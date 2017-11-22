@@ -56,6 +56,14 @@ function config_designate_dashboard {
     done
 }
 
+function config_fwaas_dashboard {
+    for file in ${SITE_PACKAGES}/neutron_fwaas_dashboard/enabled/_*[^__].py; do
+        config_dashboard "${ENABLE_FWAAS}" \
+            "${SITE_PACKAGES}/neutron_fwaas_dashboard/enabled/${file##*/}" \
+            "${SITE_PACKAGES}/openstack_dashboard/local/enabled/${file##*/}"
+    done
+}
+
 function config_freezer_ui {
     for file in ${SITE_PACKAGES}/disaster_recovery/enabled/_*[^__].py; do
         config_dashboard "${ENABLE_FREEZER}" \
@@ -213,6 +221,7 @@ function config_zun_dashboard {
 
 config_cloudkitty_dashboard
 config_designate_dashboard
+config_fwaas_dashboard
 config_freezer_ui
 config_ironic_dashboard
 config_karbor_dashboard
@@ -244,7 +253,7 @@ fi
 # NOTE(jeffrey4l): The local_settings file affect django-compress
 # behavior, so re-generate the compressed javascript and css if it
 # is changed
-MD5SUM_TXT_PATH="/tmp/.local_settings.md5sum.txt"
+MD5SUM_TXT_PATH="/var/lib/kolla/.local_settings.md5sum.txt"
 if [[ ! -f ${MD5SUM_TXT_PATH} || $(md5sum -c --status ${MD5SUM_TXT_PATH};echo $?) != 0 || ${FORCE_GENERATE} == "yes" ]]; then
     md5sum /etc/openstack-dashboard/local_settings > ${MD5SUM_TXT_PATH}
     if [[ "${KOLLA_INSTALL_TYPE}" == "binary" ]]; then

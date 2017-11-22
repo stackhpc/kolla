@@ -292,11 +292,11 @@ SOURCES = {
     'blazar-base': {
         'type': 'url',
         'location': ('$tarballs_base/blazar/'
-                     'blazar-master.tar.gz')},
+                     'blazar-0.3.0.tar.gz')},
     'ceilometer-base': {
         'type': 'url',
         'location': ('$tarballs_base/ceilometer/'
-                     'ceilometer-9.0.0.tar.gz')},
+                     'ceilometer-9.0.1.tar.gz')},
     'ceilometer-base-plugin-panko': {
         'type': 'url',
         'location': ('$tarballs_base/panko/'
@@ -320,11 +320,11 @@ SOURCES = {
     'dragonflow-base': {
         'type': 'url',
         'location': ('$tarballs_base/dragonflow/'
-                     'dragonflow-master.tar.gz')},
+                     'dragonflow-4.0.0.tar.gz')},
     'ec2-api': {
         'type': 'url',
         'location': ('$tarballs_base/ec2-api/'
-                     'ec2-api-master.tar.gz')},
+                     'ec2-api-5.0.0.tar.gz')},
     'freezer-api': {
         'type': 'url',
         'location': ('$tarballs_base/freezer-api/'
@@ -339,7 +339,7 @@ SOURCES = {
                      'glance-15.0.0.tar.gz')},
     'gnocchi-base': {
         'type': 'git',
-        'reference': '4.0.2',
+        'reference': '4.0.3',
         'location': ('https://github.com/gnocchixyz/'
                      'gnocchi.git')},
     'heat-base': {
@@ -358,6 +358,10 @@ SOURCES = {
         'type': 'url',
         'location': ('$tarballs_base/designate-dashboard/'
                      'designate-dashboard-5.0.0.tar.gz')},
+    'horizon-plugin-fwaas-dashboard': {
+        'type': 'url',
+        'location': ('$tarballs_base/neutron-fwaas-dashboard/'
+                     'neutron-fwaas-dashboard-1.0.0.tar.gz')},
     'horizon-plugin-freezer-web-ui': {
         'type': 'url',
         'location': ('$tarballs_base/freezer-web-ui/'
@@ -377,11 +381,11 @@ SOURCES = {
     'horizon-plugin-manila-ui': {
         'type': 'url',
         'location': ('$tarballs_base/manila-ui/'
-                     'manila-ui-2.10.1.tar.gz')},
+                     'manila-ui-2.10.2.tar.gz')},
     'horizon-plugin-mistral-dashboard': {
         'type': 'url',
         'location': ('$tarballs_base/mistral-dashboard/'
-                     'mistral-dashboard-5.0.0.tar.gz')},
+                     'mistral-dashboard-5.1.0.tar.gz')},
     'horizon-plugin-monasca-ui': {
         'type': 'url',
         'location': ('$tarballs_base/monasca-ui/'
@@ -433,7 +437,7 @@ SOURCES = {
     'ironic-base': {
         'type': 'url',
         'location': ('$tarballs_base/ironic/'
-                     'ironic-9.1.0.tar.gz')},
+                     'ironic-9.1.1.tar.gz')},
     'ironic-inspector': {
         'type': 'url',
         'location': ('$tarballs_base/ironic-inspector/'
@@ -441,7 +445,7 @@ SOURCES = {
     'karbor-base': {
         'type': 'url',
         'location': ('$tarballs_base/karbor/'
-                     'karbor-0.5.0.tar.gz')},
+                     'karbor-0.5.1.tar.gz')},
     'keystone-base': {
         'type': 'url',
         'location': ('$tarballs_base/keystone/'
@@ -453,7 +457,7 @@ SOURCES = {
     'kuryr-libnetwork': {
         'type': 'url',
         'location': ('$tarballs_base/kuryr-libnetwork/'
-                     'kuryr-libnetwork-master.tar.gz')},
+                     'kuryr-libnetwork-0.2.0.tar.gz')},
     'magnum-base': {
         'type': 'url',
         'location': ('$tarballs_base/magnum/'
@@ -461,11 +465,11 @@ SOURCES = {
     'manila-base': {
         'type': 'url',
         'location': ('$tarballs_base/manila/'
-                     'manila-5.0.0.tar.gz')},
+                     'manila-5.0.1.tar.gz')},
     'mistral-base': {
         'type': 'url',
         'location': ('$tarballs_base/mistral/'
-                     'mistral-5.0.0.tar.gz')},
+                     'mistral-5.1.0.tar.gz')},
     'mistral-base-plugin-tacker': {
         'type': 'url',
         'location': ('$tarballs_base/tacker/'
@@ -497,15 +501,15 @@ SOURCES = {
     'neutron-base': {
         'type': 'url',
         'location': ('$tarballs_base/neutron/'
-                     'neutron-11.0.0.tar.gz')},
+                     'neutron-11.0.1.tar.gz')},
     'neutron-base-plugin-neutron-fwaas': {
         'type': 'url',
         'location': ('$tarballs_base/neutron-fwaas/'
-                     'neutron-fwaas-11.0.0.tar.gz')},
+                     'neutron-fwaas-11.0.1.tar.gz')},
     'neutron-base-plugin-networking-generic-switch': {
         'type': 'url',
         'location': ('$tarballs_base/networking-generic-switch/'
-                     'networking-generic-switch-master.tar.gz')},
+                     'networking-generic-switch-0.4.0.tar.gz')},
     'neutron-base-plugin-networking-sfc': {
         'type': 'url',
         'location': ('$tarballs_base/networking-sfc/'
@@ -513,7 +517,7 @@ SOURCES = {
     'neutron-base-plugin-vmware-nsx': {
         'type': 'url',
         'location': ('$tarballs_base/vmware-nsx/'
-                     'vmware-nsx-master.tar.gz')},
+                     'vmware-nsx-11.0.0.tar.gz')},
     'neutron-bgp-dragent': {
         'type': 'url',
         'location': ('$tarballs_base/neutron-dynamic-routing/'
@@ -533,7 +537,7 @@ SOURCES = {
     'neutron-server-opendaylight-plugin-networking-l2gw': {
         'type': 'url',
         'location': ('$tarballs_base/networking-l2gw/'
-                     'networking-l2gw-master.tar.gz')},
+                     'networking-l2gw-11.0.0.tar.gz')},
     'neutron-server-opendaylight-plugin-networking-sfc': {
         'type': 'url',
         'location': ('$tarballs_base/networking-sfc/'
@@ -549,15 +553,15 @@ SOURCES = {
     'neutron-server-plugin-vmware-nsxlib': {
         'type': 'url',
         'location': ('$tarballs_base/vmware-nsxlib/'
-                     'vmware-nsxlib-master.tar.gz')},
+                     'vmware-nsxlib-11.1.2.tar.gz')},
     'neutron-server-plugin-vpnaas-agent': {
         'type': 'url',
         'location': ('$tarballs_base/neutron-vpnaas/'
-                     'neutron-vpnaas-master.tar.gz')},
+                     'neutron-vpnaas-11.0.0.tar.gz')},
     'neutron-vpnaas-agent': {
         'type': 'url',
         'location': ('$tarballs_base/neutron-vpnaas/'
-                     'neutron-vpnaas-master.tar.gz')},
+                     'neutron-vpnaas-11.0.0.tar.gz')},
     'neutron-server-ovn-plugin-networking-ovn': {
         'type': 'url',
         'location': ('$tarballs_base/networking-ovn/'
@@ -565,15 +569,15 @@ SOURCES = {
     'nova-base': {
         'type': 'url',
         'location': ('$tarballs_base/nova/'
-                     'nova-16.0.0.tar.gz')},
+                     'nova-16.0.1.tar.gz')},
     'nova-base-plugin-blazar': {
         'type': 'url',
         'location': ('$tarballs_base/blazar-nova/'
-                     'blazar-nova-master.tar.gz')},
+                     'blazar-nova-0.3.0.tar.gz')},
     'novajoin-base': {
         'type': 'url',
         'location': ('$tarballs_base/novajoin/'
-                     'novajoin-master.tar.gz')},
+                     'novajoin-1.0.17.tar.gz')},
     'octavia-base': {
         'type': 'url',
         'location': ('$tarballs_base/octavia/'
@@ -631,7 +635,7 @@ SOURCES = {
     'vmtp': {
         'type': 'url',
         'location': ('$tarballs_base/vmtp/'
-                     'vmtp-master.tar.gz')},
+                     'vmtp-2.4.4.tar.gz')},
     'watcher-base': {
         'type': 'url',
         'location': ('$tarballs_base/watcher/'
@@ -643,7 +647,7 @@ SOURCES = {
     'zun-base': {
         'type': 'url',
         'location': ('$tarballs_base/zun/'
-                     'zun-0.2.0.tar.gz')}
+                     'zun-0.2.1.tar.gz')}
 }
 
 
@@ -954,8 +958,8 @@ def get_source_opts(type_=None, location=None, reference=None):
 
 def get_user_opts(uid, gid):
     return [
-        cfg.StrOpt('uid', default=uid, help='The user id'),
-        cfg.StrOpt('gid', default=gid, help='The group id'),
+        cfg.IntOpt('uid', default=uid, help='The user id'),
+        cfg.IntOpt('gid', default=gid, help='The group id'),
     ]
 
 
