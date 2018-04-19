@@ -1,8 +1,7 @@
 #!/bin/bash
 
-# Bootstrap and exit if KOLLA_BOOTSTRAP variable is set. This catches all cases
-# of the KOLLA_BOOTSTRAP variable being set, including empty.
-if [[ "${!KOLLA_BOOTSTRAP[@]}" ]]; then
+
+function bootstrap_pxe() {
     chown -R ironic: /tftpboot
     for pxe_file in /var/lib/tftpboot/pxelinux.0 /var/lib/tftpboot/chain.c32 /usr/lib/syslinux/pxelinux.0 \
                     /usr/lib/syslinux/chain.c32 /usr/lib/PXELINUX/pxelinux.0 \
@@ -12,6 +11,25 @@ if [[ "${!KOLLA_BOOTSTRAP[@]}" ]]; then
         fi
     done
     exit 0
+}
+
+function bootstrap_ipxe() {
+    if [[ "${KOLLA_BASE_DISTRO}" =~ debian|ubuntu ]]; then
+        cp /usr/lib/ipxe/{undionly.kpxe,ipxe.efi} /tftpboot
+    elif [[ "${KOLLA_BASE_DISTRO}" =~ centos|oraclelinux|rhel ]]; then
+        cp /usr/share/ipxe/{undionly.kpxe,ipxe.efi} /tftpboot
+    fi
+    exit 0
+}
+
+# Bootstrap and exit if KOLLA_BOOTSTRAP variable is set. This catches all cases
+# of the KOLLA_BOOTSTRAP variable being set, including empty.
+if [[ "${!KOLLA_BOOTSTRAP[@]}" ]]; then
+    if [[ "${!KOLLA_BOOTSTRAP_IPXE[@]}" ]]; then
+        bootstrap_ipxe
+    else
+        bootstrap_pxe
+    fi
 fi
 
 # NOTE(pbourke): httpd will not clean up after itself in some cases which
