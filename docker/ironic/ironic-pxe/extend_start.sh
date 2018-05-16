@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-function prepare_pxe() {
+function prepare_pxe {
     chown -R ironic: /tftpboot
     for pxe_file in /var/lib/tftpboot/pxelinux.0 /var/lib/tftpboot/chain.c32 /usr/lib/syslinux/pxelinux.0 \
                     /usr/lib/syslinux/chain.c32 /usr/lib/PXELINUX/pxelinux.0 \
@@ -12,7 +12,7 @@ function prepare_pxe() {
     done
 }
 
-function prepare_ipxe() {
+function prepare_ipxe {
     if [[ "${KOLLA_BASE_DISTRO}" =~ debian|ubuntu ]]; then
         cp /usr/lib/ipxe/{undionly.kpxe,ipxe.efi} /tftpboot
     elif [[ "${KOLLA_BASE_DISTRO}" =~ centos|oraclelinux|rhel ]]; then
