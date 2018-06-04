@@ -65,6 +65,7 @@ _PROFILE_OPTS = [
                     'keepalived',
                     'kibana',
                     'kolla-toolbox',
+                    'logstash',
                     'mariadb',
                     'memcached',
                     'mongodb',
@@ -941,6 +942,10 @@ USERS = {
     'fluentd-user': {
         'uid': 42474,
         'gid': 42474,
+    },
+    'logstash-user': {
+        'uid': 42478,
+        'gid': 42478,
     }
 }
 
