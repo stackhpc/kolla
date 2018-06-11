@@ -75,6 +75,7 @@ _PROFILE_OPTS = [
                     'rabbitmq',
                     'redis',
                     'skydive',
+                    'storm',
                     'tgtd',
                 ],
                 help='Infra images'),
@@ -122,6 +123,7 @@ _PROFILE_OPTS = [
                     'searchlight',
                     'senlin',
                     'solum',
+                    'storm',
                     'tacker',
                     'telegraf',
                     'trove',
@@ -946,6 +948,10 @@ USERS = {
     'logstash-user': {
         'uid': 42478,
         'gid': 42478,
+    },
+    'storm-user': {
+        'uid': 42479,
+        'gid': 42479,
     }
 }
 
