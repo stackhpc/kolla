@@ -78,6 +78,7 @@ _PROFILE_OPTS = [
                     'redis',
                     'rsyslog',
                     'skydive',
+                    'storm',
                     'tgtd',
                 ],
                 help='Infra images'),
@@ -1006,6 +1007,10 @@ USERS = {
     'logstash-user': {
         'uid': 42478,
         'gid': 42478,
+    },
+    'storm-user': {
+        'uid': 42479,
+        'gid': 42479,
     }
 }
 
