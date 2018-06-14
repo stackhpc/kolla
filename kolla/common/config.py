@@ -519,7 +519,18 @@ SOURCES = {
     'monasca-statsd': {
         'type': 'url',
         'location': ('$tarballs_base/monasca-statsd/'
-                     'monasca-statsd-1.9.0.tar.gz')},
+                     'monasca-statsd-1.7.0.tar.gz')},
+    # FIXME(dszumski): Use openstack tar when infra is fixed
+    # NOTE(dszumski): Monasca-thresh is using master, because that's
+    # what we've tested on Pike (master doesn't move very quickly for these)
+    'monasca-thresh': {
+        'type': 'url',
+        'location': ('https://github.com/openstack/monasca-thresh/archive/'
+                     'master.tar.gz')},
+    'monasca-thresh-additions-monasca-common': {
+        'type': 'url',
+        'location': ('$tarballs_base/monasca-common/'
+                     'monasca-common-master.tar.gz')},
     'murano-base': {
         'type': 'url',
         'location': ('$tarballs_base/murano/'
