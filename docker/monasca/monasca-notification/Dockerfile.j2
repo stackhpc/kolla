@@ -19,6 +19,7 @@ ADD monasca-notification-archive /monasca-notification-source
 ] %}
 
 RUN ln -s monasca-notification-source/* monasca-notification \
+    && sed -i 's/no_yaml=False/no_yaml=True/g' /monasca-notification/monasca_notification/config.py \
     && {{ macros.install_pip(monasca_notification_pip_packages | customizable("pip_packages")) }}
 
 {% endif %}

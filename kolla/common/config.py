@@ -65,6 +65,7 @@ _PROFILE_OPTS = [
                     'keepalived',
                     'kibana',
                     'kolla-toolbox',
+                    'logstash',
                     'mariadb',
                     'memcached',
                     'mongodb',
@@ -74,6 +75,7 @@ _PROFILE_OPTS = [
                     'rabbitmq',
                     'redis',
                     'skydive',
+                    'storm',
                     'tgtd',
                 ],
                 help='Infra images'),
@@ -121,6 +123,7 @@ _PROFILE_OPTS = [
                     'searchlight',
                     'senlin',
                     'solum',
+                    'storm',
                     'tacker',
                     'telegraf',
                     'trove',
@@ -485,7 +488,7 @@ SOURCES = {
     'monasca-notification': {
         'type': 'url',
         'location': ('$tarballs_base/monasca-notification/'
-                     'monasca-notification-1.10.1.tar.gz')},
+                     'monasca-notification-1.12.0.tar.gz')},
     'monasca-persister': {
         'type': 'url',
         'location': ('$tarballs_base/monasca-persister/'
@@ -494,6 +497,10 @@ SOURCES = {
         'type': 'url',
         'location': ('$tarballs_base/monasca-statsd/'
                      'monasca-statsd-1.7.0.tar.gz')},
+    'monasca-common': {
+        'type': 'url',
+        'location': ('$tarballs_base/monasca-common/'
+                     'monasca-common-master.tar.gz')},
     'murano-base': {
         'type': 'url',
         'location': ('$tarballs_base/murano/'
@@ -941,6 +948,14 @@ USERS = {
     'fluentd-user': {
         'uid': 42474,
         'gid': 42474,
+    },
+    'logstash-user': {
+        'uid': 42478,
+        'gid': 42478,
+    },
+    'storm-user': {
+        'uid': 42479,
+        'gid': 42479,
     }
 }
 
