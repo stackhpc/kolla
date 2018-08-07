@@ -493,6 +493,10 @@ SOURCES = {
         'type': 'url',
         'location': ('$tarballs_base/monasca-persister/'
                      'monasca-persister-1.7.0.tar.gz')},
+    'monasca-spark-additions-monasca-common': {
+        'type': 'url',
+        'location': ('$tarballs_base/monasca-common/'
+                     'monasca-common-master.tar.gz')},
     'monasca-statsd': {
         'type': 'url',
         'location': ('$tarballs_base/monasca-statsd/'

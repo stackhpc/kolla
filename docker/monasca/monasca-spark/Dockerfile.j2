@@ -1,0 +1,96 @@
+FROM {{ namespace }}/{{ image_prefix }}monasca-base:{{ tag }}
+LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build_date }}"
+
+{% block monasca_spark_header %}{% endblock %}
+
+{% import "macros.j2" as macros with context %}
+
+{% if install_type == 'binary' %}
+
+RUN echo '{{ install_type }} not yet available for {{ base_distro }}' \
+    && /bin/false
+
+{% elif install_type == 'source' %}
+
+{% if base_distro in ['centos', 'oraclelinux', 'rhel'] %}
+    {% set monasca_spark_packages = [
+        'java-1.8.0-openjdk',
+        'maven',
+        'git',
+    ] %}
+
+ENV JAVA_HOME /usr/lib/jvm/jre-1.8.0-openjdk/
+
+{% elif base_distro in ['debian', 'ubuntu'] %}
+    {% set monasca_spark_packages = [
+        'default-jre',
+        'maven',
+        'git',
+    ] %}
+
+{% if base_arch == 'x86_64' %}
+ARG java_arch=amd64
+{% elif base_arch == 'aarch64' %}
+ARG java_arch=arm64
+{% else %}
+ARG java_arch={{ base_arch }}
+{% endif %}
+
+ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-${java_arch}/
+
+{% endif %}
+
+{{ macros.install_packages(monasca_spark_packages | customizable("packages")) }}
+
+{% block monasca_spark_version %}
+ENV monasca_spark_version=2.2.0
+ENV monasca_spark_url=https://archive.apache.org/dist/spark/spark-${monasca_spark_version}/spark-${monasca_spark_version}.tgz
+ENV monssca_spark_pkg_sha512sum=9b6f30425decb8e7f176448458c9a6131bebc6dbe7d4e93de6753584d3af566982852055d3134433fa0ad7d4ecc3b474f0304ee62cf82def9d02ff00a9d7a681
+{% endblock %}
+
+# NOTE(dszumski) This is used on the worker nodes by Monasca Transform. A
+# neater way would be to bundle the monasca-common lib + dependencies when the
+# Monasca Transform job is submitted to the Spark cluster.
+ADD additions/monasca-common* /monasca-common-source
+
+{% set monasca_spark_pip_packages = [
+    '/monasca-common'
+] %}
+
+RUN ln -s monasca-common-source monasca-common \
+    && {{ macros.install_pip(monasca_spark_pip_packages | customizable("pip_packages"), constraints = false) }}
+
+{% block monasca_spark_install %}
+# NOTE(dszumski): Monasca Transform currently uses Spark 2.2.0 built with
+# Scala 2.10. Apache binary distributions are built with Scala 2.11 because
+# 2.10 was deprecated in Spark 2.1.0. Therefore, until Monasca Transform is
+# updated we need to build Spark from source.
+ENV MAVEN_OPTS="-Xmx2g -XX:ReservedCodeCacheSize=512m"
+RUN curl -sSL -o /tmp/spark.tgz ${monasca_spark_url} \
+    && echo "${monasca_spark_pkg_sha512sum} /tmp/spark.tgz" | sha512sum -c \
+    && mkdir /opt/spark \
+    && tar --strip 1 -xvf /tmp/spark.tgz -C /opt/spark \
+    && rm -f /tmp/spark.tgz \
+    && cd /opt/spark \
+    && ./dev/change-scala-version.sh 2.10 \
+    && ./build/mvn -Pyarn -Dscala-2.10 -DskipTests clean package
+
+# Install PySpark
+RUN cd /opt/spark/python \
+    && python setup.py sdist \
+    && pip install dist/*.tar.gz
+
+# TODO: Security risk: HTTP and no checksums. Use Maven?
+RUN curl -sSL -o /opt/spark/assembly/target/scala-2.10/jars/kafka_2.10-0.8.1.1.jar http://central.maven.org/maven2/org/apache/kafka/kafka_2.10/0.8.1.1/kafka_2.10-0.8.1.1.jar
+RUN curl -sSL -o /opt/spark/assembly/target/scala-2.10/jars/metrics-core-2.2.0.jar http://central.maven.org/maven2/com/yammer/metrics/metrics-core/2.2.0/metrics-core-2.2.0.jar
+RUN curl -sSL -o /opt/spark/assembly/target/scala-2.10/jars/drizzle-jdbc-1.3.jar http://central.maven.org/maven2/org/drizzle/jdbc/drizzle-jdbc/1.3/drizzle-jdbc-1.3.jar
+ENV SPARK_CLASSPATH=/opt/spark/assembly/target/scala-2.10/jars/*:/opt/spark/external/kafka-0-8/target/*
+
+{% endblock %}
+
+{% endif %}
+
+{% block monasca_spark_footer %}{% endblock %}
+{% block footer %}{% endblock %}
+
+USER monasca

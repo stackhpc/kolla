@@ -1,0 +1,4 @@
+---
+features:
+  - Add Apache Spark which is used by Monasca Transform for
+    aggregating and processing metrics.
