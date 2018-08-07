@@ -45,7 +45,7 @@ ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-${java_arch}/
 {% block monasca_spark_version %}
 ENV monasca_spark_version=2.2.0
 ENV monasca_spark_url=https://archive.apache.org/dist/spark/spark-${monasca_spark_version}/spark-${monasca_spark_version}.tgz
-ENV monssca_spark_pkg_sha512sum=9b6f30425decb8e7f176448458c9a6131bebc6dbe7d4e93de6753584d3af566982852055d3134433fa0ad7d4ecc3b474f0304ee62cf82def9d02ff00a9d7a681
+ENV monasca_spark_pkg_sha512sum=9b6f30425decb8e7f176448458c9a6131bebc6dbe7d4e93de6753584d3af566982852055d3134433fa0ad7d4ecc3b474f0304ee62cf82def9d02ff00a9d7a681
 {% endblock %}
 
 # NOTE(dszumski) This is used on the worker nodes by Monasca Transform. A

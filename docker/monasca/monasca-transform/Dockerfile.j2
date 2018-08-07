@@ -1,0 +1,44 @@
+FROM {{ namespace }}/{{ image_prefix }}monasca-spark:{{ tag }}
+LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build_date }}"
+
+USER root
+
+{% block monasca_transform_header %}{% endblock %}
+
+{% import "macros.j2" as macros with context %}
+
+{% if install_type == 'binary' %}
+
+RUN echo '{{ install_type }} not yet available for {{ base_distro }}' \
+    && /bin/false
+
+{% elif install_type == 'source' %}
+
+{% if base_distro in ['centos', 'oraclelinux', 'rhel'] %}
+        {% set monasca_transform_packages = [
+            'mariadb',
+        ] %}
+    {% elif base_distro in ['debian', 'ubuntu'] %}
+        {% set monasca_transform_packages = [
+            'mariadb-client',
+        ] %}
+    {% endif %}
+{{ macros.install_packages(monasca_api_packages | customizable("packages")) }}
+
+ADD monasca-transform-archive /monasca-transform-source
+
+{% set monasca_transform_pip_packages = [
+    '/monasca-transform',
+] %}
+
+RUN ln -s monasca-transform-source/* monasca-transform \
+    && {{ macros.install_pip(monasca_transform_pip_packages | customizable("pip_packages")) }}
+
+{% endif %}
+
+{% block monasca_transform_footer %}{% endblock %}
+
+{% block footer %}{% endblock %}
+
+USER monasca
+

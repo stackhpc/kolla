@@ -501,6 +501,10 @@ SOURCES = {
         'type': 'url',
         'location': ('$tarballs_base/monasca-statsd/'
                      'monasca-statsd-1.7.0.tar.gz')},
+    'monasca-transform': {
+        'type': 'url',
+        'location': ('$tarballs_base/monasca-transform/'
+                     'monasca-transform-master.tar.gz')},
     'monasca-common': {
         'type': 'url',
         'location': ('$tarballs_base/monasca-common/'
