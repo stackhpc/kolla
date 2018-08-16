@@ -710,7 +710,12 @@ class KollaWorker(object):
         self.maintainer = conf.maintainer
 
         docker_kwargs = docker.utils.kwargs_from_env()
-        self.dc = docker.APIClient(version='auto', **docker_kwargs)
+        try:
+            self.dc = docker.APIClient(version='auto', **docker_kwargs)
+        except docker.errors.DockerException as e:
+            self.dc = None
+            if not conf.template_only:
+                raise e
 
     def _get_images_dir(self):
         possible_paths = (
@@ -1016,6 +1021,10 @@ class KollaWorker(object):
                     'name': name,
                     'status': status,
                 })
+                if self.conf.logs_dir and status == STATUS_ERROR:
+                    os.symlink("%s.log" % name,
+                               os.path.join(self.conf.logs_dir,
+                                            "000_FAILED_%s.log" % name))
 
         if self.image_statuses_unmatched:
             LOG.debug("=====================================")
