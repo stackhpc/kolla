@@ -1,0 +1,75 @@
+{% raw %}
+{% extends parent_template %}
+
+{% block base_header %}
+{% endraw %}
+
+ENV PIP_INDEX_URL {{ nodepool_pypi_mirror }}
+ENV PIP_TRUSTED_HOST {{ nodepool_mirror_host }}
+
+RUN echo registry={{ nodepool_npmjs_proxy }} > /etc/npmrc \
+    && mkdir -p /usr/etc \
+    && ln -s /etc/npmrc /usr/etc/npmrc
+
+{% raw %}
+{% if base_distro == 'ubuntu' %}
+
+RUN echo 'APT::Get::AllowUnauthenticated "true";' > /etc/apt/apt.conf.d/99allow-unauthenticated
+{% elif base_distro == 'centos' %}
+{% endraw %}
+
+RUN sed -i -e "/^mirrorlist/d" \
+        -e "s|^#baseurl=http://mirror.centos.org|baseurl=http://{{ nodepool_mirror_host }}|" \
+        /etc/yum.repos.d/CentOS-Base.repo
+
+{% raw %}
+{% elif base_distro == 'oraclelinux' %}
+{% endraw %}
+
+RUN sed -i -e "s|^baseurl=http://yum.oracle.com/repo/OracleLinux|baseurl={{ nodepool_oraclelinux_proxy }}|" \
+        /etc/yum.repos.d/public-yum-ol7.repo
+
+{% raw %}
+{% endif %}
+{% endblock %}
+
+{% block base_footer %}
+{% if base_distro == "centos" %}
+{% endraw %}
+
+RUN sed -i -e  "/^mirrorlist/d" \
+        -e "s|^#baseurl=http://download.fedoraproject.org/pub|baseurl=http://{{ nodepool_mirror_host }}|g" \
+        -e "s|^baseurl=http://mirror.centos.org|baseurl=http://{{ nodepool_mirror_host }}|g" \
+        -e "s|^baseurl=https://packages.elastic.co|baseurl={{ nodepool_elastic_proxy }}|g" \
+        -e "s|^baseurl=https://packagecloud.io/grafana|baseurl={{ nodepool_grafana_proxy }}|g" \
+        -e "s|^baseurl=https://trunk.rdoproject.org|baseurl=http://{{ nodepool_rdo_proxy }}|g" \
+        /etc/yum.repos.d/*.repo
+
+{% raw %}
+{% elif base_distro == "oraclelinux" %}
+{% endraw %}
+
+RUN sed -i -e "/^mirrorlist/d" \
+        -e "/^metalink/d" \
+        -e "s|^#baseurl=http://mirror.centos.org|baseurl=http://{{ nodepool_mirror_host }}|g" \
+        -e "s|^#baseurl=http://download.fedoraproject.org/pub|baseurl=http://{{ nodepool_mirror_host }}|g" \
+        -e "s|^baseurl=http://mirror.centos.org|baseurl=http://{{ nodepool_mirror_host }}|g" \
+        -e "s|^baseurl=https://packages.elastic.co|baseurl={{ nodepool_elastic_proxy }}|g" \
+        -e "s|^baseurl=https://packagecloud.io/grafana|baseurl={{ nodepool_grafana_proxy }}|g" \
+        -e "s|^baseurl=https://trunk.rdoproject.org|baseurl=http://{{ nodepool_rdo_proxy }}|g" \
+        /etc/yum.repos.d/*.repo
+
+{% raw %}
+{% elif base_distro == "ubuntu" %}
+{% endraw %}
+
+# TODO(jeffrey4l): seem the current infra repo has some issue, revert this when it is OK.
+#RUN sed -i -e "s|http://archive.ubuntu.com|http://{{ nodepool_mirror_host }}|" \
+#        -e "s|http://ubuntu-cloud.archive.canonical.com/ubuntu|http://{{ nodepool_mirror_host }}/ubuntu-cloud-archive|" \
+#        /etc/apt/sources.list \
+#    && apt-get update
+
+{% raw %}
+{% endif %}
+{% endblock %}
+{% endraw %}
