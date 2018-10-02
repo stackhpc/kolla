@@ -66,6 +66,7 @@ _PROFILE_OPTS = [
                     'keepalived',
                     'kibana',
                     'kolla-toolbox',
+                    'logstash',
                     'mariadb',
                     'memcached',
                     'mongodb',
@@ -77,6 +78,7 @@ _PROFILE_OPTS = [
                     'redis',
                     'rsyslog',
                     'skydive',
+                    'storm',
                     'tgtd',
                 ],
                 help='Infra images'),
@@ -498,6 +500,10 @@ SOURCES = {
         'type': 'url',
         'location': ('$tarballs_base/tacker/'
                      'tacker-0.9.0.tar.gz')},
+    'monasca-agent': {
+        'type': 'url',
+        'location': ('$tarballs_base/monasca-agent/'
+                     'monasca-agent-master.tar.gz')},
     'monasca-api': {
         'type': 'url',
         'location': ('$tarballs_base/monasca-api/'
@@ -517,7 +523,18 @@ SOURCES = {
     'monasca-statsd': {
         'type': 'url',
         'location': ('$tarballs_base/monasca-statsd/'
-                     'monasca-statsd-1.9.0.tar.gz')},
+                     'monasca-statsd-1.7.0.tar.gz')},
+    # FIXME(dszumski): Use openstack tar when infra is fixed
+    # NOTE(dszumski): Monasca-thresh is using master, because that's
+    # what we've tested on Pike (master doesn't move very quickly for these)
+    'monasca-thresh': {
+        'type': 'url',
+        'location': ('https://github.com/openstack/monasca-thresh/archive/'
+                     'master.tar.gz')},
+    'monasca-thresh-additions-monasca-common': {
+        'type': 'url',
+        'location': ('$tarballs_base/monasca-common/'
+                     'monasca-common-master.tar.gz')},
     'murano-base': {
         'type': 'url',
         'location': ('$tarballs_base/murano/'
@@ -1001,6 +1018,14 @@ USERS = {
     'hugetlbfs-user': {
         'uid': 42477,  # unused user, but we need the group for vhost socket
         'gid': 42477,
+    },
+    'logstash-user': {
+        'uid': 42478,
+        'gid': 42478,
+    },
+    'storm-user': {
+        'uid': 42479,
+        'gid': 42479,
     }
 }
 

@@ -18,11 +18,8 @@ deb http://nyc2.mirrors.digitalocean.com/mariadb/repo/10.0/ubuntu xenial main
 # Percona repo (for xtrabackup)
 deb http://repo.percona.com/apt xenial main
 
-# Elastic repo
-deb https://packages.elastic.co/elasticsearch/2.x/debian stable main
-
-# Kibana repo
-deb https://packages.elastic.co/kibana/4.6/debian stable main
+# Elasticsearch, Logstash & Kibana repo
+deb https://artifacts.elastic.co/packages/5.x/apt stable main
 
 # Docker repo
 deb http://apt.dockerproject.org/repo ubuntu-xenial main
