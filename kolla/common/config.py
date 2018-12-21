@@ -348,7 +348,7 @@ SOURCES = {
     'heat-base': {
         'type': 'url',
         'location': ('$tarballs_base/heat/'
-                     'heat-9.0.4.tar.gz')},
+                     'heat-9.0.5.tar.gz')},
     'horizon': {
         'type': 'url',
         'location': ('$tarballs_base/horizon/'
@@ -452,7 +452,7 @@ SOURCES = {
     'keystone-base': {
         'type': 'url',
         'location': ('$tarballs_base/keystone/'
-                     'keystone-12.0.0.tar.gz')},
+                     'keystone-12.0.2.tar.gz')},
     'kuryr-base': {
         'type': 'url',
         'location': ('$tarballs_base/kuryr/'
@@ -468,11 +468,11 @@ SOURCES = {
     'manila-base': {
         'type': 'url',
         'location': ('$tarballs_base/manila/'
-                     'manila-5.0.1.tar.gz')},
+                     'manila-5.0.2.tar.gz')},
     'mistral-base': {
         'type': 'url',
         'location': ('$tarballs_base/mistral/'
-                     'mistral-5.2.4.tar.gz')},
+                     'mistral-5.2.6.tar.gz')},
     'mistral-base-plugin-tacker': {
         'type': 'url',
         'location': ('$tarballs_base/tacker/'
@@ -508,11 +508,11 @@ SOURCES = {
     'neutron-base': {
         'type': 'url',
         'location': ('$tarballs_base/neutron/'
-                     'neutron-11.0.5.tar.gz')},
+                     'neutron-11.0.6.tar.gz')},
     'neutron-base-plugin-neutron-fwaas': {
         'type': 'url',
         'location': ('$tarballs_base/neutron-fwaas/'
-                     'neutron-fwaas-11.0.1.tar.gz')},
+                     'neutron-fwaas-11.0.2.tar.gz')},
     'neutron-base-plugin-networking-generic-switch': {
         'type': 'url',
         'location': ('$tarballs_base/networking-generic-switch/'
@@ -576,7 +576,7 @@ SOURCES = {
     'nova-base': {
         'type': 'url',
         'location': ('$tarballs_base/nova/'
-                     'nova-16.1.4.tar.gz')},
+                     'nova-16.1.6.tar.gz')},
     'nova-base-plugin-blazar': {
         'type': 'url',
         'location': ('$tarballs_base/blazar-nova/'
@@ -588,7 +588,7 @@ SOURCES = {
     'octavia-base': {
         'type': 'url',
         'location': ('$tarballs_base/octavia/'
-                     'octavia-1.0.2.tar.gz')},
+                     'octavia-1.0.3.tar.gz')},
     'opendaylight': {
         'type': 'url',
         'location': ('https://nexus.opendaylight.org/content/'
@@ -630,7 +630,7 @@ SOURCES = {
     'tempest': {
         'type': 'url',
         'location': ('$tarballs_base/tempest/'
-                     'tempest-master.tar.gz')},
+                     'tempest-17.0.0.tar.gz')},
     'trove-base': {
         'type': 'url',
         'location': ('$tarballs_base/trove/'
