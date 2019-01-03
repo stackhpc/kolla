@@ -314,15 +314,15 @@ SOURCES = {
     'ceilometer-base-plugin-panko': {
         'type': 'url',
         'location': ('$tarballs_base/panko/'
-                     'panko-4.0.1.tar.gz')},
+                     'panko-4.0.2.tar.gz')},
     'cinder-base': {
         'type': 'url',
         'location': ('$tarballs_base/cinder/'
-                     'cinder-12.0.3.tar.gz')},
+                     'cinder-12.0.4.tar.gz')},
     'congress-base': {
         'type': 'url',
         'location': ('$tarballs_base/congress/'
-                     'congress-7.0.0.tar.gz')},
+                     'congress-7.0.1.tar.gz')},
     'cloudkitty-base': {
         'type': 'url',
         'location': ('$tarballs_base/cloudkitty/'
@@ -359,7 +359,7 @@ SOURCES = {
     'heat-base': {
         'type': 'url',
         'location': ('$tarballs_base/heat/'
-                     'heat-10.0.1.tar.gz')},
+                     'heat-10.0.2.tar.gz')},
     'horizon': {
         'type': 'url',
         'location': ('$tarballs_base/horizon/'
@@ -395,7 +395,7 @@ SOURCES = {
     'horizon-plugin-magnum-ui': {
         'type': 'url',
         'location': ('$tarballs_base/magnum-ui/'
-                     'magnum-ui-4.0.0.tar.gz')},
+                     'magnum-ui-4.0.1.tar.gz')},
     'horizon-plugin-manila-ui': {
         'type': 'url',
         'location': ('$tarballs_base/manila-ui/'
@@ -463,7 +463,7 @@ SOURCES = {
     'ironic-base': {
         'type': 'url',
         'location': ('$tarballs_base/ironic/'
-                     'ironic-10.1.3.tar.gz')},
+                     'ironic-10.1.6.tar.gz')},
     'ironic-inspector': {
         'type': 'url',
         'location': ('$tarballs_base/ironic-inspector/'
@@ -475,7 +475,7 @@ SOURCES = {
     'keystone-base': {
         'type': 'url',
         'location': ('$tarballs_base/keystone/'
-                     'keystone-13.0.0.tar.gz')},
+                     'keystone-13.0.2.tar.gz')},
     'kuryr-base': {
         'type': 'url',
         'location': ('$tarballs_base/kuryr/'
@@ -487,15 +487,15 @@ SOURCES = {
     'magnum-base': {
         'type': 'url',
         'location': ('$tarballs_base/magnum/'
-                     'magnum-6.1.1.tar.gz')},
+                     'magnum-6.2.0.tar.gz')},
     'manila-base': {
         'type': 'url',
         'location': ('$tarballs_base/manila/'
-                     'manila-6.0.1.tar.gz')},
+                     'manila-6.0.2.tar.gz')},
     'mistral-base': {
         'type': 'url',
         'location': ('$tarballs_base/mistral/'
-                     'mistral-6.0.3.tar.gz')},
+                     'mistral-6.0.5.tar.gz')},
     'mistral-base-plugin-tacker': {
         'type': 'url',
         'location': ('$tarballs_base/tacker/'
@@ -542,11 +542,11 @@ SOURCES = {
     'neutron-base': {
         'type': 'url',
         'location': ('$tarballs_base/neutron/'
-                     'neutron-12.0.3.tar.gz')},
+                     'neutron-12.0.5.tar.gz')},
     'neutron-base-plugin-neutron-fwaas': {
         'type': 'url',
         'location': ('$tarballs_base/neutron-fwaas/'
-                     'neutron-fwaas-12.0.0.tar.gz')},
+                     'neutron-fwaas-12.0.1.tar.gz')},
     'neutron-base-plugin-networking-baremetal': {
         'type': 'url',
         'location': ('$tarballs_base/networking-baremetal/'
@@ -566,7 +566,7 @@ SOURCES = {
     'neutron-base-plugin-vpnaas-agent': {
         'type': 'url',
         'location': ('$tarballs_base/neutron-vpnaas/'
-                     'neutron-vpnaas-12.0.0.tar.gz')},
+                     'neutron-vpnaas-12.0.1.tar.gz')},
     'neutron-bgp-dragent': {
         'type': 'url',
         'location': ('$tarballs_base/neutron-dynamic-routing/'
@@ -582,7 +582,7 @@ SOURCES = {
     'neutron-server-opendaylight-plugin-networking-bgpvpn': {
         'type': 'url',
         'location': ('$tarballs_base/networking-bgpvpn/'
-                     'networking-bgpvpn-8.0.0.tar.gz')},
+                     'networking-bgpvpn-8.0.1.tar.gz')},
     'neutron-server-opendaylight-plugin-networking-l2gw': {
         'type': 'url',
         'location': ('$tarballs_base/networking-l2gw/'
@@ -606,19 +606,19 @@ SOURCES = {
     'neutron-vpnaas-agent': {
         'type': 'url',
         'location': ('$tarballs_base/neutron-vpnaas/'
-                     'neutron-vpnaas-12.0.0.tar.gz')},
+                     'neutron-vpnaas-12.0.1.tar.gz')},
     'neutron-server-ovn-plugin-networking-ovn': {
         'type': 'url',
         'location': ('$tarballs_base/networking-ovn/'
-                     'networking-ovn-4.0.2.tar.gz')},
+                     'networking-ovn-4.0.3.tar.gz')},
     'neutron-metadata-agent-ovn-plugin-networking-ovn': {
         'type': 'url',
         'location': ('$tarballs_base/networking-ovn/'
-                     'networking-ovn-4.0.2.tar.gz')},
+                     'networking-ovn-4.0.3.tar.gz')},
     'nova-base': {
         'type': 'url',
         'location': ('$tarballs_base/nova/'
-                     'nova-17.0.5.tar.gz')},
+                     'nova-17.0.7.tar.gz')},
     'nova-base-plugin-blazar': {
         'type': 'url',
         'location': ('$tarballs_base/blazar-nova/'
@@ -634,7 +634,7 @@ SOURCES = {
     'octavia-base': {
         'type': 'url',
         'location': ('$tarballs_base/octavia/'
-                     'octavia-2.0.1.tar.gz')},
+                     'octavia-2.0.2.tar.gz')},
     'opendaylight': {
         'type': 'url',
         'location': ('https://nexus.opendaylight.org/content/'
@@ -644,7 +644,7 @@ SOURCES = {
     'panko-base': {
         'type': 'url',
         'location': ('$tarballs_base/panko/'
-                     'panko-4.0.1.tar.gz')},
+                     'panko-4.0.2.tar.gz')},
     'tempest-plugin-tempest-conf': {
         'type': 'url',
         'location': ('$tarballs_base/python-tempestconf/'
@@ -656,7 +656,7 @@ SOURCES = {
     'sahara-base': {
         'type': 'url',
         'location': ('$tarballs_base/sahara/'
-                     'sahara-8.0.1.tar.gz')},
+                     'sahara-8.0.2.tar.gz')},
     'searchlight-base': {
         'type': 'url',
         'location': ('$tarballs_base/searchlight/'
@@ -684,7 +684,7 @@ SOURCES = {
     'tempest': {
         'type': 'url',
         'location': ('$tarballs_base/tempest/'
-                     'tempest-master.tar.gz')},
+                     'tempest-18.0.0.tar.gz')},
     'tripleo-ui': {
         'type': 'url',
         'location': ('$tarballs_base/tripleo-ui/'
@@ -712,7 +712,7 @@ SOURCES = {
     'zun-base': {
         'type': 'url',
         'location': ('$tarballs_base/zun/'
-                     'zun-1.0.0.tar.gz')}
+                     'zun-1.0.1.tar.gz')}
 }
 
 
