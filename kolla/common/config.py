@@ -1199,7 +1199,11 @@ USERS = {
     'masakari-user': {
         'uid': 42485,
         'gid': 42485,
-    }
+    },
+    'caso-user': {
+        'uid': 42481,
+        'gid': 42481,
+    },
 }
 
 
