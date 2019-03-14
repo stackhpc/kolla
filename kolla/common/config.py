@@ -664,6 +664,10 @@ USERS = {
         'uid': 42404,
         'gid': 42404,
     },
+    'caso-user': {
+        'uid': 52400,
+        'gid': 52400,
+    },
     'ceilometer-user': {
         'uid': 42405,
         'gid': 42405,
