@@ -21,19 +21,19 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 
 {% block prometheus_libvirt_exporter_version %}
 ARG prometheus_libvirt_exporter_version=0.1.1
-ARG prometheus_libvirt_exporter_url=https://github.com/kumina/libvirt_exporter.git
+ARG prometheus_libvirt_exporter_url=https://github.com/kumina/libvirt_exporter/archive/${prometheus_libvirt_exporter_version}.tar.gz
 {% endblock %}
 
 {% block prometheus_libvirt_exporter_install %}
-ENV GOPATH=/build
-RUN mkdir /build \
-    && cd /build \
-    && git clone --branch ${prometheus_libvirt_exporter_version} ${prometheus_libvirt_exporter_url} \
-    && cd libvirt_exporter \
+ENV GOPATH=/tmp
+RUN curl -sSL -o /tmp/libvirt_exporter.tar.gz ${prometheus_libvirt_exporter_url} \
+    && mkdir /tmp/libvirt_exporter \
+    && tar --strip 1 -xvf /tmp/libvirt_exporter.tar.gz -C /tmp/libvirt_exporter \
+    && cd /tmp/libvirt_exporter \
     && go get -d ./... \
     && go build \
     && install -m 0755 libvirt_exporter /opt/ \
-    && rm -rf /build
+    && rm -rf /tmp/libvirt_exporter*
 {% endblock %}
 
 {% block prometheus_libvirt_exporter_footer %}{% endblock %}
