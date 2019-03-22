@@ -93,6 +93,7 @@ _PROFILE_OPTS = [
                     'almanach',
                     'aodh',
                     'blazar',
+                    'caso',
                     'cloudkitty',
                     'congress',
                     'designate',
@@ -1124,6 +1125,10 @@ USERS = {
     'tempest-user': {
         'uid': 42480,
         'gid': 42480,
+    },
+    'caso-user': {
+        'uid': 42481,
+        'gid': 42481,
     }
 }
 
