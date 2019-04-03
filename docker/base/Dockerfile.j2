@@ -54,6 +54,11 @@ RUN echo {{ centos_contentdir }} >> /etc/yum/vars/contentdir
 {% endblock %}
 
 #### BEGIN REPO ENABLEMENT
+
+# Workaround https://bugs.launchpad.net/kolla/+bug/1813906
+# https://jira.percona.com/browse/PT-1685
+COPY gpg-keys/PERCONA-PACKAGING-KEY /etc/pki/rpm-gpg/PERCONA-PACKAGING-KEY
+
 {% set base_yum_repo_files = [
  ] %}
 
@@ -86,11 +91,12 @@ RUN echo {{ centos_contentdir }} >> /etc/yum/vars/contentdir
 
     {% set base_yum_repo_keys = [
         'http://yum.mariadb.org/RPM-GPG-KEY-MariaDB',
-        '/etc/pki/rpm-gpg/RPM-GPG-KEY-Percona',
         'https://packages.elastic.co/GPG-KEY-elasticsearch',
         'https://repos.influxdata.com/influxdb.key',
         'https://packagecloud.io/gpg.key',
-        'https://grafanarel.s3.amazonaws.com/RPM-GPG-KEY-grafana',
+        'https://packages.grafana.com/gpg.key',
+        'https://www.percona.com/downloads/RPM-GPG-KEY-percona',
+        '/etc/pki/rpm-gpg/PERCONA-PACKAGING-KEY',
         'https://packages.treasuredata.com/GPG-KEY-td-agent'
     ] %}
 {% endif %}
@@ -315,7 +321,6 @@ COPY apt_preferences.{{ base_distro }} /etc/apt/preferences
     {# 05CE15085FC09D18E99EFB22684A14CF2582E0C5 -- InfluxDB Packaging Service <support@influxdb.com> #}
     {# 177F4010FE56CA3336300305F1656F24C74CD1D8 -- MariaDB Signing Key <signing-key@mariadb.org> #}
     {# 391A9AA2147192839E9DB0315EDB1B62EC4926EA -- Canonical Cloud Archive Signing Key <ftpmaster@canonical.com> #}
-    {# 418A7F2FB0E1E6E7EABF6FE8C2E73424D59097AB -- packagecloud ops (production key) <ops@packagecloud.io> #}
     {# 46095ACC8548582C1A2699A9D27D666CD88E42B4 -- Elasticsearch (Elasticsearch Signing Key) <dev_ops@elasticsearch.org> #}
     {# 49B07274951063870A8B7EAE7B8AA1A344C05248 -- Opendaylight Signing Key <https://launchpad.net/~odl-team> #}
     {# 4D1BB29D63D98E422B2113B19334A25F8507EFA5 -- Percona MySQL Development Team (Packaging key) <mysql-dev@percona.com> #}
@@ -327,7 +332,6 @@ COPY apt_preferences.{{ base_distro }} /etc/apt/preferences
       '05CE15085FC09D18E99EFB22684A14CF2582E0C5',
       '177F4010FE56CA3336300305F1656F24C74CD1D8',
       '391A9AA2147192839E9DB0315EDB1B62EC4926EA',
-      '418A7F2FB0E1E6E7EABF6FE8C2E73424D59097AB',
       '46095ACC8548582C1A2699A9D27D666CD88E42B4',
       '49B07274951063870A8B7EAE7B8AA1A344C05248',
       '4D1BB29D63D98E422B2113B19334A25F8507EFA5',
@@ -337,6 +341,7 @@ COPY apt_preferences.{{ base_distro }} /etc/apt/preferences
       'A20F259AEB9C94BB'
     ] %}
     {% set remote_apt_keys = [
+      'https://packages.grafana.com/gpg.key'
     ] %}
 {% elif base_distro == 'debian' %}
     {% set base_apt_keys = [
@@ -344,12 +349,12 @@ COPY apt_preferences.{{ base_distro }} /etc/apt/preferences
       '0xcbcb082a1bb943db',
       'D27D666CD88E42B4',
       '05CE15085FC09D18E99EFB22684A14CF2582E0C5',
-      '418A7F2FB0E1E6E7EABF6FE8C2E73424D59097AB',
       '901F9177AB97ACBE',
       'E84AC2C0460F3994',
     ] %}
     {% set remote_apt_keys = [
       'https://people.linaro.org/~marcin.juszkiewicz/debian/stretch/Release.key',
+      'https://packages.grafana.com/gpg.key'
     ] %}
     {% set base_apt_packages = base_apt_packages +
       ['sudo',]
