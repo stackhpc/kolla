@@ -7,10 +7,12 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 
 {% if base_distro in ['centos', 'oraclelinux', 'rhel'] %}
     {% set caso_packages = [
+        'cronie',
         'python-pip',
     ] %}
 {% elif base_distro in ['debian', 'ubuntu'] %}
     {% set caso_packages = [
+        'cron',
         'python-pip',
     ] %}
 {% endif %}
