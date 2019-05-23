@@ -247,7 +247,8 @@ _CLI_OPTS = [
     cfg.MultiOpt('template-override', types.String(),
                  help='Path to template override file'),
     cfg.MultiOpt('docker-dir', types.String(),
-                 help='Path to additional docker file template directory',
+                 help=('Path to additional docker file template directory,'
+                       ' can be specified multiple times'),
                  short='D', default=[]),
     cfg.StrOpt('logs-dir', help='Path to logs directory'),
     cfg.BoolOpt('pull', default=True,
@@ -517,7 +518,7 @@ SOURCES = {
     'monasca-log-api': {
         'type': 'url',
         'location': ('$tarballs_base/monasca-log-api/'
-                     'monasca-log-api-2.7.0.tar.gz')},
+                     'monasca-log-api-2.7.1.tar.gz')},
     'monasca-notification': {
         'type': 'url',
         'location': ('$tarballs_base/monasca-notification/'
