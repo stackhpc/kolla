@@ -21,7 +21,7 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 
 {% block storm_version %}
 ENV storm_version=1.1.2
-ENV storm_url=http://www.mirrorservice.org/sites/ftp.apache.org/storm/apache-storm-${storm_version}/apache-storm-${storm_version}.tar.gz
+ENV storm_url=https://archive.apache.org/dist/storm/apache-storm-${storm_version}/apache-storm-${storm_version}.tar.gz
 ENV storm_pkg_sha512sum=4ec7554d4e242c5cfa3b010f63b2ed65866d0768bfa04c7ae87004d21994041ef25b198a236a87f14ac3b36b698f117338080d9b7d9c0f561b7de256bf2e10d2
 {% endblock %}
 
