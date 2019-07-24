@@ -42,10 +42,12 @@ WORKDIR /usr/share/grafana
 COPY grafana_sudoers /etc/sudoers.d/kolla_grafana_sudoers
 COPY extend_start.sh /usr/local/bin/kolla_extend_start
 
+{% block monasca_grafana_arguments %}
 ENV GO_PATH=/grafana
 ENV monasca_grafana_build_path=${GO_PATH}/src/github.com/grafana/grafana
 ARG monasca_grafana_version=grafana4
 ARG monasca_grafana_url=https://github.com/monasca/grafana/archive/$monasca_grafana_version.tar.gz
+{% endblock %}
 
 {% block monasca_grafana_install %}
 RUN gem install rake fpm \
