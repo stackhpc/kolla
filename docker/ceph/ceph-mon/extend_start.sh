@@ -22,7 +22,7 @@ if [[ "${!KOLLA_BOOTSTRAP[@]}" ]]; then
 
     # Generating initial keyrings and monmap
     ceph-authtool --create-keyring "${KEYRING_MON}" --gen-key -n mon. --cap mon 'allow *'
-    ceph-authtool --create-keyring "${KEYRING_ADMIN}" --gen-key -n client.admin --set-uid=0 --cap mon 'allow *' --cap osd 'allow *' --cap mds 'allow' --cap mgr 'allow *'
+    ceph-authtool --create-keyring "${KEYRING_ADMIN}" --gen-key -n client.admin --set-uid=0 --cap mon 'allow *' --cap osd 'allow *' --cap mds 'allow *' --cap mgr 'allow *'
     ceph-authtool --create-keyring "${KEYRING_RGW}" --gen-key -n client.radosgw.gateway --set-uid=0 --cap osd 'allow rwx' --cap mon 'allow rwx'
     ceph-authtool "${KEYRING_MON}" --import-keyring "${KEYRING_ADMIN}"
     ceph-authtool "${KEYRING_MON}" --import-keyring "${KEYRING_RGW}"
@@ -39,6 +39,16 @@ if [[ ! -e "${MON_DIR}/keyring" ]]; then
     ceph-authtool --create-keyring "${KEYRING_TMP}" --import-keyring "${KEYRING_ADMIN}"
     ceph-authtool "${KEYRING_TMP}" --import-keyring "${KEYRING_MON}"
     mkdir -p "${MON_DIR}"
-    ceph-mon --mkfs -i "${HOSTNAME}" --monmap "${MONMAP}" --keyring "${KEYRING_TMP}"
+
+    mon_stat=$(ceph mon stat --connect-timeout 1 || true)
+    mon_check=$(echo $mon_stat | awk '/mons/{print $0}' | wc -l)
+    if [[ ${mon_check} -eq 0 ]]; then
+        ceph-mon --mkfs -i "${HOSTNAME}" --keyring "${KEYRING_TMP}"
+    else
+        MONMAP_TMP="/tmp/ceph.${HOSTNAME}.monmap"
+        ceph mon getmap -o "${MONMAP_TMP}"
+        ceph-mon --mkfs -i "${HOSTNAME}" --monmap "${MONMAP_TMP}" --keyring "${KEYRING_TMP}"
+        rm "${MONMAP_TMP}"
+    fi
     rm "${KEYRING_TMP}"
 fi

@@ -21,9 +21,12 @@
 {% endif %}
 {%- endmacro %}
 
-{% macro install_pip(packages, constraints = true) %}
+{% macro install_pip(packages, constraints = true, pip_version = pip) %}
+{%- if not pip_version -%}
+    {%- set pip_version = 'pip' -%}
+{%- endif -%}
 {%- if packages is sequence and packages|length > 0 -%}
-    pip --no-cache-dir install --upgrade{{ ' ' }}
+    {{ pip_version }} --no-cache-dir install --upgrade{{ ' ' }}
     {%- if constraints %}-c /requirements/upper-constraints.txt {% endif -%}
     {{ packages | join(' ') }}
 {%- else -%}
@@ -89,12 +92,13 @@ RUN apt-get update \
 {% endmacro %}
 
 
-{% macro install_fluent_plugins(plugins) -%}
+{% macro install_fluent_plugins(plugins, chain=False) -%}
 {% if plugins is defined and plugins|length > 0 -%}
-    {% if base_distro in ['centos', 'oraclelinux', 'rhel'] -%}
-        RUN ulimit -n 65536 && gem install --minimal-deps {{ plugins | join(' ') }}
+    {% if not chain -%} RUN {% endif -%}
+    {%- if base_distro in ['centos', 'oraclelinux', 'rhel'] -%}
+        ulimit -n 65536 && gem install --minimal-deps {{ plugins | join(' ') }}
     {%- elif base_distro in ['debian', 'ubuntu'] -%}
-        RUN ulimit -n 65536 && td-agent-gem install {{ plugins | join(' ') }}
+        ulimit -n 65536 && td-agent-gem install {{ plugins | join(' ') }}
     {%- endif %}
 {%- endif %}
 {%- endmacro %}
