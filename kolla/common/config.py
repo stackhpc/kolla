@@ -182,6 +182,8 @@ _CLI_OPTS = [
     cfg.StrOpt('base-arch', default=hostarch,
                choices=BASE_ARCH,
                help='The base architecture. Default is same as host'),
+    cfg.BoolOpt('use-dumb-init', default=True,
+                help='Use dumb-init as init system in containers'),
     cfg.BoolOpt('debug', short='d', default=False,
                 help='Turn on debugging log level'),
     cfg.BoolOpt('skip-parents', default=False,
@@ -313,7 +315,7 @@ SOURCES = {
     'cinder-base': {
         'type': 'url',
         'location': ('$tarballs_base/cinder/'
-                     'cinder-13.0.4.tar.gz')},
+                     'cinder-13.0.6.tar.gz')},
     'congress-base': {
         'type': 'url',
         'location': ('$tarballs_base/congress/'
@@ -358,7 +360,7 @@ SOURCES = {
     'horizon': {
         'type': 'url',
         'location': ('$tarballs_base/horizon/'
-                     'horizon-14.0.2.tar.gz')},
+                     'horizon-14.0.3.tar.gz')},
     'horizon-plugin-blazar-dashboard': {
         'type': 'url',
         'location': ('$tarballs_base/blazar-dashboard/'
@@ -402,7 +404,7 @@ SOURCES = {
     'horizon-plugin-manila-ui': {
         'type': 'url',
         'location': ('$tarballs_base/manila-ui/'
-                     'manila-ui-2.16.0.tar.gz')},
+                     'manila-ui-2.16.1.tar.gz')},
     'horizon-plugin-mistral-dashboard': {
         'type': 'url',
         'location': ('$tarballs_base/mistral-dashboard/'
@@ -426,7 +428,7 @@ SOURCES = {
     'horizon-plugin-octavia-dashboard': {
         'type': 'url',
         'location': ('$tarballs_base/octavia-dashboard/'
-                     'octavia-dashboard-2.0.0.tar.gz')},
+                     'octavia-dashboard-2.0.1.tar.gz')},
     'horizon-plugin-sahara-dashboard': {
         'type': 'url',
         'location': ('$tarballs_base/sahara-dashboard/'
@@ -470,11 +472,11 @@ SOURCES = {
     'ironic-base': {
         'type': 'url',
         'location': ('$tarballs_base/ironic/'
-                     'ironic-11.1.2.tar.gz')},
+                     'ironic-11.1.3.tar.gz')},
     'ironic-inspector': {
         'type': 'url',
         'location': ('$tarballs_base/ironic-inspector/'
-                     'ironic-inspector-8.0.2.tar.gz')},
+                     'ironic-inspector-8.0.3.tar.gz')},
     'karbor-base': {
         'type': 'url',
         'location': ('$tarballs_base/karbor/'
@@ -498,7 +500,7 @@ SOURCES = {
     'manila-base': {
         'type': 'url',
         'location': ('$tarballs_base/manila/'
-                     'manila-7.2.0.tar.gz')},
+                     'manila-7.3.0.tar.gz')},
     'mistral-base': {
         'type': 'url',
         'location': ('$tarballs_base/mistral/'
@@ -522,7 +524,7 @@ SOURCES = {
     'monasca-notification': {
         'type': 'url',
         'location': ('$tarballs_base/monasca-notification/'
-                     'monasca-notification-1.14.0.tar.gz')},
+                     'monasca-notification-1.14.1.tar.gz')},
     'monasca-persister': {
         'type': 'url',
         'location': ('$tarballs_base/monasca-persister/'
@@ -547,11 +549,11 @@ SOURCES = {
     'neutron-base': {
         'type': 'url',
         'location': ('$tarballs_base/neutron/'
-                     'neutron-13.0.3.tar.gz')},
+                     'neutron-13.0.4.tar.gz')},
     'neutron-base-plugin-neutron-fwaas': {
         'type': 'url',
         'location': ('$tarballs_base/neutron-fwaas/'
-                     'neutron-fwaas-13.0.1.tar.gz')},
+                     'neutron-fwaas-13.0.2.tar.gz')},
     'neutron-base-plugin-networking-ansible': {
         'type': 'url',
         'location': ('$tarballs_base/networking-ansible/'
@@ -635,7 +637,7 @@ SOURCES = {
     'nova-base': {
         'type': 'url',
         'location': ('$tarballs_base/nova/'
-                     'nova-18.2.0.tar.gz')},
+                     'nova-18.2.2.tar.gz')},
     'nova-base-plugin-blazar': {
         'type': 'url',
         'location': ('$tarballs_base/blazar-nova/'
@@ -651,7 +653,7 @@ SOURCES = {
     'octavia-base': {
         'type': 'url',
         'location': ('$tarballs_base/octavia/'
-                     'octavia-3.1.0.tar.gz')},
+                     'octavia-3.2.0.tar.gz')},
     'panko-base': {
         'type': 'url',
         'location': ('$tarballs_base/panko/'

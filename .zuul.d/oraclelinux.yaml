@@ -12,10 +12,12 @@
             required-projects:
               - openstack/kolla-ansible
               - openstack/requirements
+        - kolla-ansible-oraclelinux-source-ceph:
+            files: ^docker\/(ceph|cinder)\/.*
     gate:
       jobs:
         - kolla-build-oraclelinux-source
-    periodic:
+    periodic-stable:
       jobs:
         - kolla-publish-oraclelinux-source
         - kolla-publish-oraclelinux-binary

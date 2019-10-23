@@ -21,7 +21,6 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
         'ruby-devel',
         'rubygem-fluent-plugin-elasticsearch',
         'rubygem-fluent-plugin-grok-parser',
-        'rubygem-fluent-plugin-kubernetes_metadata_filter',
         'rubygem-fluent-plugin-rewrite-tag-filter',
         'rubygem-fluent-plugin-secure-forward'
     ] %}
@@ -61,11 +60,14 @@ RUN chmod 755 /usr/local/bin/kolla_extend_start
 {% block fluentd_plugins_install %}
 
 {% if base_distro in ['debian', 'ubuntu'] %}
+# NOTE(mgoddard): fluent-plugin-elasticsearch requires faraday, which from
+# 0.16.0 depends on Ruby 2.3, but td-agent provides its own older version of
+# Ruby.
     {% set fluentd_plugins = [
+        'faraday:"~>0.15.4"',
         'fluent-plugin-elasticsearch',
         'fluent-plugin-grep',
         'fluent-plugin-grok-parser:2.1.4',
-        'fluent-plugin-kubernetes_metadata_filter',
         'fluent-plugin-parser',
         'fluent-plugin-rewrite-tag-filter:2.0.0',
         'fluent-plugin-secure-forward',
@@ -82,7 +84,7 @@ RUN tar -xvf /tmp/fluentd-monasca.tar.gz -C /tmp \
     && cd /tmp/fluentd-monasca-* \
     && gem build fluentd-monasca-output.gemspec \
     && gem install fluentd-monasca-output-*.gem \
-    && fluent-gem install fluentd-monasca-output-*.gem \
+    && {{ macros.install_fluent_plugins(['fluentd-monasca-output-*.gem'], chain=True) }} \
     && rm -rf /tmp/fluentd*
 
 {% endblock %}

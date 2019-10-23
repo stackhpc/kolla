@@ -300,6 +300,11 @@ class PushIntoQueueTask(task.Task):
         self.success = True
 
 
+class PushError(Exception):
+    """Raised when there is a problem with pushing image to repository."""
+    pass
+
+
 class PushTask(DockerTask):
     """Task that pushes an image to a docker repository."""
 
@@ -323,6 +328,9 @@ class PushTask(DockerTask):
                                   ' have the correct privileges to run Docker'
                                   ' (root)')
             image.status = STATUS_CONNECTION_ERROR
+        except PushError as exception:
+            self.logger.error(exception)
+            image.status = STATUS_PUSH_ERROR
         except Exception:
             self.logger.exception('Unknown error when pushing')
             image.status = STATUS_PUSH_ERROR
@@ -347,8 +355,10 @@ class PushTask(DockerTask):
             if 'stream' in response:
                 self.logger.info(response['stream'])
             elif 'errorDetail' in response:
-                image.status = STATUS_ERROR
-                self.logger.error(response['errorDetail']['message'])
+                raise PushError(response['errorDetail']['message'])
+
+        # Reset any previous errors.
+        image.status = STATUS_BUILT
 
 
 class BuildTask(DockerTask):
@@ -663,6 +673,7 @@ class KollaWorker(object):
         else:
             self.namespace = conf.namespace
         self.base = conf.base
+        self.use_dumb_init = conf.use_dumb_init
         self.base_tag = conf.base_tag
         self.install_type = conf.install_type
         self.tag = conf.tag
@@ -866,6 +877,7 @@ class KollaWorker(object):
                       'base_image': self.conf.base_image,
                       'base_distro_tag': self.base_tag,
                       'base_arch': self.base_arch,
+                      'use_dumb_init': self.use_dumb_init,
                       'supported_distro_release': supported_distro_release,
                       'install_metatype': self.install_metatype,
                       'image_prefix': self.image_prefix,

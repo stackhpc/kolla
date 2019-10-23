@@ -19,10 +19,13 @@
             required-projects:
               - openstack/kolla-ansible
               - openstack/requirements
+        - kolla-ansible-ubuntu-source-ceph:
+            files: ^docker\/(ceph|cinder)\/.*
     gate:
+      queue: kolla
       jobs:
         - kolla-build-ubuntu-source
-    periodic:
+    periodic-stable:
       jobs:
         - kolla-publish-ubuntu-source
         - kolla-publish-ubuntu-binary
