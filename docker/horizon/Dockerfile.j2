@@ -130,12 +130,14 @@ ADD plugins-archive /
     '/plugins/*'
 ] %}
 
+# NOTE(hrw) searchlight-ui was not released in Rocky, we used 'master' and now it fails due to py2 != py3
 RUN ln -s horizon-source/* horizon \
     && {{ macros.install_pip(horizon_pip_packages | customizable("pip_packages")) }} \
     && mkdir -p /etc/openstack-dashboard \
     && cp -r /horizon/openstack_dashboard/conf/* /etc/openstack-dashboard/ \
     && cp /horizon/openstack_dashboard/local/local_settings.py.example /etc/openstack-dashboard/local_settings \
     && cp /horizon/manage.py /var/lib/kolla/venv/bin/manage.py \
+    && rm -rf /plugins/searchlight-ui* \
     && if [ "$(ls /plugins)" ]; then \
            {{ macros.install_pip(horizon_plugins_pip_packages) }}; \
        fi \
