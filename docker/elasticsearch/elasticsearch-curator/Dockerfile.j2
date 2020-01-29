@@ -8,13 +8,12 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 {% if base_package_type == 'rpm' %}
     {% set elasticsearch_curator_packages = [
         'cronie',
-        'python3-pip',
+        'python-pip',
     ] %}
 {% elif base_package_type == 'deb' %}
     {% set elasticsearch_curator_packages = [
         'cron',
-        'python3-pip',
-        'python3-setuptools'
+        'python-pip',
     ] %}
 {% endif %}
 
@@ -26,7 +25,7 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
     'elasticsearch-curator'
 ] %}
 
-RUN {{ macros.install_pip(elasticsearch_curator_pip_packages | customizable("pip_packages"), constraints=false, pip_version="pip3") }} \
+RUN {{ macros.install_pip(elasticsearch_curator_pip_packages | customizable("pip_packages"),  constraints = false) }} \
     && mkdir -p /etc/elasticsearch-curator \
     && chown -R elasticsearch: /etc/elasticsearch-curator
 
