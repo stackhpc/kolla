@@ -13,7 +13,6 @@
 import itertools
 import os
 
-from distutils.version import LooseVersion
 from oslo_config import cfg
 from oslo_config import types
 
@@ -324,7 +323,7 @@ SOURCES = {
     'bifrost-base': {
         'type': 'url',
         'location': ('$tarballs_base/bifrost/'
-                     'bifrost-7.1.1.tar.gz')},
+                     'bifrost-7.2.1.tar.gz')},
     'blazar-base': {
         'type': 'url',
         'location': ('$tarballs_base/blazar/'
@@ -332,7 +331,7 @@ SOURCES = {
     'ceilometer-base': {
         'type': 'url',
         'location': ('$tarballs_base/ceilometer/'
-                     'ceilometer-13.0.0.tar.gz')},
+                     'ceilometer-13.1.0.tar.gz')},
     'ceilometer-base-plugin-panko': {
         'type': 'url',
         'location': ('$tarballs_base/panko/'
@@ -340,7 +339,7 @@ SOURCES = {
     'cinder-base': {
         'type': 'url',
         'location': ('$tarballs_base/cinder/'
-                     'cinder-15.0.1.tar.gz')},
+                     'cinder-15.1.0.tar.gz')},
     'congress-base': {
         'type': 'url',
         'location': ('$tarballs_base/congress/'
@@ -376,7 +375,7 @@ SOURCES = {
     'glance-base': {
         'type': 'url',
         'location': ('$tarballs_base/glance/'
-                     'glance-19.0.1.tar.gz')},
+                     'glance-19.0.2.tar.gz')},
     'gnocchi-base': {
         'type': 'git',
         'reference': '4.3.4',
@@ -385,7 +384,7 @@ SOURCES = {
     'heat-base': {
         'type': 'url',
         'location': ('$tarballs_base/heat/'
-                     'openstack-heat-13.0.0.tar.gz')},
+                     'openstack-heat-13.0.2.tar.gz')},
     'horizon': {
         'type': 'url',
         'location': ('$tarballs_base/horizon/'
@@ -421,7 +420,7 @@ SOURCES = {
     'horizon-plugin-ironic-ui': {
         'type': 'url',
         'location': ('$tarballs_base/ironic-ui/'
-                     'ironic-ui-3.5.4.tar.gz')},
+                     'ironic-ui-3.5.5.tar.gz')},
     'horizon-plugin-karbor-dashboard': {
         'type': 'url',
         'location': ('$tarballs_base/karbor-dashboard/'
@@ -429,7 +428,7 @@ SOURCES = {
     'horizon-plugin-magnum-ui': {
         'type': 'url',
         'location': ('$tarballs_base/magnum-ui/'
-                     'magnum-ui-5.2.1.tar.gz')},
+                     'magnum-ui-5.3.0.tar.gz')},
     'horizon-plugin-manila-ui': {
         'type': 'url',
         'location': ('$tarballs_base/manila-ui/'
@@ -441,7 +440,7 @@ SOURCES = {
     'horizon-plugin-mistral-dashboard': {
         'type': 'url',
         'location': ('$tarballs_base/mistral-dashboard/'
-                     'mistral-dashboard-9.0.1.tar.gz')},
+                     'mistral-dashboard-9.0.0.tar.gz')},
     'horizon-plugin-monasca-ui': {
         'type': 'url',
         'location': ('$tarballs_base/monasca-ui/'
@@ -505,11 +504,11 @@ SOURCES = {
     'ironic-base': {
         'type': 'url',
         'location': ('$tarballs_base/ironic/'
-                     'ironic-13.0.2.tar.gz')},
+                     'ironic-13.0.3.tar.gz')},
     'ironic-inspector': {
         'type': 'url',
         'location': ('$tarballs_base/ironic-inspector/'
-                     'ironic-inspector-9.2.1.tar.gz')},
+                     'ironic-inspector-9.2.2.tar.gz')},
     'karbor-base': {
         'type': 'url',
         'location': ('$tarballs_base/karbor/'
@@ -517,7 +516,7 @@ SOURCES = {
     'keystone-base': {
         'type': 'url',
         'location': ('$tarballs_base/keystone/'
-                     'keystone-16.0.0.tar.gz')},
+                     'keystone-16.0.1.tar.gz')},
     'kuryr-base': {
         'type': 'url',
         'location': ('$tarballs_base/kuryr/'
@@ -529,11 +528,11 @@ SOURCES = {
     'magnum-base': {
         'type': 'url',
         'location': ('$tarballs_base/magnum/'
-                     'magnum-9.2.0.tar.gz')},
+                     'magnum-9.3.0.tar.gz')},
     'manila-base': {
         'type': 'url',
         'location': ('$tarballs_base/manila/'
-                     'manila-9.1.0.tar.gz')},
+                     'manila-9.1.2.tar.gz')},
     'masakari-base': {
         'type': 'url',
         'location': ('$tarballs_base/masakari/'
@@ -545,7 +544,7 @@ SOURCES = {
     'mistral-base': {
         'type': 'url',
         'location': ('$tarballs_base/mistral/'
-                     'mistral-9.0.1.tar.gz')},
+                     'mistral-9.1.0.tar.gz')},
     'mistral-base-plugin-tacker': {
         'type': 'url',
         'location': ('$tarballs_base/tacker/'
@@ -590,7 +589,7 @@ SOURCES = {
     'neutron-base': {
         'type': 'url',
         'location': ('$tarballs_base/neutron/'
-                     'neutron-15.0.2.tar.gz')},
+                     'neutron-15.1.0.tar.gz')},
     'neutron-base-plugin-neutron-fwaas': {
         'type': 'url',
         'location': ('$tarballs_base/neutron-fwaas/'
@@ -654,15 +653,15 @@ SOURCES = {
     'neutron-server-ovn-plugin-networking-ovn': {
         'type': 'url',
         'location': ('$tarballs_base/networking-ovn/'
-                     'networking-ovn-7.1.0.tar.gz')},
+                     'networking-ovn-7.2.0.tar.gz')},
     'neutron-metadata-agent-ovn-plugin-networking-ovn': {
         'type': 'url',
         'location': ('$tarballs_base/networking-ovn/'
-                     'networking-ovn-7.1.0.tar.gz')},
+                     'networking-ovn-7.2.0.tar.gz')},
     'nova-base': {
         'type': 'url',
         'location': ('$tarballs_base/nova/'
-                     'nova-20.1.1.tar.gz')},
+                     'nova-20.2.0.tar.gz')},
     'nova-base-plugin-blazar': {
         'type': 'url',
         'location': ('$tarballs_base/blazar-nova/'
@@ -759,10 +758,6 @@ SOURCES = {
         'type': 'url',
         'location': ('$tarballs_base/telemetry-tempest-plugin/'
                      'telemetry_tempest_plugin-0.4.0.tar.gz')},
-    'tempest-plugin-tripleo-common': {
-        'type': 'url',
-        'location': ('$tarballs_base/tripleo-common-tempest-plugin/'
-                     'tripleo-common-tempest-plugin-master.tar.gz')},
     'tempest-plugin-trove': {
         'type': 'url',
         'location': ('$tarballs_base/trove-tempest-plugin/'
@@ -1270,12 +1265,6 @@ def parse(conf, args, usage=None, prog=None,
     # NOTE(jeffrey4l): set the default base tag based on the
     # base option
     conf.set_default('base_tag', DEFAULT_BASE_TAGS.get(conf.base))
-    # TODO(mgoddard): Remove this 'if' when CentOS 7 is no longer supported.
-    if conf.base in ['centos', 'rhel']:
-        if LooseVersion(conf.base_tag) >= LooseVersion('8'):
-            # Use CentOS 8 Delorean repos.
-            conf.set_default('rpm_setup_config', [DELOREAN_CENTOS8,
-                                                  DELOREAN_DEPS_CENTOS8])
 
     if not conf.base_image:
         conf.base_image = conf.base
