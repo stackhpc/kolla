@@ -167,6 +167,7 @@ UNBUILDABLE_IMAGES = {
 
     'centos8+source': {
         "cyborg-agent",          # opae-sdk does not support CentOS 8
+        "masakari-monitors",     # python-libvirt===5.7.0 fails
     },
 
     'debian': {
@@ -174,6 +175,7 @@ UNBUILDABLE_IMAGES = {
                          # Debian 'buster'
         "cyborg-base",
         "elasticsearch6",   # Only required for CentOS 8 migration.
+        "logstash6",        # Only required for CentOS 8 migration.
         "kibana6",          # Only required for CentOS 8 migration.
         "monasca-grafana",  # FIXME(hrw): some ssl issues to fix
         "mongodb",
@@ -187,6 +189,7 @@ UNBUILDABLE_IMAGES = {
     'ubuntu': {
         "cyborg-base",
         "elasticsearch6",   # Only required for CentOS 8 migration.
+        "logstash6",        # Only required for CentOS 8 migration.
         "kibana6",          # Only required for CentOS 8 migration.
         "qdrouterd",  # There is no qdrouterd package for ubuntu bionic
         "rabbitmq-3.7.24",  # Required only for CentOS 7 to 8 migration
