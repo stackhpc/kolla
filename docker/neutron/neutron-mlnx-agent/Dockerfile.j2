@@ -23,9 +23,15 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 
 {% if install_type == 'binary' %}
 
+    {% if distro_python_version.startswith('3') %}
     {% set neutron_mlnx_agent_packages = neutron_mlnx_agent_packages + [
         'python-networking-mlnx'
     ] %}
+    {% else %}
+    {% set neutron_mlnx_agent_packages = neutron_mlnx_agent_packages + [
+        'python2-networking-mlnx'
+    ] %}
+    {% endif %}
 
 {{ macros.install_packages(neutron_mlnx_agent_packages | customizable("packages")) }}
 
