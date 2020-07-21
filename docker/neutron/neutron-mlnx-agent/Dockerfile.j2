@@ -29,7 +29,8 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
     ] %}
     {% else %}
     {% set neutron_mlnx_agent_packages = neutron_mlnx_agent_packages + [
-        'python2-networking-mlnx'
+        'python2-networking-mlnx',
+        'python2-defusedxml'
     ] %}
     {% endif %}
 
