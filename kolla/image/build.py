@@ -185,14 +185,18 @@ SKIPPED_IMAGES = {
         "monasca-thresh",
         "nova-mksproxy",
         "ovsdpdk",
+        "rsyslog",
         "searchlight-base",
         "solum-base",
+        "tripleoclient",
         "vmtp",
         "zun-base"
     ],
     'oraclelinux+source': [
         "bifrost-base",
         "ovsdpdk",
+        "rsyslog",
+        "searchlight-base",
         # TODO(jeffrey4l): remove tripleo-ui when following bug is fixed
         # https://bugs.launchpad.net/tripleo/+bug/1744215
         "tripleo-ui"
@@ -1036,9 +1040,15 @@ class KollaWorker(object):
                     'status': status,
                 })
                 if self.conf.logs_dir and status == STATUS_ERROR:
-                    os.symlink("%s.log" % name,
-                               os.path.join(self.conf.logs_dir,
-                                            "000_FAILED_%s.log" % name))
+                    linkname = os.path.join(self.conf.logs_dir,
+                                            "000_FAILED_%s.log" % name)
+                    try:
+                        os.lstat(linkname)
+                        os.remove(linkname)
+                    except OSError:
+                        pass
+
+                    os.symlink("%s.log" % name, linkname)
 
         if self.image_statuses_unmatched:
             LOG.debug("=====================================")
