@@ -84,7 +84,6 @@ STATUS_ERRORS = (STATUS_CONNECTION_ERROR, STATUS_PUSH_ERROR,
 UNBUILDABLE_IMAGES = {
     'aarch64': {
         "cyborg-base",       # no binary package
-        "kibana",            # no binary package
         "monasca-grafana",   # no phantomJS on aarch64
         "opendaylight",      # no binary package
         "prometheus-mtail",  # no aarch64 binary
@@ -95,7 +94,6 @@ UNBUILDABLE_IMAGES = {
         "cyborg-base",       # no binary package
         "elasticsearch",     # no binary package
         "grafana",           # no binary package
-        "kibana",            # no binary package
         "kube-proxy",        # no binary
         "helm-repository",   # no binary
         "monasca-grafana",   # no phantomJS
@@ -143,21 +141,55 @@ UNBUILDABLE_IMAGES = {
     'centos': {
         "ovsdpdk",
     },
+
+    # NOTE(mgoddard): Mark images with missing dependencies as unbuildable for
+    # CentOS 8.
+    'centos8': {
+        "almanach-base",         # Dropped in master
+        "ceph-base",             # Missing Ceph repo
+        "dind",                  # Dropped in master
+        "dragonflow-base",       # Dropped in master
+        "elasticsearch",         # Missing elasticsearch repo
+        "hacluster-pcs",         # Missing crmsh package
+        "helm-repository",       # Dropped in master
+        "kibana",                # Missing elasticsearch repo
+        "kube-base",             # Dropped in master
+        "kubernetes-entrypoint",  # Dropped in master
+        "kubetoolbox",           # Dropped in master
+        "mongodb",               # Missing mongodb and mongodb-server packages
+        "nova-spicehtml5proxy",  # Missing spicehtml5 package
+        "opendaylight",          # Missing opendaylight repo
+        "ovsdpdk",               # Not supported on CentOS
+        "rabbitmq-3.7.24",       # Required only for CentOS 7 to 8 migration
+        "sensu-base",            # Missing sensu package
+        "tgtd",                  # Not supported on CentOS 8
+    },
+
+    'centos8+source': {
+        "cyborg-agent",          # opae-sdk does not support CentOS 8
+    },
+
     'debian': {
         "bifrost-base",  # tries to install 'mysql-server' which is not in
                          # Debian 'buster'
         "cyborg-base",
+        "elasticsearch6",   # Only required for CentOS 8 migration.
+        "kibana6",          # Only required for CentOS 8 migration.
         "monasca-grafana",  # FIXME(hrw): some ssl issues to fix
         "mongodb",
         "opendaylight",  # no binary package
         "ovsdpdk",
         "qdrouterd",
+        "rabbitmq-3.7.24",  # Required only for CentOS 7 to 8 migration
         "sensu-base",
         "telegraf",      # no binary package
     },
     'ubuntu': {
         "cyborg-base",
+        "elasticsearch6",   # Only required for CentOS 8 migration.
+        "kibana6",          # Only required for CentOS 8 migration.
         "qdrouterd",  # There is no qdrouterd package for ubuntu bionic
+        "rabbitmq-3.7.24",  # Required only for CentOS 7 to 8 migration
     },
 
     'debian+aarch64': {
@@ -178,14 +210,20 @@ UNBUILDABLE_IMAGES = {
 
     'centos+aarch64': {
         "elasticsearch",  # no binary package
+        "fluentd",        # no binary package
+        "gnocchi-base",   # no python3-boto3 package in HA
         "hacluster-pcs",  # no binary package
         "influxdb",       # no binary package
+        "kibana",         # no binary package
+        "kolla-toolbox",  # no erlang package
+        "rabbitmq",       # no erlang package
         "mongodb",        # no binary package
     },
 
     'centos+ppc64le': {
         "hacluster-pcs",  # no binary package
         "influxdb",       # no binary package
+        "kibana",         # no binary package
         "mongodb",        # no binary package
     },
 
@@ -416,7 +454,8 @@ class BuildTask(DockerTask):
             ])
         if self.image.children and self.success:
             for image in self.image.children:
-                if image.status == STATUS_UNMATCHED:
+                if image.status in (STATUS_UNMATCHED, STATUS_SKIPPED,
+                                    STATUS_UNBUILDABLE):
                     continue
                 followups.append(BuildTask(self.conf, image, self.push_queue))
         return followups
@@ -1043,7 +1082,15 @@ class KollaWorker(object):
                     filter_ += self.conf.profiles[profile]
 
         # mark unbuildable images and their children
-        tag_element = r'(%s|%s|%s)' % (self.base,
+
+        # NOTE(mgoddard): Use a base of centos8 to allow a different set of
+        # unbuildable images for CentOS 8.
+        # TODO(mgoddard): Remove this after CentOS 8 transition.
+        base = self.base
+        if base == 'centos' and self.distro_package_manager == 'dnf':
+            base = 'centos8'
+
+        tag_element = r'(%s|%s|%s)' % (base,
                                        self.install_type,
                                        self.base_arch)
         tag_re = re.compile(r'^%s(\+%s)*$' % (tag_element, tag_element))
@@ -1075,47 +1122,44 @@ class KollaWorker(object):
         # When we want to build a subset of images then filter_ part kicks in.
         # Otherwise we just mark everything buildable as matched for build.
 
+        # First, determine which buildable images match.
         if filter_:
             patterns = re.compile(r"|".join(filter_).join('()'))
             for image in self.images:
                 # as we now list not buildable/skipped images we need to
                 # process them otherwise list will contain also not requested
                 # entries
-                if image.status == STATUS_MATCHED:
+                if image.status in (STATUS_MATCHED, STATUS_UNBUILDABLE):
                     continue
                 if re.search(patterns, image.name):
-                    if image.status not in [STATUS_SKIPPED,
-                                            STATUS_UNBUILDABLE]:
-                        image.status = STATUS_MATCHED
+                    image.status = STATUS_MATCHED
 
-                    # skip image if --skip-existing was given and image
-                    # was already built
-                    if (self.conf.skip_existing and image.in_docker_cache()):
-                        image.status = STATUS_SKIPPED
-
-                    # handle image ancestors
                     ancestor_image = image
                     while (ancestor_image.parent is not None and
-                           ancestor_image.parent.status not in
-                           (STATUS_MATCHED, STATUS_SKIPPED)):
+                           ancestor_image.parent.status != STATUS_MATCHED):
                         ancestor_image = ancestor_image.parent
-                        if self.conf.skip_parents:
-                            ancestor_image.status = STATUS_SKIPPED
-                        elif (self.conf.skip_existing and
-                              ancestor_image.in_docker_cache()):
-                            ancestor_image.status = STATUS_SKIPPED
-                        else:
-                            if ancestor_image.status != STATUS_UNBUILDABLE:
-                                ancestor_image.status = STATUS_MATCHED
-                        LOG.debug('Image %s matched regex', image.name)
+                        # Parents of a buildable image must also be buildable.
+                        ancestor_image.status = STATUS_MATCHED
+                    LOG.debug('Image %s matched regex', image.name)
                 else:
-                    # we do not care if it is skipped or not as we did not
-                    # request it
                     image.status = STATUS_UNMATCHED
         else:
             for image in self.images:
                 if image.status != STATUS_UNBUILDABLE:
                     image.status = STATUS_MATCHED
+
+        # Next, mark any skipped images.
+        for image in self.images:
+            if image.status != STATUS_MATCHED:
+                continue
+            # Skip image if --skip-existing was given and image exists.
+            if (self.conf.skip_existing and image.in_docker_cache()):
+                LOG.debug('Skipping existing image %s', image.name)
+                image.status = STATUS_SKIPPED
+            # Skip image if --skip-parents was given and image has children.
+            elif self.conf.skip_parents and image.children:
+                LOG.debug('Skipping parent image %s', image.name)
+                image.status = STATUS_SKIPPED
 
     def summary(self):
         """Walk the dictionary of images statuses and print results."""

@@ -13,15 +13,17 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
             'e2fsprogs',
             'gdisk',
             'ipmitool',
+            'openssh-clients',
             'openstack-ironic-conductor',
             'openstack-ironic-staging-drivers',
             'parted',
             'psmisc',
-            'shellinabox',
             'util-linux',
             'xfsprogs'
         ] %}
 
+        # FIXME(mgoddard): Removed shellinabox which is not currently provided
+        # by EPEL8.
         {% if distro_python_version.startswith('3') %}
         {% set ironic_conductor_packages = ironic_conductor_packages + [
             'python3dist\(ansible\)',
@@ -44,16 +46,17 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
             'python-scciclient',
             'python-sushy',
             'python2-ImcSdk',
+            'shellinabox',
             'systemd-python'
         ] %}
         {% endif %}
-        {% if base_distro in ['centos'] %}
+        {% if distro_package_manager == 'dnf' or base_distro not in ['centos'] %}
             {% set ironic_conductor_packages = ironic_conductor_packages + [
-                'qemu-img-ev'
+                'qemu-img'
             ] %}
         {% else %}
             {% set ironic_conductor_packages = ironic_conductor_packages + [
-                'qemu-img'
+                'qemu-img-ev'
             ] %}
         {% endif %}
     {% elif base_package_type == 'deb' %}
@@ -67,6 +70,7 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
             'gdisk',
             'ipmitool',
             'ironic-conductor',
+            'openssh-client',
             'parted',
             'psmisc',
             'python3-ironic-inspector-client',
@@ -88,21 +92,34 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
             'fuse',
             'gdisk',
             'ipmitool',
+            'openssh-clients',
             'parted',
             'psmisc',
-            'qemu-img-ev',
-            'shellinabox',
             'util-linux',
             'xfsprogs',
         ] %}
+        # FIXME(mgoddard): Removed shellinabox which is not currently provided
+        # by EPEL8.
         {% if distro_python_version.startswith('3') %}
         {% set ironic_conductor_packages = ironic_conductor_packages + [
+            'python3-systemd',
             'systemd-udev',
         ] %}
         {% else %}
         {% set ironic_conductor_packages = ironic_conductor_packages + [
+            'shellinabox',
+            'systemd-python',
             'systemd',
         ] %}
+        {% endif %}
+        {% if distro_package_manager == 'dnf' or base_distro not in ['centos'] %}
+            {% set ironic_conductor_packages = ironic_conductor_packages + [
+                'qemu-img'
+            ] %}
+        {% else %}
+            {% set ironic_conductor_packages = ironic_conductor_packages + [
+                'qemu-img-ev'
+            ] %}
         {% endif %}
     {% elif base_package_type == 'deb' %}
         {% set ironic_conductor_packages = [
@@ -111,8 +128,10 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
             'e2fsprogs',
             'gdisk',
             'ipmitool',
+            'openssh-client',
             'parted',
             'psmisc',
+            'python3-systemd',
             'qemu-utils',
             'shellinabox',
             'udev',

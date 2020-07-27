@@ -79,6 +79,28 @@ class BuildTestCentosSource(BuildTest, base.BaseTestCase):
                                 "--type", "source"])
 
 
+class BuildTestCentos8Binary(BuildTest, base.BaseTestCase):
+
+    def setUp(self):
+        super(BuildTestCentos8Binary, self).setUp()
+        # TODO(mgoddard): Remove --base-tag argument when CentOS 8 is the
+        # default.
+        self.build_args.extend(["--base", "centos",
+                                "--base-tag", "8",
+                                "--type", "binary"])
+
+
+class BuildTestCentos8Source(BuildTest, base.BaseTestCase):
+
+    def setUp(self):
+        super(BuildTestCentos8Source, self).setUp()
+        # TODO(mgoddard): Remove --base-tag argument when CentOS 8 is the
+        # default.
+        self.build_args.extend(["--base", "centos",
+                                "--base-tag", "8",
+                                "--type", "source"])
+
+
 class BuildTestUbuntuBinary(BuildTest, base.BaseTestCase):
 
     def setUp(self):
