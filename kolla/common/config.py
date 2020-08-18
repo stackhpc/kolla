@@ -315,7 +315,7 @@ SOURCES = {
     'bifrost-base': {
         'type': 'url',
         'location': ('$tarballs_base/bifrost/'
-                     'bifrost-6.0.3.tar.gz')},
+                     'bifrost-6.0.4.tar.gz')},
     'blazar-base': {
         'type': 'url',
         'location': ('$tarballs_base/blazar/'
@@ -331,7 +331,7 @@ SOURCES = {
     'cinder-base': {
         'type': 'url',
         'location': ('$tarballs_base/cinder/'
-                     'cinder-14.0.4.tar.gz')},
+                     'cinder-14.1.0.tar.gz')},
     'congress-base': {
         'type': 'url',
         'location': ('$tarballs_base/congress/'
@@ -379,11 +379,11 @@ SOURCES = {
     'heat-base': {
         'type': 'url',
         'location': ('$tarballs_base/heat/'
-                     'openstack-heat-12.0.0.tar.gz')},
+                     'openstack-heat-12.1.0.tar.gz')},
     'horizon': {
         'type': 'url',
         'location': ('$tarballs_base/horizon/'
-                     'horizon-15.2.0.tar.gz')},
+                     'horizon-15.3.0.tar.gz')},
     'horizon-plugin-blazar-dashboard': {
         'type': 'url',
         'location': ('$tarballs_base/blazar-dashboard/'
@@ -507,7 +507,7 @@ SOURCES = {
     'keystone-base': {
         'type': 'url',
         'location': ('$tarballs_base/keystone/'
-                     'keystone-15.0.0.tar.gz')},
+                     'keystone-15.0.1.tar.gz')},
     'kuryr-base': {
         'type': 'url',
         'location': ('$tarballs_base/kuryr/'
@@ -523,7 +523,7 @@ SOURCES = {
     'manila-base': {
         'type': 'url',
         'location': ('$tarballs_base/manila/'
-                     'manila-8.1.0.tar.gz')},
+                     'manila-8.1.2.tar.gz')},
     'mistral-base': {
         'type': 'url',
         'location': ('$tarballs_base/mistral/'
@@ -572,7 +572,7 @@ SOURCES = {
     'neutron-base': {
         'type': 'url',
         'location': ('$tarballs_base/neutron/'
-                     'neutron-14.1.0.tar.gz')},
+                     'neutron-14.2.0.tar.gz')},
     'neutron-base-plugin-neutron-fwaas': {
         'type': 'url',
         'location': ('$tarballs_base/neutron-fwaas/'
@@ -648,15 +648,15 @@ SOURCES = {
     'neutron-server-ovn-plugin-networking-ovn': {
         'type': 'url',
         'location': ('$tarballs_base/networking-ovn/'
-                     'networking-ovn-6.0.1.tar.gz')},
+                     'networking-ovn-6.1.0.tar.gz')},
     'neutron-metadata-agent-ovn-plugin-networking-ovn': {
         'type': 'url',
         'location': ('$tarballs_base/networking-ovn/'
-                     'networking-ovn-6.0.1.tar.gz')},
+                     'networking-ovn-6.1.0.tar.gz')},
     'nova-base': {
         'type': 'url',
         'location': ('$tarballs_base/nova/'
-                     'nova-19.1.0.tar.gz')},
+                     'nova-19.2.0.tar.gz')},
     'nova-base-plugin-blazar': {
         'type': 'url',
         'location': ('$tarballs_base/blazar-nova/'
@@ -672,7 +672,7 @@ SOURCES = {
     'octavia-base': {
         'type': 'url',
         'location': ('$tarballs_base/octavia/'
-                     'octavia-4.1.1.tar.gz')},
+                     'octavia-4.1.2.tar.gz')},
     'panko-base': {
         'type': 'url',
         'location': ('$tarballs_base/panko/'
@@ -749,10 +749,6 @@ SOURCES = {
         'type': 'url',
         'location': ('$tarballs_base/telemetry-tempest-plugin/'
                      'telemetry_tempest_plugin-0.3.0.tar.gz')},
-    'tempest-plugin-tripleo-common': {
-        'type': 'url',
-        'location': ('$tarballs_base/tripleo-common-tempest-plugin/'
-                     'tripleo-common-tempest-plugin-master.tar.gz')},
     'tempest-plugin-trove': {
         'type': 'url',
         'location': ('$tarballs_base/trove-tempest-plugin/'

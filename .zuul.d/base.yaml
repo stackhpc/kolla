@@ -54,6 +54,11 @@
       - ^releasenotes/.*$
       - ^specs/.*$
       - ^test-requirements.txt$
+      - ^\.zuul\.d/
+      - ^\..+
+      - ^contrib/
+      - ^LICENSE$
+      - ^tox\.ini$
     vars:
       publisher: false
     extra-vars:
