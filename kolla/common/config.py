@@ -48,7 +48,7 @@ INSTALL_TYPE_CHOICES = ['binary', 'source', 'rdo', 'rhos']
 
 # TODO(mandre) check for file integrity instead of downloading from an HTTPS
 # source
-TARBALLS_BASE = "https://tarballs.openstack.org"
+TARBALLS_BASE = "https://tarballs.opendev.org"
 
 _PROFILE_OPTS = [
     cfg.ListOpt('infra',
@@ -306,76 +306,76 @@ _BASE_OPTS = [
 SOURCES = {
     'openstack-base': {
         'type': 'url',
-        'location': ('$tarballs_base/requirements/'
+        'location': ('$tarballs_base/openstack/requirements/'
                      'requirements-stable-train.tar.gz')},
     'almanach-base': {
         'type': 'url',
-        'location': ('$tarballs_base/almanach/'
+        'location': ('$tarballs_base/openstack/almanach/'
                      'almanach-4.1.0.tar.gz')},
     'aodh-base': {
         'type': 'url',
-        'location': ('$tarballs_base/aodh/'
-                     'aodh-9.0.1.tar.gz')},
+        'location': ('$tarballs_base/openstack/aodh/'
+                     'aodh-stable-train.tar.gz')},
     'barbican-base': {
         'type': 'url',
-        'location': ('$tarballs_base/barbican/'
-                     'barbican-9.0.1.tar.gz')},
+        'location': ('$tarballs_base/openstack/barbican/'
+                     'barbican-stable-train.tar.gz')},
     'bifrost-base': {
         'type': 'url',
-        'location': ('$tarballs_base/bifrost/'
-                     'bifrost-7.2.2.tar.gz')},
+        'location': ('$tarballs_base/openstack/bifrost/'
+                     'bifrost-stable-train.tar.gz')},
     'blazar-base': {
         'type': 'url',
-        'location': ('$tarballs_base/blazar/'
-                     'blazar-4.0.1.tar.gz')},
+        'location': ('$tarballs_base/openstack/blazar/'
+                     'blazar-stable-train.tar.gz')},
     'ceilometer-base': {
         'type': 'url',
-        'location': ('$tarballs_base/ceilometer/'
-                     'ceilometer-13.1.2.tar.gz')},
+        'location': ('$tarballs_base/openstack/ceilometer/'
+                     'ceilometer-stable-train.tar.gz')},
     'ceilometer-base-plugin-panko': {
         'type': 'url',
-        'location': ('$tarballs_base/panko/'
-                     'panko-7.1.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/panko/'
+                     'panko-stable-train.tar.gz')},
     'cinder-base': {
         'type': 'url',
-        'location': ('$tarballs_base/cinder/'
-                     'cinder-15.6.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/cinder/'
+                     'cinder-stable-train.tar.gz')},
     'congress-base': {
         'type': 'url',
-        'location': ('$tarballs_base/congress/'
-                     'openstack-congress-10.0.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/congress/'
+                     'congress-stable-train.tar.gz')},
     'cloudkitty-base': {
         'type': 'url',
-        'location': ('$tarballs_base/cloudkitty/'
-                     'cloudkitty-11.1.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/cloudkitty/'
+                     'cloudkitty-stable-train.tar.gz')},
     'cyborg-base': {
         'type': 'url',
-        'location': ('$tarballs_base/cyborg/'
-                     'openstack-cyborg-3.0.1.tar.gz')},
+        'location': ('$tarballs_base/openstack/cyborg/'
+                     'cyborg-stable-train.tar.gz')},
     'designate-base': {
         'type': 'url',
-        'location': ('$tarballs_base/designate/'
-                     'designate-9.0.2.tar.gz')},
+        'location': ('$tarballs_base/openstack/designate/'
+                     'designate-stable-train.tar.gz')},
     'dragonflow-base': {
         'type': 'url',
-        'location': ('$tarballs_base/dragonflow/'
-                     'dragonflow-3.0.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/dragonflow/'
+                     'dragonflow-stable-train.tar.gz')},
     'ec2-api': {
         'type': 'url',
-        'location': ('$tarballs_base/ec2-api/'
-                     'ec2-api-9.0.1.tar.gz')},
+        'location': ('$tarballs_base/openstack/ec2-api/'
+                     'ec2-api-stable-train.tar.gz')},
     'freezer-api': {
         'type': 'url',
-        'location': ('$tarballs_base/freezer-api/'
-                     'freezer-api-7.2.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/freezer-api/'
+                     'freezer-api-stable-train.tar.gz')},
     'freezer-base': {
         'type': 'url',
-        'location': ('$tarballs_base/freezer/'
-                     'freezer-7.2.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/freezer/'
+                     'freezer-stable-train.tar.gz')},
     'glance-base': {
         'type': 'url',
-        'location': ('$tarballs_base/glance/'
-                     'glance-19.0.4.tar.gz')},
+        'location': ('$tarballs_base/openstack/glance/'
+                     'glance-stable-train.tar.gz')},
     'gnocchi-base': {
         'type': 'git',
         'reference': '4.3.4',
@@ -383,196 +383,196 @@ SOURCES = {
                      'gnocchi.git')},
     'heat-base': {
         'type': 'url',
-        'location': ('$tarballs_base/heat/'
-                     'openstack-heat-13.1.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/heat/'
+                     'heat-stable-train.tar.gz')},
     'horizon': {
         'type': 'url',
-        'location': ('$tarballs_base/horizon/'
-                     'horizon-16.2.2.tar.gz')},
+        'location': ('$tarballs_base/openstack/horizon/'
+                     'horizon-stable-train.tar.gz')},
     'horizon-plugin-blazar-dashboard': {
         'type': 'url',
-        'location': ('$tarballs_base/blazar-dashboard/'
-                     'blazar-dashboard-2.0.1.tar.gz')},
+        'location': ('$tarballs_base/openstack/blazar-dashboard/'
+                     'blazar-dashboard-stable-train.tar.gz')},
     'horizon-plugin-congress-dashboard': {
         'type': 'url',
-        'location': ('$tarballs_base/congress-dashboard/'
-                     'congress-dashboard-5.0.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/congress-dashboard/'
+                     'congress-dashboard-stable-train.tar.gz')},
     'horizon-plugin-cloudkitty-dashboard': {
         'type': 'url',
-        'location': ('$tarballs_base/cloudkitty-dashboard/'
-                     'cloudkitty-dashboard-9.0.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/cloudkitty-dashboard/'
+                     'cloudkitty-dashboard-stable-train.tar.gz')},
     'horizon-plugin-designate-dashboard': {
         'type': 'url',
-        'location': ('$tarballs_base/designate-dashboard/'
-                     'designate-dashboard-9.0.1.tar.gz')},
+        'location': ('$tarballs_base/openstack/designate-dashboard/'
+                     'designate-dashboard-stable-train.tar.gz')},
     'horizon-plugin-fwaas-dashboard': {
         'type': 'url',
-        'location': ('$tarballs_base/neutron-fwaas-dashboard/'
-                     'neutron-fwaas-dashboard-2.1.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/neutron-fwaas-dashboard/'
+                     'neutron-fwaas-dashboard-stable-train.tar.gz')},
     'horizon-plugin-freezer-web-ui': {
         'type': 'url',
-        'location': ('$tarballs_base/freezer-web-ui/'
-                     'freezer-web-ui-7.2.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/freezer-web-ui/'
+                     'freezer-web-ui-stable-train.tar.gz')},
     'horizon-plugin-heat-dashboard': {
         'type': 'url',
-        'location': ('$tarballs_base/heat-dashboard/'
-                     'heat-dashboard-2.0.2.tar.gz')},
+        'location': ('$tarballs_base/openstack/heat-dashboard/'
+                     'heat-dashboard-stable-train.tar.gz')},
     'horizon-plugin-ironic-ui': {
         'type': 'url',
-        'location': ('$tarballs_base/ironic-ui/'
-                     'ironic-ui-3.5.5.tar.gz')},
+        'location': ('$tarballs_base/openstack/ironic-ui/'
+                     'ironic-ui-stable-train.tar.gz')},
     'horizon-plugin-karbor-dashboard': {
         'type': 'url',
-        'location': ('$tarballs_base/karbor-dashboard/'
-                     'karbor-dashboard-1.3.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/karbor-dashboard/'
+                     'karbor-dashboard-stable-train.tar.gz')},
     'horizon-plugin-magnum-ui': {
         'type': 'url',
-        'location': ('$tarballs_base/magnum-ui/'
-                     'magnum-ui-5.3.1.tar.gz')},
+        'location': ('$tarballs_base/openstack/magnum-ui/'
+                     'magnum-ui-stable-train.tar.gz')},
     'horizon-plugin-manila-ui': {
         'type': 'url',
-        'location': ('$tarballs_base/manila-ui/'
-                     'manila-ui-2.19.2.tar.gz')},
+        'location': ('$tarballs_base/openstack/manila-ui/'
+                     'manila-ui-stable-train.tar.gz')},
     'horizon-plugin-masakari-dashboard': {
         'type': 'url',
-        'location': ('$tarballs_base/masakari-dashboard/'
-                     'masakari-dashboard-1.0.1.tar.gz')},
+        'location': ('$tarballs_base/openstack/masakari-dashboard/'
+                     'masakari-dashboard-stable-train.tar.gz')},
     'horizon-plugin-mistral-dashboard': {
         'type': 'url',
-        'location': ('$tarballs_base/mistral-dashboard/'
-                     'mistral-dashboard-9.0.1.tar.gz')},
+        'location': ('$tarballs_base/openstack/mistral-dashboard/'
+                     'mistral-dashboard-stable-train.tar.gz')},
     'horizon-plugin-monasca-ui': {
         'type': 'url',
-        'location': ('$tarballs_base/monasca-ui/'
-                     'monasca-ui-1.17.2.tar.gz')},
+        'location': ('$tarballs_base/openstack/monasca-ui/'
+                     'monasca-ui-stable-train.tar.gz')},
     'horizon-plugin-murano-dashboard': {
         'type': 'url',
-        'location': ('$tarballs_base/murano-dashboard/'
-                     'murano-dashboard-8.0.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/murano-dashboard/'
+                     'murano-dashboard-stable-train.tar.gz')},
     'horizon-plugin-neutron-vpnaas-dashboard': {
         'type': 'url',
-        'location': ('$tarballs_base/neutron-vpnaas-dashboard/'
-                     'neutron-vpnaas-dashboard-1.6.1.tar.gz')},
+        'location': ('$tarballs_base/openstack/neutron-vpnaas-dashboard/'
+                     'neutron-vpnaas-dashboard-stable-train.tar.gz')},
     'horizon-plugin-octavia-dashboard': {
         'type': 'url',
-        'location': ('$tarballs_base/octavia-dashboard/'
-                     'octavia-dashboard-4.0.2.tar.gz')},
+        'location': ('$tarballs_base/openstack/octavia-dashboard/'
+                     'octavia-dashboard-stable-train.tar.gz')},
     'horizon-plugin-qinling-dashboard': {
         'type': 'url',
-        'location': ('$tarballs_base/qinling-dashboard/'
-                     'qinling-dashboard-2.0.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/qinling-dashboard/'
+                     'qinling-dashboard-stable-train.tar.gz')},
     'horizon-plugin-sahara-dashboard': {
         'type': 'url',
-        'location': ('$tarballs_base/sahara-dashboard/'
-                     'sahara-dashboard-11.0.1.tar.gz')},
+        'location': ('$tarballs_base/openstack/sahara-dashboard/'
+                     'sahara-dashboard-stable-train.tar.gz')},
     'horizon-plugin-searchlight-ui': {
         'type': 'url',
-        'location': ('$tarballs_base/searchlight-ui/'
-                     'searchlight-ui-7.0.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/searchlight-ui/'
+                     'searchlight-ui-stable-train.tar.gz')},
     'horizon-plugin-senlin-dashboard': {
         'type': 'url',
-        'location': ('$tarballs_base/senlin-dashboard/'
-                     'senlin-dashboard-0.11.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/senlin-dashboard/'
+                     'senlin-dashboard-stable-train.tar.gz')},
     'horizon-plugin-solum-dashboard': {
         'type': 'url',
-        'location': ('$tarballs_base/solum-dashboard/'
-                     'solum-dashboard-3.0.1.tar.gz')},
+        'location': ('$tarballs_base/openstack/solum-dashboard/'
+                     'solum-dashboard-stable-train.tar.gz')},
     'horizon-plugin-tacker-dashboard': {
         'type': 'url',
-        'location': ('$tarballs_base/tacker-horizon/'
-                     'tacker-horizon-0.15.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/tacker-horizon/'
+                     'tacker-horizon-stable-train.tar.gz')},
     'horizon-plugin-trove-dashboard': {
         'type': 'url',
-        'location': ('$tarballs_base/trove-dashboard/'
-                     'trove-dashboard-13.0.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/trove-dashboard/'
+                     'trove-dashboard-stable-train.tar.gz')},
     'horizon-plugin-vitrage-dashboard': {
         'type': 'url',
-        'location': ('$tarballs_base/vitrage-dashboard/'
-                     'vitrage-dashboard-2.0.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/vitrage-dashboard/'
+                     'vitrage-dashboard-stable-train.tar.gz')},
     'horizon-plugin-watcher-dashboard': {
         'type': 'url',
-        'location': ('$tarballs_base/watcher-dashboard/'
-                     'watcher-dashboard-2.0.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/watcher-dashboard/'
+                     'watcher-dashboard-stable-train.tar.gz')},
     'horizon-plugin-zaqar-ui': {
         'type': 'url',
-        'location': ('$tarballs_base/zaqar-ui/'
-                     'zaqar-ui-7.0.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/zaqar-ui/'
+                     'zaqar-ui-stable-train.tar.gz')},
     'horizon-plugin-zun-ui': {
         'type': 'url',
-        'location': ('$tarballs_base/zun-ui/'
-                     'zun-ui-4.0.1.tar.gz')},
+        'location': ('$tarballs_base/openstack/zun-ui/'
+                     'zun-ui-stable-train.tar.gz')},
     'ironic-base': {
         'type': 'url',
-        'location': ('$tarballs_base/ironic/'
-                     'ironic-13.0.7.tar.gz')},
+        'location': ('$tarballs_base/openstack/ironic/'
+                     'ironic-stable-train.tar.gz')},
     'ironic-inspector': {
         'type': 'url',
-        'location': ('$tarballs_base/ironic-inspector/'
-                     'ironic-inspector-9.2.4.tar.gz')},
+        'location': ('$tarballs_base/openstack/ironic-inspector/'
+                     'ironic-inspector-stable-train.tar.gz')},
     'karbor-base': {
         'type': 'url',
-        'location': ('$tarballs_base/karbor/'
-                     'karbor-1.4.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/karbor/'
+                     'karbor-stable-train.tar.gz')},
     'keystone-base': {
         'type': 'url',
-        'location': ('$tarballs_base/keystone/'
-                     'keystone-16.0.2.tar.gz')},
+        'location': ('$tarballs_base/openstack/keystone/'
+                     'keystone-stable-train.tar.gz')},
     'kuryr-base': {
         'type': 'url',
-        'location': ('$tarballs_base/kuryr/'
-                     'kuryr-lib-1.1.1.tar.gz')},
+        'location': ('$tarballs_base/openstack/kuryr/'
+                     'kuryr-stable-train.tar.gz')},
     'kuryr-libnetwork': {
         'type': 'url',
-        'location': ('$tarballs_base/kuryr-libnetwork/'
-                     'kuryr-libnetwork-4.0.2.tar.gz')},
+        'location': ('$tarballs_base/openstack/kuryr-libnetwork/'
+                     'kuryr-libnetwork-stable-train.tar.gz')},
     'magnum-base': {
         'type': 'url',
-        'location': ('$tarballs_base/magnum/'
-                     'magnum-9.4.1.tar.gz')},
+        'location': ('$tarballs_base/openstack/magnum/'
+                     'magnum-stable-train.tar.gz')},
     'manila-base': {
         'type': 'url',
-        'location': ('$tarballs_base/manila/'
-                     'manila-9.1.5.tar.gz')},
+        'location': ('$tarballs_base/openstack/manila/'
+                     'manila-stable-train.tar.gz')},
     'masakari-base': {
         'type': 'url',
-        'location': ('$tarballs_base/masakari/'
-                     'masakari-8.1.2.tar.gz')},
+        'location': ('$tarballs_base/openstack/masakari/'
+                     'masakari-stable-train.tar.gz')},
     'masakari-monitors': {
         'type': 'url',
-        'location': ('$tarballs_base/masakari-monitors/'
-                     'masakari-monitors-8.0.2.tar.gz')},
+        'location': ('$tarballs_base/openstack/masakari-monitors/'
+                     'masakari-monitors-stable-train.tar.gz')},
     'mistral-base': {
         'type': 'url',
-        'location': ('$tarballs_base/mistral/'
-                     'mistral-9.1.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/mistral/'
+                     'mistral-stable-train.tar.gz')},
     'mistral-base-plugin-tacker': {
         'type': 'url',
-        'location': ('$tarballs_base/tacker/'
-                     'tacker-2.0.2.tar.gz')},
+        'location': ('$tarballs_base/openstack/tacker/'
+                     'tacker-stable-train.tar.gz')},
     'monasca-agent': {
         'type': 'url',
-        'location': ('$tarballs_base/monasca-agent/'
-                     'monasca-agent-2.12.1.tar.gz')},
+        'location': ('$tarballs_base/openstack/monasca-agent/'
+                     'monasca-agent-stable-train.tar.gz')},
     'monasca-api': {
         'type': 'url',
-        'location': ('$tarballs_base/monasca-api/'
-                     'monasca-api-3.2.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/monasca-api/'
+                     'monasca-api-stable-train.tar.gz')},
     'monasca-log-api': {
         'type': 'url',
-        'location': ('$tarballs_base/monasca-log-api/'
-                     'monasca-log-api-2.11.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/monasca-log-api/'
+                     'monasca-log-api-stable-train.tar.gz')},
     'monasca-notification': {
         'type': 'url',
-        'location': ('$tarballs_base/monasca-notification/'
-                     'monasca-notification-1.18.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/monasca-notification/'
+                     'monasca-notification-stable-train.tar.gz')},
     'monasca-persister': {
         'type': 'url',
-        'location': ('$tarballs_base/monasca-persister/'
-                     'monasca-persister-1.15.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/monasca-persister/'
+                     'monasca-persister-stable-train.tar.gz')},
     'monasca-statsd': {
         'type': 'url',
-        'location': ('$tarballs_base/monasca-statsd/'
-                     'monasca-statsd-1.12.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/monasca-statsd/'
+                     'monasca-statsd-stable-train.tar.gz')},
     # FIXME(dszumski): Use openstack tar when infra is fixed
     'monasca-thresh': {
         'type': 'url',
@@ -580,288 +580,288 @@ SOURCES = {
                      'master.tar.gz')},
     'monasca-thresh-additions-monasca-common': {
         'type': 'url',
-        'location': ('$tarballs_base/monasca-common/'
-                     'monasca-common-2.16.1.tar.gz')},
+        'location': ('$tarballs_base/openstack/monasca-common/'
+                     'monasca-common-stable-train.tar.gz')},
     'murano-base': {
         'type': 'url',
-        'location': ('$tarballs_base/murano/'
-                     'murano-8.1.1.tar.gz')},
+        'location': ('$tarballs_base/openstack/murano/'
+                     'murano-stable-train.tar.gz')},
     'neutron-base': {
         'type': 'url',
-        'location': ('$tarballs_base/neutron/'
-                     'neutron-15.3.4.tar.gz')},
+        'location': ('$tarballs_base/openstack/neutron/'
+                     'neutron-stable-train.tar.gz')},
     'neutron-base-plugin-neutron-fwaas': {
         'type': 'url',
-        'location': ('$tarballs_base/neutron-fwaas/'
-                     'neutron-fwaas-15.0.1.tar.gz')},
+        'location': ('$tarballs_base/openstack/neutron-fwaas/'
+                     'neutron-fwaas-stable-train.tar.gz')},
     'neutron-base-plugin-networking-ansible': {
         'type': 'url',
-        'location': ('$tarballs_base/networking-ansible/'
-                     'networking-ansible-1.1.0.tar.gz')},
+        'location': ('$tarballs_base/x/networking-ansible/'
+                     'networking-ansible-stable-train.tar.gz')},
     'neutron-base-plugin-networking-baremetal': {
         'type': 'url',
-        'location': ('$tarballs_base/networking-baremetal/'
-                     'networking-baremetal-1.4.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/networking-baremetal/'
+                     'networking-baremetal-stable-train.tar.gz')},
     'neutron-base-plugin-networking-generic-switch': {
         'type': 'url',
-        'location': ('$tarballs_base/networking-generic-switch/'
-                     'networking-generic-switch-2.1.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/networking-generic-switch/'
+                     'networking-generic-switch-stable-train.tar.gz')},
     'neutron-base-plugin-networking-sfc': {
         'type': 'url',
-        'location': ('$tarballs_base/networking-sfc/'
-                     'networking-sfc-9.0.1.tar.gz')},
+        'location': ('$tarballs_base/openstack/networking-sfc/'
+                     'networking-sfc-stable-train.tar.gz')},
     'neutron-base-plugin-vmware-nsx': {
         'type': 'url',
-        'location': ('$tarballs_base/vmware-nsx/'
+        'location': ('$tarballs_base/x/vmware-nsx/'
                      'vmware-nsx-15.0.0.tar.gz')},
     'neutron-base-plugin-vpnaas-agent': {
         'type': 'url',
-        'location': ('$tarballs_base/neutron-vpnaas/'
-                     'neutron-vpnaas-15.0.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/neutron-vpnaas/'
+                     'neutron-vpnaas-stable-train.tar.gz')},
     'neutron-bgp-dragent': {
         'type': 'url',
-        'location': ('$tarballs_base/neutron-dynamic-routing/'
-                     'neutron-dynamic-routing-15.0.1.tar.gz')},
+        'location': ('$tarballs_base/openstack/neutron-dynamic-routing/'
+                     'neutron-dynamic-routing-stable-train.tar.gz')},
     'neutron-server-opendaylight-plugin-networking-odl': {
         'type': 'url',
-        'location': ('$tarballs_base/networking-odl/'
-                     'networking-odl-15.0.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/networking-odl/'
+                     'networking-odl-stable-train.tar.gz')},
     'neutron-server-opendaylight-plugin-networking-bgpvpn': {
         'type': 'url',
-        'location': ('$tarballs_base/networking-bgpvpn/'
-                     'networking-bgpvpn-11.0.1.tar.gz')},
+        'location': ('$tarballs_base/openstack/networking-bgpvpn/'
+                     'networking-bgpvpn-stable-train.tar.gz')},
     'neutron-server-opendaylight-plugin-networking-l2gw': {
         'type': 'url',
-        'location': ('$tarballs_base/networking-l2gw/'
-                     'networking-l2gw-15.0.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/networking-l2gw/'
+                     'networking-l2gw-stable-train.tar.gz')},
     'neutron-server-opendaylight-plugin-networking-sfc': {
         'type': 'url',
-        'location': ('$tarballs_base/networking-sfc/'
-                     'networking-sfc-9.0.1.tar.gz')},
+        'location': ('$tarballs_base/openstack/networking-sfc/'
+                     'networking-sfc-stable-train.tar.gz')},
     'neutron-server-plugin-neutron-dynamic-routing': {
         'type': 'url',
-        'location': ('$tarballs_base/neutron-dynamic-routing/'
-                     'neutron-dynamic-routing-15.0.1.tar.gz')},
+        'location': ('$tarballs_base/openstack/neutron-dynamic-routing/'
+                     'neutron-dynamic-routing-stable-train.tar.gz')},
     'neutron-server-plugin-vmware-nsxlib': {
         'type': 'url',
-        'location': ('$tarballs_base/vmware-nsxlib/'
-                     'vmware-nsxlib-14.0.3.tar.gz')},
+        'location': ('$tarballs_base/x/vmware-nsxlib/'
+                     'vmware-nsxlib-stable-train.tar.gz')},
     'neutron-vpnaas-agent': {
         'type': 'url',
-        'location': ('$tarballs_base/neutron-vpnaas/'
-                     'neutron-vpnaas-15.0.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/neutron-vpnaas/'
+                     'neutron-vpnaas-stable-train.tar.gz')},
     'neutron-server-ovn-plugin-networking-ovn': {
         'type': 'url',
-        'location': ('$tarballs_base/networking-ovn/'
-                     'networking-ovn-7.4.1.tar.gz')},
+        'location': ('$tarballs_base/openstack/networking-ovn/'
+                     'networking-ovn-stable-train.tar.gz')},
     'neutron-metadata-agent-ovn-plugin-networking-ovn': {
         'type': 'url',
-        'location': ('$tarballs_base/networking-ovn/'
-                     'networking-ovn-7.4.1.tar.gz')},
+        'location': ('$tarballs_base/openstack/networking-ovn/'
+                     'networking-ovn-stable-train.tar.gz')},
     'nova-base': {
         'type': 'url',
-        'location': ('$tarballs_base/nova/'
-                     'nova-20.6.1.tar.gz')},
+        'location': ('$tarballs_base/openstack/nova/'
+                     'nova-stable-train.tar.gz')},
     'nova-base-plugin-blazar': {
         'type': 'url',
-        'location': ('$tarballs_base/blazar-nova/'
-                     'blazar-nova-1.3.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/blazar-nova/'
+                     'blazar-nova-stable-train.tar.gz')},
     'nova-base-plugin-mksproxy': {
         'type': 'url',
-        'location': ('$tarballs_base/nova-mksproxy/'
+        'location': ('$tarballs_base/openstack/nova-mksproxy/'
                      'nova-mksproxy-0.0.2.tar.gz')},
     'novajoin-base': {
         'type': 'url',
-        'location': ('$tarballs_base/novajoin/'
+        'location': ('$tarballs_base/openstack/novajoin/'
                      'novajoin-1.2.0.tar.gz')},
     'octavia-base': {
         'type': 'url',
-        'location': ('$tarballs_base/octavia/'
-                     'octavia-5.1.2.tar.gz')},
+        'location': ('$tarballs_base/openstack/octavia/'
+                     'octavia-stable-train.tar.gz')},
     'panko-base': {
         'type': 'url',
-        'location': ('$tarballs_base/panko/'
-                     'panko-7.1.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/panko/'
+                     'panko-stable-train.tar.gz')},
     'placement-base': {
         'type': 'url',
-        'location': ('$tarballs_base/placement/'
-                     'openstack-placement-2.0.1.tar.gz')},
+        'location': ('$tarballs_base/openstack/placement/'
+                     'placement-stable-train.tar.gz')},
     'qinling-base': {
         'type': 'url',
-        'location': ('$tarballs_base/qinling/'
-                     'qinling-3.0.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/qinling/'
+                     'qinling-stable-train.tar.gz')},
     'tempest-plugin-tempest-conf': {
         'type': 'url',
-        'location': ('$tarballs_base/python-tempestconf/'
+        'location': ('$tarballs_base/openstack/python-tempestconf/'
                      'python-tempestconf-2.4.0.tar.gz')},
     'tempest-plugin-barbican': {
         'type': 'url',
-        'location': ('$tarballs_base/barbican-tempest-plugin/'
+        'location': ('$tarballs_base/openstack/barbican-tempest-plugin/'
                      'barbican_tempest_plugin-0.3.0.tar.gz')},
     'tempest-plugin-blazar': {
         'type': 'url',
-        'location': ('$tarballs_base/blazar-tempest-plugin/'
+        'location': ('$tarballs_base/openstack/blazar-tempest-plugin/'
                      'blazar_tempest_plugin-0.3.0.tar.gz')},
     'tempest-plugin-cinder': {
         'type': 'url',
-        'location': ('$tarballs_base/cinder-tempest-plugin/'
+        'location': ('$tarballs_base/openstack/cinder-tempest-plugin/'
                      'cinder-tempest-plugin-0.3.0.tar.gz')},
     'tempest-plugin-congress': {
         'type': 'url',
-        'location': ('$tarballs_base/congress-tempest-plugin/'
+        'location': ('$tarballs_base/openstack/congress-tempest-plugin/'
                      'congress-tempest-plugin-0.3.0.tar.gz')},
     'tempest-plugin-ec2api': {
         'type': 'url',
-        'location': ('$tarballs_base/ec2api-tempest-plugin/'
+        'location': ('$tarballs_base/openstack/ec2api-tempest-plugin/'
                      'ec2api-tempest-plugin-0.3.0.tar.gz')},
     'tempest-plugin-heat': {
         'type': 'url',
-        'location': ('$tarballs_base/heat-tempest-plugin/'
+        'location': ('$tarballs_base/openstack/heat-tempest-plugin/'
                      'heat-tempest-plugin-0.4.0.tar.gz')},
     'tempest-plugin-ironic': {
         'type': 'url',
-        'location': ('$tarballs_base/ironic-tempest-plugin/'
+        'location': ('$tarballs_base/openstack/ironic-tempest-plugin/'
                      'ironic-tempest-plugin-1.5.1.tar.gz')},
     'tempest-plugin-keystone': {
         'type': 'url',
-        'location': ('$tarballs_base/keystone-tempest-plugin/'
+        'location': ('$tarballs_base/openstack/keystone-tempest-plugin/'
                      'keystone_tempest_plugin-0.3.0.tar.gz')},
     'tempest-plugin-magnum': {
         'type': 'url',
-        'location': ('$tarballs_base/magnum-tempest-plugin/'
+        'location': ('$tarballs_base/openstack/magnum-tempest-plugin/'
                      'magnum_tempest_plugin-0.3.0.tar.gz')},
     'tempest-plugin-manila': {
         'type': 'url',
-        'location': ('$tarballs_base/manila-tempest-plugin/'
+        'location': ('$tarballs_base/openstack/manila-tempest-plugin/'
                      'manila-tempest-plugin-0.4.1.tar.gz')},
     'tempest-plugin-mistral': {
         'type': 'url',
-        'location': ('$tarballs_base/mistral-tempest-plugin/'
+        'location': ('$tarballs_base/openstack/mistral-tempest-plugin/'
                      'mistral_tempest_tests-0.3.0.tar.gz')},
     'tempest-plugin-monasca': {
         'type': 'url',
-        'location': ('$tarballs_base/monasca-tempest-plugin/'
+        'location': ('$tarballs_base/openstack/monasca-tempest-plugin/'
                      'monasca-tempest-plugin-1.1.0.tar.gz')},
     'tempest-plugin-murano': {
         'type': 'url',
-        'location': ('$tarballs_base/murano-tempest-plugin/'
+        'location': ('$tarballs_base/openstack/murano-tempest-plugin/'
                      'murano-tempest-plugin-1.1.0.tar.gz')},
     'tempest-plugin-neutron': {
         'type': 'url',
-        'location': ('$tarballs_base/neutron-tempest-plugin/'
+        'location': ('$tarballs_base/openstack/neutron-tempest-plugin/'
                      'neutron-tempest-plugin-0.6.0.tar.gz')},
     'tempest-plugin-patrole': {
         'type': 'url',
-        'location': ('$tarballs_base/patrole/'
+        'location': ('$tarballs_base/openstack/patrole/'
                      'patrole-0.7.0.tar.gz')},
     'tempest-plugin-telemetry': {
         'type': 'url',
-        'location': ('$tarballs_base/telemetry-tempest-plugin/'
+        'location': ('$tarballs_base/openstack/telemetry-tempest-plugin/'
                      'telemetry_tempest_plugin-0.4.0.tar.gz')},
     'tempest-plugin-trove': {
         'type': 'url',
-        'location': ('$tarballs_base/trove-tempest-plugin/'
+        'location': ('$tarballs_base/openstack/trove-tempest-plugin/'
                      'trove_tempest_plugin-0.3.0.tar.gz')},
     'tempest-plugin-vitrage': {
         'type': 'url',
-        'location': ('$tarballs_base/vitrage-tempest-plugin/'
+        'location': ('$tarballs_base/openstack/vitrage-tempest-plugin/'
                      'vitrage-tempest-plugin-3.0.0.tar.gz')},
     'tempest-plugin-watcher': {
         'type': 'url',
-        'location': ('$tarballs_base/watcher-tempest-plugin/'
+        'location': ('$tarballs_base/openstack/watcher-tempest-plugin/'
                      'watcher-tempest-plugin-1.2.0.tar.gz')},
     'tempest-plugin-zaqar': {
         'type': 'url',
-        'location': ('$tarballs_base/zaqar-tempest-plugin/'
+        'location': ('$tarballs_base/openstack/zaqar-tempest-plugin/'
                      'zaqar_tempest_plugin-0.3.0.tar.gz')},
     'rally': {
         'type': 'url',
-        'location': ('$tarballs_base/rally/'
+        'location': ('$tarballs_base/openstack/rally/'
                      'rally-2.0.0.tar.gz')},
     'sahara-base': {
         'type': 'url',
-        'location': ('$tarballs_base/sahara/'
-                     'sahara-11.0.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/sahara/'
+                     'sahara-stable-train.tar.gz')},
     'sahara-base-plugin-ambari': {
         'type': 'url',
-        'location': ('$tarballs_base/sahara-plugin-ambari/'
-                     'sahara-plugin-ambari-2.0.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/sahara-plugin-ambari/'
+                     'sahara-plugin-ambari-stable-train.tar.gz')},
     'sahara-base-plugin-cdh': {
         'type': 'url',
-        'location': ('$tarballs_base/sahara-plugin-cdh/'
-                     'sahara-plugin-cdh-2.0.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/sahara-plugin-cdh/'
+                     'sahara-plugin-cdh-stable-train.tar.gz')},
     'sahara-base-plugin-mapr': {
         'type': 'url',
-        'location': ('$tarballs_base/sahara-plugin-mapr/'
-                     'sahara-plugin-mapr-2.0.1.tar.gz')},
+        'location': ('$tarballs_base/openstack/sahara-plugin-mapr/'
+                     'sahara-plugin-mapr-stable-train.tar.gz')},
     'sahara-base-plugin-spark': {
         'type': 'url',
-        'location': ('$tarballs_base/sahara-plugin-spark/'
-                     'sahara-plugin-spark-2.0.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/sahara-plugin-spark/'
+                     'sahara-plugin-spark-stable-train.tar.gz')},
     'sahara-base-plugin-storm': {
         'type': 'url',
-        'location': ('$tarballs_base/sahara-plugin-storm/'
-                     'sahara-plugin-storm-2.0.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/sahara-plugin-storm/'
+                     'sahara-plugin-storm-stable-train.tar.gz')},
     'sahara-base-plugin-vanilla': {
         'type': 'url',
-        'location': ('$tarballs_base/sahara-plugin-vanilla/'
-                     'sahara-plugin-vanilla-2.0.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/sahara-plugin-vanilla/'
+                     'sahara-plugin-vanilla-stable-train.tar.gz')},
     'searchlight-base': {
         'type': 'url',
-        'location': ('$tarballs_base/searchlight/'
-                     'searchlight-7.0.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/searchlight/'
+                     'searchlight-stable-train.tar.gz')},
     'senlin-base': {
         'type': 'url',
-        'location': ('$tarballs_base/senlin/'
-                     'senlin-8.0.1.tar.gz')},
+        'location': ('$tarballs_base/openstack/senlin/'
+                     'senlin-stable-train.tar.gz')},
     'solum-base': {
         'type': 'url',
-        'location': ('$tarballs_base/solum/'
-                     'solum-7.0.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/solum/'
+                     'solum-stable-train.tar.gz')},
     'swift-base': {
         'type': 'url',
-        'location': ('$tarballs_base/swift/'
-                     'swift-2.23.3.tar.gz')},
+        'location': ('$tarballs_base/openstack/swift/'
+                     'swift-stable-train.tar.gz')},
     'tacker-base': {
         'type': 'url',
-        'location': ('$tarballs_base/tacker/'
-                     'tacker-2.0.2.tar.gz')},
+        'location': ('$tarballs_base/openstack/tacker/'
+                     'tacker-stable-train.tar.gz')},
     'tacker-base-plugin-networking-sfc': {
         'type': 'url',
-        'location': ('$tarballs_base/networking-sfc/'
-                     'networking-sfc-9.0.1.tar.gz')},
+        'location': ('$tarballs_base/openstack/networking-sfc/'
+                     'networking-sfc-stable-train.tar.gz')},
     'tempest': {
         'type': 'url',
-        'location': ('$tarballs_base/tempest/'
+        'location': ('$tarballs_base/openstack/tempest/'
                      'tempest-22.1.0.tar.gz')},
     'tripleoclient': {
         'type': 'url',
-        'location': ('$tarballs_base/python-tripleoclient/'
-                     'tripleoclient-12.3.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/python-tripleoclient/'
+                     'tripleoclient-stable-train.tar.gz')},
     'trove-base': {
         'type': 'url',
-        'location': ('$tarballs_base/trove/'
-                     'trove-12.1.0.tar.gz')},
+        'location': ('$tarballs_base/openstack/trove/'
+                     'trove-stable-train.tar.gz')},
     'vitrage-base': {
         'type': 'url',
-        'location': ('$tarballs_base/vitrage/'
-                     'vitrage-5.0.2.tar.gz')},
+        'location': ('$tarballs_base/openstack/vitrage/'
+                     'vitrage-stable-train.tar.gz')},
     'vmtp': {
         'type': 'url',
-        'location': ('$tarballs_base/vmtp/'
+        'location': ('$tarballs_base/openstack/vmtp/'
                      'vmtp-master.tar.gz')},
     'watcher-base': {
         'type': 'url',
-        'location': ('$tarballs_base/watcher/'
-                     'python-watcher-3.0.2.tar.gz')},
+        'location': ('$tarballs_base/openstack/watcher/'
+                     'watcher-stable-train.tar.gz')},
     'zaqar-base': {
         'type': 'url',
-        'location': ('$tarballs_base/zaqar/'
-                     'zaqar-9.0.1.tar.gz')},
+        'location': ('$tarballs_base/openstack/zaqar/'
+                     'zaqar-stable-train.tar.gz')},
     'zun-base': {
         'type': 'url',
-        'location': ('$tarballs_base/zun/'
-                     'zun-4.0.2.tar.gz')}
+        'location': ('$tarballs_base/openstack/zun/'
+                     'zun-stable-train.tar.gz')}
 }
 
 
