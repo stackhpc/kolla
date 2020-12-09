@@ -237,8 +237,8 @@ RUN rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
         'dnf-plugins-core'
     ] %}
     {% set base_centos_yum_repos_to_enable = [
-        'HighAvailability',
-        'PowerTools'
+        'ha',
+        'powertools'
     ] %}
     {% set base_centos_yum_repos_to_disable = [
         'epel',
