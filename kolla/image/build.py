@@ -104,6 +104,9 @@ UNBUILDABLE_IMAGES = {
     },
 
     'source': {
+        "helm-repository",   # chart repository is gone
+        "kuryr-libnetwork",  # Could not find a version that satisfies the
+                             # requirement jsonschema>=2.6.0,<3.0.0
         "tripleoclient",
     },
     'binary': {
@@ -113,6 +116,7 @@ UNBUILDABLE_IMAGES = {
         "cyborg-base",
         "dragonflow-base",
         "freezer-base",
+        "helm-repository",   # chart repository is gone
         "karbor-base",
         "kuryr-base",
         "masakari-base",
@@ -139,6 +143,7 @@ UNBUILDABLE_IMAGES = {
     },
 
     'centos': {
+        "mongodb",
         "ovsdpdk",
     },
 
@@ -256,6 +261,20 @@ UNBUILDABLE_IMAGES = {
         "vitrage-base",
         "zaqar",
         "neutron-mlnx-agent",
+    },
+
+    'debian+source': {
+        "almanach-base",     # Could not find a version that satisfies the
+                             # requirement Flask!=0.11,<1.0,>=0.10
+        "dragonflow-base",   # Could not find a version that satisfies the
+                             # requirement SQLAlchemy<1.1.0,>=1.0.10
+    },
+
+    'ubuntu+source': {
+        "almanach-base",     # Could not find a version that satisfies the
+                             # requirement Flask!=0.11,<1.0,>=0.10
+        "dragonflow-base",   # Could not find a version that satisfies the
+                             # requirement SQLAlchemy<1.1.0,>=1.0.10
     },
 }
 
