@@ -244,8 +244,8 @@ RUN rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
         'dnf-plugins-core'
     ] %}
     {% set base_centos_yum_repos_to_enable = [
-        'HighAvailability',
-        'PowerTools'
+        'ha',
+        'powertools'
     ] %}
     # NOTE(yoctozepto): use upstream rabbitmq (3.7) and erlang on CentOS 8
     # see https://launchpad.net/bugs/1884034
@@ -337,11 +337,13 @@ RUN yum-config-manager --enable rhel-7-server-optional-rpms \
 ] %}
 {% if distro_python_version.startswith('3') %}
 {% set base_centos_binary_packages = base_centos_binary_packages + [
-        'python3'
+        'python3',
+        'python3-pip'
 ] %}
 {% else %}
 {% set base_centos_binary_packages = base_centos_binary_packages + [
-        'python'
+        'python',
+        'python-pip'
 ] %}
 {% endif %}
 {% if distro_package_manager == 'dnf' %}
@@ -376,11 +378,13 @@ RUN yum-config-manager --enable rhel-7-server-optional-rpms \
 ] %}
 {% if distro_python_version.startswith('3') %}
 {% set base_centos_source_packages = base_centos_source_packages + [
-        'python3'
+        'python3',
+        'python3-pip'
 ] %}
 {% else %}
 {% set base_centos_source_packages = base_centos_source_packages + [
-        'python'
+        'python',
+        'python-pip'
 ] %}
 {% endif %}
 {% if distro_package_manager == 'dnf' %}
@@ -455,6 +459,7 @@ COPY apt_preferences /etc/apt/preferences.d/kolla-custom
    'open-iscsi',
    'procps',
    'python3',
+   'python3-pip',
    'socat',
    'sudo',
    'tgt']
