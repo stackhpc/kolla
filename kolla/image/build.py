@@ -104,6 +104,9 @@ UNBUILDABLE_IMAGES = {
     },
 
     'source': {
+        "helm-repository",   # chart repository is gone
+        "kuryr-libnetwork",  # Could not find a version that satisfies the
+                             # requirement jsonschema>=2.6.0,<3.0.0
         "tripleoclient",
     },
     'binary': {
@@ -113,6 +116,7 @@ UNBUILDABLE_IMAGES = {
         "cyborg-base",
         "dragonflow-base",
         "freezer-base",
+        "helm-repository",   # chart repository is gone
         "karbor-base",
         "kuryr-base",
         "masakari-base",
@@ -139,6 +143,7 @@ UNBUILDABLE_IMAGES = {
     },
 
     'centos': {
+        "mongodb",
         "ovsdpdk",
     },
 
@@ -174,6 +179,7 @@ UNBUILDABLE_IMAGES = {
                          # Debian 'buster'
         "cyborg-base",
         "elasticsearch6",   # Only required for CentOS 8 migration.
+        "logstash6",        # Only required for CentOS 8 migration.
         "kibana6",          # Only required for CentOS 8 migration.
         "monasca-grafana",  # FIXME(hrw): some ssl issues to fix
         "mongodb",
@@ -187,6 +193,7 @@ UNBUILDABLE_IMAGES = {
     'ubuntu': {
         "cyborg-base",
         "elasticsearch6",   # Only required for CentOS 8 migration.
+        "logstash6",        # Only required for CentOS 8 migration.
         "kibana6",          # Only required for CentOS 8 migration.
         "qdrouterd",  # There is no qdrouterd package for ubuntu bionic
         "rabbitmq-3.7.24",  # Required only for CentOS 7 to 8 migration
@@ -252,6 +259,20 @@ UNBUILDABLE_IMAGES = {
         "tripleoclient",
         "vitrage-base",
         "zaqar",
+    },
+
+    'debian+source': {
+        "almanach-base",     # Could not find a version that satisfies the
+                             # requirement Flask!=0.11,<1.0,>=0.10
+        "dragonflow-base",   # Could not find a version that satisfies the
+                             # requirement SQLAlchemy<1.1.0,>=1.0.10
+    },
+
+    'ubuntu+source': {
+        "almanach-base",     # Could not find a version that satisfies the
+                             # requirement Flask!=0.11,<1.0,>=0.10
+        "dragonflow-base",   # Could not find a version that satisfies the
+                             # requirement SQLAlchemy<1.1.0,>=1.0.10
     },
 }
 

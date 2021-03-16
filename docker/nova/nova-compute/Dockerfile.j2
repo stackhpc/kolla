@@ -14,6 +14,7 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
             'e2fsprogs',
             'genisoimage',
             'iscsi-initiator-utils',
+            'ndctl',
             'nfs-utils',
             'nvme-cli',
             'openstack-nova-compute',
@@ -36,6 +37,13 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
             'python-oslo-vmware',
             'python-rtslib'
         ] %}
+        {% endif %}
+
+        # NOTE(hrw): daxio is part of pmdk which is x86-64 only in CentOS 8
+        {% if base_arch == 'x86_64' %}
+            {% set nova_compute_packages = nova_compute_packages + [
+                'daxio'
+            ] %}
         {% endif %}
 
 {{ macros.install_packages(nova_compute_packages | customizable("packages")) }}
@@ -65,6 +73,16 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
             'targetcli-fb',
             'xfsprogs'
         ] %}
+        # FIXME(pkopec): since Ubuntu 19.04 'ndctl' package is available
+        # for other archs than 'x86_64
+        # NOTE(hrw): similar situation with 'pmdk-tools'
+        {% if base_distro == 'debian' or
+            (base_distro == 'ubuntu' and base_arch == 'x86_64') %}
+            {% set nova_compute_packages = nova_compute_packages + [
+                'ndctl',
+                'pmdk-tools',
+            ] %}
+        {% endif %}
 
 {{ macros.install_packages(nova_compute_packages | customizable("packages")) }}
 
@@ -82,6 +100,7 @@ RUN rm -f /etc/nova/nova-compute.conf
             'genisoimage',
             'iscsi-initiator-utils',
             'libosinfo',
+            'ndctl',
             'nfs-utils',
             'openvswitch',
             'parted',
@@ -112,6 +131,13 @@ RUN rm -f /etc/nova/nova-compute.conf
         ] %}
         {% endif %}
 
+        # NOTE(hrw): daxio is part of pmdk which is x86-64 only in CentOS 8
+        {% if base_arch == 'x86_64' %}
+            {% set nova_compute_packages = nova_compute_packages + [
+                'daxio'
+            ] %}
+        {% endif %}
+
     {% elif base_package_type == 'deb' %}
 
         {% set nova_compute_packages = [
@@ -131,6 +157,7 @@ RUN rm -f /etc/nova/nova-compute.conf
             'python3-rbd',
             'python3-rtslib-fb',
             'qemu-utils',
+            'sysfsutils',
             'targetcli-fb',
             'xfsprogs'
         ] %}
@@ -138,6 +165,16 @@ RUN rm -f /etc/nova/nova-compute.conf
         {% if base_arch == "aarch64" %}
             {% set nova_compute_packages = nova_compute_packages + [
                 'qemu-efi'
+            ] %}
+        {% endif %}
+        # FIXME(pkopec): since Ubuntu 19.04 'ndctl' package is available
+        # for other archs than 'x86_64'
+        # NOTE(hrw): similar situation with 'pmdk-tools'
+        {% if base_distro == 'debian' or
+            (base_distro == 'ubuntu' and base_arch == 'x86_64') %}
+            {% set nova_compute_packages = nova_compute_packages + [
+                'ndctl',
+                'pmdk-tools',
             ] %}
         {% endif %}
 
