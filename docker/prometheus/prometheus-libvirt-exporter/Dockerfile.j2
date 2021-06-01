@@ -35,7 +35,6 @@ RUN mkdir /build \
     && curl -sSL -o libvirt-exporter.tar.gz ${prometheus_libvirt_exporter_url}/${prometheus_libvirt_exporter_version}.tar.gz  \
     && tar xvf libvirt-exporter.tar.gz \
     && cd libvirt-exporter-${prometheus_libvirt_exporter_version} \
-    && go get -d ./... \
     && go build -mod vendor \
     && install -m 0755 libvirt-exporter /opt/ \
     && rm -rf /build
