@@ -190,6 +190,7 @@ RUN rm -f /etc/rpm/macros.image-language-conf \
 
 {% set base_centos_yum_repo_packages = [
     'centos-release-openstack-wallaby',
+    'centos-release-ceph-pacific',
     'centos-release-opstools',
     'epel-release',
 ] %}
@@ -204,6 +205,7 @@ RUN rm -f /etc/rpm/macros.image-language-conf \
 {% set base_centos_yum_repos_to_disable = [
     'centos-advanced-virtualization',
     'centos-ceph-nautilus',
+    'centos-ceph-pacific',
     'centos-nfv-openvswitch',
     'centos-opstools',
     'centos-rabbitmq-38',
