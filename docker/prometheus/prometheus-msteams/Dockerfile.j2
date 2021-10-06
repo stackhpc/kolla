@@ -1,0 +1,21 @@
+FROM {{ namespace }}/{{ infra_image_prefix }}prometheus-base:{{ tag }}
+{% block labels %}
+LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build_date }}"
+{% endblock %}
+
+{% block prometheus_msteams_header %}{% endblock %}
+
+{% block prometheus_msteams_repository_version %}
+ENV prometheus_msteams_version=1.5.0
+{% endblock %}
+
+{% block prometheus_msteams_install %}
+RUN curl -o /opt/prometheus-msteams https://github.com/prometheus-msteams/prometheus-msteams/releases/download/v${prometheus_msteams_version}/prometheus-msteams-linux-{{debian_arch}} \
+    && chmod 0755 /opt/prometheus-msteams \
+    && mkdir -p /etc/msteams
+{% endblock %}
+
+{% block prometheus_msteams_footer %}{% endblock %}
+{% block footer %}{% endblock %}
+
+USER prometheus
