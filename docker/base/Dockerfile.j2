@@ -21,7 +21,7 @@ ENV LANG en_US.UTF-8
 {# Specifics required such as homedir or shell are configured within the service specific image #}
 {%- for name, user in users | dictsort() %}
 {% if loop.first -%}RUN {% else %}    && {% endif -%}
-    groupadd --force --gid {{ user.gid }} {{ name }} \
+    groupadd --force --gid {{ user.gid }} {{ user.group }} \
     && useradd -l -M --shell /usr/sbin/nologin --uid {{ user.uid }} --gid {{ user.gid }} {{ name }}
         {%- if not loop.last %} \{% endif -%}
 {%- endfor %}
@@ -271,10 +271,14 @@ RUN {{ macros.install_packages(base_centos_yum_repo_packages | customizable("cen
 {# endif for base_package_type rpm #}
 {% elif base_package_type == 'deb' %}
 # Customize PS1 bash shell
-# enlarge 'system users' range so 'haproxy' package will not complain
-# see https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=939470
+# - enlarge 'system users' range so 'haproxy' package will not complain
+#   see https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=939470
+# - enlarge 'system groups' range so 'hacluster' user added in
+#   https://review.opendev.org/c/openstack/kolla/+/802671
+#   can be in 'haclient' group with same high uid
 RUN cat /tmp/kolla_bashrc >> /etc/bash.bashrc \
-    && sed -i -e s/LAST_SYSTEM_UID=999/LAST_SYSTEM_UID=59999/g /etc/adduser.conf
+    && sed -i -e s/LAST_SYSTEM_UID=999/LAST_SYSTEM_UID=59999/g \
+              -e s/LAST_SYSTEM_GID=999/LAST_SYSTEM_GID=59999/g /etc/adduser.conf
 
 # This will prevent questions from being asked during the install
 ENV DEBIAN_FRONTEND noninteractive
@@ -371,6 +375,7 @@ COPY apt_preferences /etc/apt/preferences.d/kolla-custom
 {% elif base_distro == 'debian' %}
     {% set base_apt_keys = [
       '46095ACC8548582C1A2699A9D27D666CD88E42B4',
+      'F1656F24C74CD1D8',
       'F77F1EDA57EBB1CC',
       'F6609E60DC62814E',
     ] %}

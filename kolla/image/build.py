@@ -160,15 +160,11 @@ UNBUILDABLE_IMAGES = {
     },
 
     'debian+binary': {
-        "cloudkitty-base",       # no support in Dockerfile
-        "ironic-neutron-agent",  # no support in Dockerfile
         "nova-serialproxy",      # no binary package
         "tacker-base",           # no binary package
     },
 
     'ubuntu+binary': {
-        "cloudkitty-base",
-        "ironic-neutron-agent",
         "rally",
         "senlin-conductor",  # no binary package
         "senlin-health-manager",  # no binary package
@@ -908,6 +904,7 @@ class KollaWorker(object):
                 ret[match.group(0)[:-5]] = {
                     'uid': user.uid,
                     'gid': user.gid,
+                    'group': user.group,
                 }
         return ret
 
