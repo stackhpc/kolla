@@ -1,6 +1,9 @@
 FROM {{ base_image }}:{{ base_distro_tag }}
 LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build_date }}"
 
+# We use curl in this dockerfile so let configure it before first use
+COPY curlrc /root/.curlrc
+
 {% block base_lang %}
 # NOTE(yoctozepto): use a UTF-8 (Unicode) locale like standard image installs do
 # fixes issues arising from ascii fallback usage
@@ -97,6 +100,7 @@ COPY yum.conf /etc/yum.conf
     {% set base_yum_repo_keys = [
         'https://packages.grafana.com/gpg.key',
         'https://repos.influxdata.com/influxdb.key',
+        'https://github.com/rabbitmq/signing-keys/releases/download/2.0/rabbitmq-release-signing-key.asc',
         'https://packages.treasuredata.com/GPG-KEY-td-agent',
     ] %}
     # FIXME(mgoddard): Not available for CentOS 8 yet.
@@ -119,6 +123,7 @@ COPY yum.conf /etc/yum.conf
 
     {% set base_yum_repo_keys = [
         'https://packages.grafana.com/gpg.key',
+        'https://github.com/rabbitmq/signing-keys/releases/download/2.0/rabbitmq-release-signing-key.asc',
     ] %}
     # FIXME(mgoddard): Not available for CentOS 8 yet.
     {% if distro_package_manager == 'yum' %}
@@ -163,6 +168,12 @@ RUN if [[ -e /etc/yum.repos.d/rabbitmq_rabbitmq-server.repo ]]; then \
 
 {% block base_centos_repo_overrides_post_copy %}{% endblock %}
 
+{% for key in base_yum_repo_keys | customizable('yum_repo_keys') %}
+{%- if loop.first %}RUN {% else %}    && {% endif -%}
+    rpm --import {{ key }}
+{%- if not loop.last %} \{% endif %}
+{% endfor -%}
+
 # Install what is needed for en_US.UTF-8
 {% block base_centos_distro_sync_and_languages %}
 
@@ -181,12 +192,6 @@ RUN {{ macros.install_packages(base_centos_language_packages | customizable("cen
 {% endblock %}
 
 {{ macros.install_packages(base_yum_url_packages | customizable("yum_url_packages")) }}
-
-{% for key in base_yum_repo_keys | customizable('yum_repo_keys') %}
-{%- if loop.first %}RUN {% else %}    && {% endif -%}
-    rpm --import {{ key }}
-{%- if not loop.last %} \{% endif %}
-{% endfor -%}
 
     {% if install_metatype in ['rdo', 'mixed'] %}
 
@@ -443,6 +448,8 @@ COPY sources.list.{{ base_distro }}.{{ base_arch }} /etc/apt/sources.list
 COPY sources.list /etc/apt/sources.list.d/kolla-custom.list
 {% endblock %}
 
+{% block base_debian_after_sources_list %}{% endblock %}
+
 {% block base_ubuntu_package_apt_preferences %}
 COPY apt_preferences.{{ base_distro }} /etc/apt/preferences
 COPY apt_preferences /etc/apt/preferences.d/kolla-custom
@@ -566,7 +573,6 @@ COPY start.sh /usr/local/bin/kolla_start
 COPY copy_cacerts.sh /usr/local/bin/kolla_copy_cacerts
 COPY httpd_setup.sh /usr/local/bin/kolla_httpd_setup
 COPY sudoers /etc/sudoers
-COPY curlrc /root/.curlrc
 
 {% if use_dumb_init %}
 

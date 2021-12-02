@@ -197,13 +197,13 @@ UNBUILDABLE_IMAGES = {
         "kibana6",          # Only required for CentOS 8 migration.
         "qdrouterd",  # There is no qdrouterd package for ubuntu bionic
         "rabbitmq-3.7.24",  # Required only for CentOS 7 to 8 migration
+        "sensu-base",       # upstream dropped Ubuntu repositories
     },
 
     'debian+aarch64': {
         "skydive-base",  # no binary package
     },
     'ubuntu+aarch64': {
-        "sensu-base",    # no binary package
         "skydive-base",  # no binary package
     },
 
@@ -211,7 +211,6 @@ UNBUILDABLE_IMAGES = {
         "skydive-base",  # no binary package
     },
     'ubuntu+ppc64le': {
-        "sensu-base",    # no binary package
         "skydive-base",  # no binary package
     },
 
@@ -863,6 +862,7 @@ class KollaWorker(object):
             PROJECT_ROOT,
             os.path.join(sys.prefix, 'share/kolla'),
             os.path.join(sys.prefix, 'local/share/kolla'),
+            os.path.join(os.getenv('HOME', ''), '.local/share/kolla'),
             # NOTE(zioproto): When Kolla is used within a snap, the env var
             #                 $SNAP is the directory where the snap is mounted.
             #                 https://github.com/zioproto/snap-kolla
