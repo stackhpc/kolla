@@ -20,7 +20,6 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
             'iscsi-initiator-utils',
             'ndctl',
             'nfs-utils',
-            'nvme-cli',
             'openstack-nova-compute',
             'openvswitch',
             'parted',
@@ -39,7 +38,9 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
             ] %}
         {% endif %}
 
-{{ macros.install_packages(nova_compute_packages | customizable("packages")) }}
+{{ macros.install_packages(nova_compute_packages | customizable("packages")) }} \
+    && dnf remove -y linux-firmware \
+    && dnf clean all
 
     {% elif base_package_type == 'deb' %}
 
@@ -52,8 +53,9 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
             'multipath-tools',
             'nfs-common',
             'nova-compute',
-            'openvswitch-switch',
+            'nvme-cli',
             'open-iscsi',
+            'openvswitch-switch',
             'parted',
             'pmdk-tools',
             'python3-cephfs',
@@ -94,6 +96,7 @@ RUN rm -f /etc/nova/nova-compute.conf
             'libosinfo',
             'ndctl',
             'nfs-utils',
+            'nvme-cli',
             'openvswitch',
             'parted',
             'python3-libguestfs',
@@ -112,6 +115,10 @@ RUN rm -f /etc/nova/nova-compute.conf
             ] %}
         {% endif %}
 
+{{ macros.install_packages(nova_compute_packages | customizable("packages")) }} \
+    && dnf remove -y linux-firmware \
+    && dnf clean all
+
     {% elif base_package_type == 'deb' %}
 
         {% set nova_compute_packages = [
@@ -122,6 +129,7 @@ RUN rm -f /etc/nova/nova-compute.conf
             'libosinfo-bin',
             'multipath-tools',
             'nfs-common',
+            'nvme-cli',
             'open-iscsi',
             'parted',
             'pmdk-tools',
@@ -151,11 +159,11 @@ RUN rm -f /etc/nova/nova-compute.conf
             ] %}
         {% endif %}
 
-RUN mkdir -p /etc/ceph
+RUN mkdir -p /etc/ceph \
+    && {{ macros.install_packages(nova_compute_packages | customizable("packages"), chain=True) }}
 
     {% endif %}
 
-{{ macros.install_packages(nova_compute_packages | customizable("packages")) }}
 
 {% set nova_compute_pip_packages = [
         'oslo-vmware'
