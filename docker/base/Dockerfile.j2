@@ -93,12 +93,14 @@ COPY dnf.conf /etc/dnf/dnf.conf
 {% elif base_arch == 'aarch64' %}
     {% set base_yum_repo_files = [
         'elasticsearch.repo',
+        'erlang-solutions.repo',
         'grafana.repo',
         'rabbitmq_rabbitmq-server.repo',
         'td.repo',
     ] %}
 
     {% set base_yum_repo_keys = [
+        'https://packages.erlang-solutions.com/rpm/erlang_solutions.asc',
         'https://packages.grafana.com/gpg.key',
         'https://github.com/rabbitmq/signing-keys/releases/download/2.0/rabbitmq-release-signing-key.asc',
     ] %}
@@ -370,7 +372,7 @@ COPY apt_preferences /etc/apt/preferences.d/kolla-custom
       'F77F1EDA57EBB1CC',
       'F6609E60DC62814E',
     ] %}
-    {% set remote_apt_keys = [
+    {% set base_remote_apt_keys = [
       'https://packages.grafana.com/gpg.key',
       'https://repos.influxdata.com/influxdb.key',
     ] %}
@@ -381,7 +383,7 @@ COPY apt_preferences /etc/apt/preferences.d/kolla-custom
       'F77F1EDA57EBB1CC',
       'F6609E60DC62814E',
     ] %}
-    {% set remote_apt_keys = [
+    {% set base_remote_apt_keys = [
       'https://download.docker.com/linux/debian/gpg',
       'https://packages.grafana.com/gpg.key',
       'https://packages.treasuredata.com/GPG-KEY-td-agent',
@@ -396,7 +398,7 @@ COPY apt_preferences /etc/apt/preferences.d/kolla-custom
             {%- if not loop.last %} \
             {% endif -%}
         {% endfor %}
-        {% for key in remote_apt_keys | customizable('remote_apt_keys') %}
+        {% for key in base_remote_apt_keys | customizable('remote_apt_keys') %}
             {%- if loop.first %} RUN {% else %} && {% endif %}curl {{ key }} | apt-key add -
             {%- if not loop.last %} \
             {% endif -%}
