@@ -92,12 +92,14 @@ COPY dnf.conf /etc/dnf/dnf.conf
 {% elif base_arch == 'aarch64' %}
     {% set base_yum_repo_files = [
         'elasticsearch.repo',
+        'erlang-solutions.repo',
         'grafana.repo',
         'rabbitmq_rabbitmq-server.repo',
         'td.repo',
     ] %}
 
     {% set base_yum_repo_keys = [
+        'https://packages.erlang-solutions.com/rpm/erlang_solutions.asc',
         'https://packages.grafana.com/gpg.key',
         'https://github.com/rabbitmq/signing-keys/releases/download/2.0/rabbitmq-release-signing-key.asc',
     ] %}
@@ -213,6 +215,8 @@ RUN rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
     'centos-ceph-nautilus',
     'centos-opstools',
     'centos-rabbitmq-38',
+    'epel',
+    'epel-modular',
 ] %}
 
 {% if base_arch == 'x86_64' %}
@@ -361,17 +365,18 @@ COPY apt_preferences /etc/apt/preferences.d/kolla-custom
       'F77F1EDA57EBB1CC',
       'F6609E60DC62814E',
     ] %}
-    {% set remote_apt_keys = [
+    {% set base_remote_apt_keys = [
       'https://packages.grafana.com/gpg.key',
       'https://repos.influxdata.com/influxdb.key',
     ] %}
 {% elif base_distro == 'debian' %}
     {% set base_apt_keys = [
       '46095ACC8548582C1A2699A9D27D666CD88E42B4',
+      'F1656F24C74CD1D8',
       'F77F1EDA57EBB1CC',
       'F6609E60DC62814E',
     ] %}
-    {% set remote_apt_keys = [
+    {% set base_remote_apt_keys = [
       'https://download.docker.com/linux/debian/gpg',
       'https://packages.grafana.com/gpg.key',
       'http://buster-ussuri.debian.net/debian/dists/pubkey.gpg',
@@ -391,7 +396,7 @@ COPY apt_preferences /etc/apt/preferences.d/kolla-custom
             {%- if not loop.last %} \
             {% endif -%}
         {% endfor %}
-        {% for key in remote_apt_keys | customizable('remote_apt_keys') %}
+        {% for key in base_remote_apt_keys | customizable('remote_apt_keys') %}
             {%- if loop.first %} RUN {% else %} && {% endif %}curl {{ key }} | apt-key add -
             {%- if not loop.last %} \
             {% endif -%}
