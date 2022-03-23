@@ -24,7 +24,6 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
             'mod_ssl',
             'openssl',
             'python3-alembic',
-            'python3-anyjson',
             'python3-aodhclient',
             'python3-barbicanclient',
             'python3-cachetools',
@@ -88,7 +87,6 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
             'python3-routes',
             'python3-saharaclient',
             'python3-sqlalchemy',
-            'python3-sqlalchemy-collectd',
             'python3-sqlparse',
             'python3-swiftclient',
             'python3-sysv_ipc',
@@ -212,7 +210,6 @@ ENV DEBIAN_FRONTEND noninteractive
         'WSME',
         'alembic',
         'amqp',
-        'anyjson',
         'aodhclient',
         'appdirs',
         'bcrypt',
@@ -315,6 +312,11 @@ ENV DEBIAN_FRONTEND noninteractive
 
 ADD openstack-base-archive /openstack-base-source
 RUN ln -s openstack-base-source/* /requirements \
+{# NOTE(mnasiadka): Remove ovs from upper-constraints.txt because python3-openvswitch
+                    is usually newer than UC entry and older version would get installed
+                    in venv (see https://launchpad.net/bugs/1961874).
+#}
+    && sed -i /^ovs=/d /requirements/upper-constraints.txt \
     && mkdir -p /var/lib/kolla \
     && {{ macros.install_pip(['virtualenv'])}} \
     && virtualenv --system-site-packages /var/lib/kolla/venv

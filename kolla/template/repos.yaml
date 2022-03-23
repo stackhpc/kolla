@@ -21,7 +21,7 @@ centos-aarch64:
   elasticsearch: "elasticsearch-kibana-logstash-7.x"
   epel: "epel"
   epel-modular: "epel-modular"
-  erlang: "centos-rabbitmq-38"
+  erlang: "erlang-solutions"
   extras: "extras"
   grafana: "grafana"
   hacluster: "ha"
@@ -56,6 +56,7 @@ debian:
   influxdb: "deb https://repos.influxdata.com/debian buster stable"
   logstash: "deb https://artifacts.elastic.co/packages/oss-7.x/apt stable main"
   kibana: "deb [arch=amd64] https://artifacts.elastic.co/packages/oss-7.x/apt stable main"
+  mariadb: "deb http://downloads.mariadb.com/MariaDB/mariadb-10.3/repo/debian buster main"
   rabbitmq: "deb https://packagecloud.io/rabbitmq/rabbitmq-server/debian/ buster main"
   td-agent: "deb http://packages.treasuredata.com/4/debian/buster buster contrib"
 
@@ -67,6 +68,7 @@ debian-aarch64:
   logstash: "deb https://artifacts.elastic.co/packages/oss-7.x/apt stable main"
   kibana: "deb [arch=amd64] https://artifacts.elastic.co/packages/oss-7.x/apt stable main"
   libvirt: "deb https://obs.linaro.org/repos/home:/marcin.juszkiewicz/debian-buster ./"
+  mariadb: "deb http://downloads.mariadb.com/MariaDB/mariadb-10.3/repo/debian buster main"
   rabbitmq: "deb https://packagecloud.io/rabbitmq/rabbitmq-server/debian/ buster main"
   td-agent: "deb http://packages.treasuredata.com/4/debian/buster buster contrib"
 
