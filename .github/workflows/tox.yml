@@ -5,4 +5,4 @@ name: Tox Continuous Integration
   pull_request:
 jobs:
   tox:
-    uses: jackhodgkiss/.github/workflows/tox-workflow.yml@main
+    uses: jackhodgkiss/.github/.github/workflows/tox-workflow.yml@main
