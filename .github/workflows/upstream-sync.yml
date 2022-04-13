@@ -17,6 +17,7 @@ jobs:
     steps:
       - name: Check if ${{ format('{0}/{1}', env.upstream-prefix, matrix.branch) }} is ahead of ${{ format('{0}/{1}', env.downstream-prefix, matrix.branch) }}
         uses: actions/github-script@9ac08808f993958e9de277fe43a64532a609130e
+        id: check-if-ahead
         with:
           script: |
             const { repo, owner } = context.repo;
@@ -26,8 +27,12 @@ jobs:
               head: '${{ format('{0}/{1}', env.upstream-prefix, matrix.branch) }}',
               base: '${{ format('{0}/{1}', env.downstream-prefix, matrix.branch) }}',
             });
-            console.log(result.data['ahead_by']);
+            const is_ahead = result.data['ahead_by'] > 0;
+            console.log(is_ahead ? 'Base is behind upstream. Proceed with PR' : 'Base is not behind upstream. Terminate job);
+            return is_ahead;
+          result-encoding: bool
       - name: Create PR ${{ format('{0}/{1}', env.downstream-prefix, matrix.branch) }} with ${{ format('{0}/{1}', env.upstream-prefix, matrix.branch) }}
+        if: ${{ steps.check-if-ahead.outputs.result }}
         uses: actions/github-script@9ac08808f993958e9de277fe43a64532a609130e
         with:
           script: |
