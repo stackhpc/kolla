@@ -14,7 +14,6 @@ jobs:
       fail-fast: false
       matrix:
         branch: [xena, wallaby, victoria]
-    name: Pull Request ${{ matrix.branch }} with ${{ format('{0}/{1}', env.upstream-prefix, matrix.branch) }}
     steps:
       - name: Create Pull Request ${{ matrix.branch }} with ${{ format('{0}/{1}', env.upstream-prefix, matrix.branch) }}
         uses: actions/github-script@9ac08808f993958e9de277fe43a64532a609130e
