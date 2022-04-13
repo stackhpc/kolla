@@ -15,7 +15,7 @@ jobs:
       matrix:
         branch: [xena, wallaby, victoria]
     steps:
-      - name: Check If ${{ format('{0}/{1}', env.upstream-prefix, matrix.branch) }} is Ahead of ${{ format('{0}/{1}', env.downstream-prefix, matrix.branch) }}
+      - name: Check if ${{ format('{0}/{1}', env.upstream-prefix, matrix.branch) }} is ahead of ${{ format('{0}/{1}', env.downstream-prefix, matrix.branch) }}
         uses: actions/github-script@9ac08808f993958e9de277fe43a64532a609130e
         with:
           script: |
