@@ -36,19 +36,20 @@ jobs:
             return is_ahead ? 'true' : 'false';
           result-encoding: string
       - name: Create PR ${{ format('{0}/{1}', env.downstream-prefix, matrix.branch) }} with ${{ format('{0}/{1}', env.upstream-prefix, matrix.branch) }}
-        if: ${{ steps.check-if-ahead.outputs.result }} == 'true'
         uses: actions/github-script@9ac08808f993958e9de277fe43a64532a609130e
         with:
           script: |
-            const { repo, owner } = context.repo;
-            const result = await github.rest.pulls.create({
-              title: 'Synchronise ${{ matrix.branch }} with ${{ format('{0}/{1}', env.upstream-prefix, matrix.branch) }}',
-              owner,
-              repo,
-              head: '${{ format('{0}/{1}', env.upstream-prefix, matrix.branch) }}',
-              base: '${{ format('{0}/{1}', env.downstream-prefix, matrix.branch) }}',
-              maintainer_can_modify: false,
-              body: [
-                'This is an automated pull request.'
-              ].join('\n')
-            });
+            if(${{ steps.check-if-ahead.outputs.result }} == 'true') {
+              const { repo, owner } = context.repo;
+              const result = await github.rest.pulls.create({
+                title: 'Synchronise ${{ matrix.branch }} with ${{ format('{0}/{1}', env.upstream-prefix, matrix.branch) }}',
+                owner,
+                repo,
+                head: '${{ format('{0}/{1}', env.upstream-prefix, matrix.branch) }}',
+                base: '${{ format('{0}/{1}', env.downstream-prefix, matrix.branch) }}',
+                maintainer_can_modify: false,
+                body: [
+                  'This is an automated pull request.'
+                ].join('\n')
+              });
+            }
