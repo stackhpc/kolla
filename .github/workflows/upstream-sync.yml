@@ -21,7 +21,7 @@ jobs:
           script: |
             const { repo, owner } = context.repo;
             const result = await github.rest.repos.compareCommits({
-              ower,
+              owner,
               repo,
               head: '${{ format('{0}/{1}', env.upstream-prefix, matrix.branch) }}',
               base: '${{ format('{0}/{1}', env.downstream-prefix, matrix.branch) }}',
