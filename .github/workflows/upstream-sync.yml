@@ -33,10 +33,10 @@ jobs:
             } else {
               console.log('Base is not behind upstream. Terminate job');
             }
-            return is_ahead;
-          result-encoding: bool
+            return is_ahead ? 'true' : 'false';
+          result-encoding: string
       - name: Create PR ${{ format('{0}/{1}', env.downstream-prefix, matrix.branch) }} with ${{ format('{0}/{1}', env.upstream-prefix, matrix.branch) }}
-        if: ${{ steps.check-if-ahead.outputs.result }}
+        if: ${{ steps.check-if-ahead.outputs.result }} == 'true'
         uses: actions/github-script@9ac08808f993958e9de277fe43a64532a609130e
         with:
           script: |
