@@ -26,7 +26,7 @@ jobs:
               head: '${{ format('{0}/{1}', env.upstream-prefix, matrix.branch) }}',
               base: '${{ format('{0}/{1}', env.downstream-prefix, matrix.branch) }}',
             });
-            console.log(result['ahead_by']);
+            console.log(result.data['ahead_by']);
       - name: Create PR ${{ format('{0}/{1}', env.downstream-prefix, matrix.branch) }} with ${{ format('{0}/{1}', env.upstream-prefix, matrix.branch) }}
         uses: actions/github-script@9ac08808f993958e9de277fe43a64532a609130e
         with:
