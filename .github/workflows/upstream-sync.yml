@@ -15,7 +15,7 @@ jobs:
       matrix:
         branch: [xena, wallaby, victoria]
     steps:
-      - name: Create Pull Request ${{ matrix.branch }} with ${{ format('{0}/{1}', env.upstream-prefix, matrix.branch) }}
+      - name: Create PR ${{ format('{0}/{1}', env.downstream-prefix, matrix.branch) }} with ${{ format('{0}/{1}', env.upstream-prefix, matrix.branch) }}
         uses: actions/github-script@9ac08808f993958e9de277fe43a64532a609130e
         with:
           script: |
