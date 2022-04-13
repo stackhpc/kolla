@@ -28,7 +28,11 @@ jobs:
               base: '${{ format('{0}/{1}', env.downstream-prefix, matrix.branch) }}',
             });
             const is_ahead = result.data['ahead_by'] > 0;
-            console.log(is_ahead ? 'Base is behind upstream. Proceed with PR' : 'Base is not behind upstream. Terminate job);
+            if(is_ahead) {
+              console.log('Base is behind upstream. Proceed with PR');
+            } else {
+              console.log('Base is not behind upstream. Terminate job');
+            }
             return is_ahead;
           result-encoding: bool
       - name: Create PR ${{ format('{0}/{1}', env.downstream-prefix, matrix.branch) }} with ${{ format('{0}/{1}', env.upstream-prefix, matrix.branch) }}
