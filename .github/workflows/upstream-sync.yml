@@ -46,7 +46,7 @@ jobs:
               const result = await github.rest.repos.getCommit({
                 "openstack",
                 repo,
-                ref: 'refs/heads/stable/xena',
+                "refs/heads/stable/xena",
               });
               console.log(result);
             }
