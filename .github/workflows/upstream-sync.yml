@@ -53,33 +53,34 @@ jobs:
           result-encoding: string
       - name: Create copy of upstream branch
         uses: actions/github-script@9ac08808f993958e9de277fe43a64532a609130e
-        id: pr-date
+        id: branch-name
         with:
           script: |
             if(${{ steps.check-if-ahead.outputs.result }} == true) {
               const { repo, owner } = context.repo;
               const date = new Date();
               const prDate = `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`;
+              const branchName = '${{ format('refs/heads/upstream-{0}-', matrix.branch) }}' + prDate
               const result = await github.rest.git.createRef({
                 owner,
                 repo,
-                ref: '${{ format('refs/heads/upstream-{0}-{1}', matrix.branch, prDate) }}',
+                ref: branchName,
                 sha: '${{ steps.get-upstream-sha.outputs.result }}',
               });
-              return prDate;
+              return branchName;
             }
           result-encoding: string
-      - name: Create PR ${{ format('{0}/{1}', env.downstream-prefix, matrix.branch) }} with ${{ format('refs/heads/upstream-{0}-{1}', matrix.branch, steps.pr-date.outputs.result) }}
+      - name: Create PR ${{ format('{0}/{1}', env.downstream-prefix, matrix.branch) }} with ${{ steps.branch-name.outputs.result }}
         uses: actions/github-script@9ac08808f993958e9de277fe43a64532a609130e
         with:
           script: |
             if(${{ steps.check-if-ahead.outputs.result }} == true) {
               const { repo, owner } = context.repo;
               const result = await github.rest.pulls.create({
-              title: 'Synchronise ${{ matrix.branch }} with ${{ format('refs/heads/upstream-{0}-{1}', matrix.branch, steps.pr-date.outputs.result) }}',
+              title: 'Synchronise ${{ matrix.branch }} with ${{ steps.branch-name.outputs.result }}',
               owner,
               repo,
-              head: '${{ format('refs/heads/upstream-{0}-{1}', matrix.branch, steps.pr-date.outputs.result) }}',
+              head: '${{ steps.branch-name.outputs.result }}',
               base: '${{ format('{0}/{1}', env.downstream-prefix, matrix.branch) }}',
               maintainer_can_modify: false,
               body: [
