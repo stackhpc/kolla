@@ -44,7 +44,7 @@ jobs:
             if(${{ steps.check-if-ahead.outputs.result }} == true) {
               const { repo, owner } = context.repo;
               const result = await github.rest.repos.getCommit({
-                owner: ${{ env.owner }}
+                owner: ${{ env.owner }},
                 repo,
                 ref: '${{ format('refs/heads/{0}/{1}', env.downstream-prefix, matrix.branch) }}',
               });
