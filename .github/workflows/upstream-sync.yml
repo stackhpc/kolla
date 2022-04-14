@@ -42,11 +42,11 @@ jobs:
         with:
           script: |
             if(${{ steps.check-if-ahead.outputs.result }} == true) {
-              const { repo, _ } = context.repo;
+              const { repo, owner } = context.repo;
               const result = await github.rest.git.getRef({
-                'openstack',
+                owner,
                 repo,
-                'refs/heads/stable/xena',
+                'refs/heads/stackhpc/xena',
               });
               console.log(result);
             }
