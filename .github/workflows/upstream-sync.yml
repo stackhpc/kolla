@@ -64,17 +64,17 @@ jobs:
                 sha: '${{ steps.get-upstream-sha.outputs.result }}',
               });
             }
-      - name: Create PR ${{ format('{0}/{1}', env.downstream-prefix, matrix.branch) }} with ${{ format('{0}/{1}', env.upstream-prefix, matrix.branch) }}
+      - name: Create PR ${{ format('{0}/{1}', env.downstream-prefix, matrix.branch) }} with ${{ format('upstream-{0}', matrix.branch) }}
         uses: actions/github-script@9ac08808f993958e9de277fe43a64532a609130e
         with:
           script: |
             if(${{ steps.check-if-ahead.outputs.result }} == true) {
               const { repo, owner } = context.repo;
               const result = await github.rest.pulls.create({
-              title: 'Synchronise ${{ matrix.branch }} with ${{ format('{0}/{1}', env.upstream-prefix, matrix.branch) }}',
+              title: 'Synchronise ${{ matrix.branch }} with ${{ format('upstream-{0}', matrix.branch) }}',
               owner,
               repo,
-              head: '${{ format('{0}/{1}', env.upstream-prefix, matrix.branch) }}',
+              head: '${{ format('upstream-{0}', matrix.branch) }}',
               base: '${{ format('{0}/{1}', env.downstream-prefix, matrix.branch) }}',
               maintainer_can_modify: false,
               body: [
