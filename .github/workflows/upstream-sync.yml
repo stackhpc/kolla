@@ -63,6 +63,8 @@ jobs:
                 ref: '${{ format('refs/heads/upstream-{0}', matrix.branch) }}',
                 sha: '${{ steps.get-upstream-sha.outputs.result }}',
               });
+              const date = new Date();
+              console.log(date.getYear(), date.getMonth(), date.getDay());
             }
       - name: Create PR ${{ format('{0}/{1}', env.downstream-prefix, matrix.branch) }} with ${{ format('upstream-{0}', matrix.branch) }}
         uses: actions/github-script@9ac08808f993958e9de277fe43a64532a609130e
