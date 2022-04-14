@@ -43,11 +43,12 @@ jobs:
           script: |
             const { repo, _ } = context.repo;
             if(${{ steps.check-if-ahead.outputs.result }} == true) {
-              const { repo, owner } = context.repo;
+              const { repo, _ } = context.repo;
+              const owner = ;
               const result = await github.rest.git.getRef({
                 'openstack',
                 repo,
-                refs/heads/stable/xena
+                'refs/heads/stable/xena',
               });
               console.log(result);
             }
