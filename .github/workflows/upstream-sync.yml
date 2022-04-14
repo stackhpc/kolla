@@ -34,7 +34,7 @@ jobs:
             } else {
               console.log('Base is not behind upstream. Terminate job');
             }
-            console.log(result)
+            console.log(owner)
             return is_ahead ? 'true' : 'false';
           result-encoding: string
       - name: Create branch based on upstream ${{ format('{0}/{1}', env.upstream-prefix, matrix.branch) }}
