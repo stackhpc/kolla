@@ -34,16 +34,23 @@ jobs:
             } else {
               console.log('Base is not behind upstream. Terminate job');
             }
-            console.log(owner)
             return is_ahead ? 'true' : 'false';
           result-encoding: string
-      - name: Create branch based on upstream ${{ format('{0}/{1}', env.upstream-prefix, matrix.branch) }}
+      - name: Get upstream SHA
         uses: actions/github-script@9ac08808f993958e9de277fe43a64532a609130e
+        id: get-upstream-sha
         with:
           script: |
-              if(${{ steps.check-if-ahead.outputs.result }} == true) {
-                const { repo, owner } = context.repo;
-              }
+            const { repo, _ } = context.repo;
+            if(${{ steps.check-if-ahead.outputs.result }} == true) {
+              const { repo, owner } = context.repo;
+              const result = await github.rest.git.getRef({
+                'openstack',
+                repo,
+                refs/heads/stable/xena
+              });
+              console.log(result);
+            }
       - name: Create PR ${{ format('{0}/{1}', env.downstream-prefix, matrix.branch) }} with ${{ format('{0}/{1}', env.upstream-prefix, matrix.branch) }}
         uses: actions/github-script@9ac08808f993958e9de277fe43a64532a609130e
         with:
