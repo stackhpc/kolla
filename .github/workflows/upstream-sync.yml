@@ -42,7 +42,7 @@ jobs:
             if(${{ steps.check-if-ahead.outputs.result }} == true) {
               const { repo, owner } = context.repo;
               const result = await github.rest.repos.getCommit({
-                openstack,
+                'openstack',
                 repo,
                 ref: '${{ format('refs/heads/{0}-upstream', matrix.branch) }}'
               });
