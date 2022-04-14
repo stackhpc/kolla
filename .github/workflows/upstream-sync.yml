@@ -46,7 +46,7 @@ jobs:
               const result = await github.rest.repos.getCommit({
                 owner: '${{ format('openstack') }}',
                 repo: repo,
-                ref: '${{ format('refs/heads/stable/xena') }}',
+                ref: '${{ format('{0}/{1}', 'stable', matrix.branch) }}',
               });
               console.log(result.data['sha']);
             }
