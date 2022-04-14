@@ -48,7 +48,21 @@ jobs:
                 repo: repo,
                 ref: '${{ format('{0}/{1}', 'stable', matrix.branch) }}',
               });
-              console.log(result.data['sha']);
+              return result.data['sha'];
+            }
+          result-encoding: string
+      - name: Create copy of upstream branch
+        uses: actions/github-script@9ac08808f993958e9de277fe43a64532a609130e
+        with:
+          script: |
+            if(${{ steps.check-if-ahead.outputs.result }} == true) {
+              const { repo, owner } = context.repo;
+              const result = await github.rest.git.createRef({
+                owner,
+                repo,
+                ref: '${{ format('refs/heads/upstream-{0}', matrix.branch) }}',
+                sha: '${{ steps.get-upstream-sha.outputs.result }}',
+              });
             }
       - name: Create PR ${{ format('{0}/{1}', env.downstream-prefix, matrix.branch) }} with ${{ format('{0}/{1}', env.upstream-prefix, matrix.branch) }}
         uses: actions/github-script@9ac08808f993958e9de277fe43a64532a609130e
