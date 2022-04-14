@@ -41,10 +41,8 @@ jobs:
         id: get-upstream-sha
         with:
           script: |
-            const { repo, _ } = context.repo;
             if(${{ steps.check-if-ahead.outputs.result }} == true) {
               const { repo, _ } = context.repo;
-              const owner = ;
               const result = await github.rest.git.getRef({
                 'openstack',
                 repo,
