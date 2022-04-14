@@ -44,7 +44,7 @@ jobs:
               const result = await github.rest.repos.getCommit({
                 'openstack',
                 repo,
-                ref: '${{ format('refs/heads/{0}-upstream', matrix.branch) }}'
+                ref: '${{ format('refs/heads/{0}-upstream', matrix.branch) }}',
               });
               console.log(result);
             }
