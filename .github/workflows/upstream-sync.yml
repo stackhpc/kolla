@@ -35,6 +35,19 @@ jobs:
             }
             return is_ahead ? 'true' : 'false';
           result-encoding: string
+      - name: Create checkout branch of upstream branch prior to PR
+        uses: actions/github-script@9ac08808f993958e9de277fe43a64532a609130e
+        with:
+          script: |
+            if(${{ steps.check-if-ahead.outputs.result }} == true) {
+              const { repo, owner } = context.repo;
+              const result = await github.rest.repos.getCommit({
+                openstack,
+                repo,
+                ref: '${{ format('refs/heads/{0}-upstream', matrix.branch) }}'
+              });
+              console.log(result);
+            }
       - name: Create PR ${{ format('{0}/{1}', env.downstream-prefix, matrix.branch) }} with ${{ format('{0}/{1}', env.upstream-prefix, matrix.branch) }}
         uses: actions/github-script@9ac08808f993958e9de277fe43a64532a609130e
         with:
