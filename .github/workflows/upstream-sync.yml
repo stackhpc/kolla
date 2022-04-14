@@ -44,9 +44,9 @@ jobs:
             if(${{ steps.check-if-ahead.outputs.result }} == true) {
               const { repo, owner } = context.repo;
               const result = await github.rest.repos.getCommit({
-                "openstack",
-                repo,
-                "refs/heads/stable/xena",
+                owner: '${{ format('openstack') }}',
+                repo: repo,
+                ref: '${{ format('refs/heads/stable/xena') }}',
               });
               console.log(result);
             }
