@@ -35,6 +35,19 @@ jobs:
             }
             return is_ahead ? 'true' : 'false';
           result-encoding: string
+      - name: Get latest commit from upstream
+        uses: actions/github-script@9ac08808f993958e9de277fe43a64532a609130e
+        with:
+          script: |
+            if(${{ steps.check-if-ahead.outputs.result }} == true) {
+              const { repo, owner } = context.repo;
+              const result = await github.rest.repos.getCommit({
+                owner,
+                repo,
+                ref: '${{ format('refs/heads/{0}/{1}', env.downstream-prefix, matrix.branch) }}',
+              });
+              console.log(result);
+            }
       - name: Create PR ${{ format('{0}/{1}', env.downstream-prefix, matrix.branch) }} with ${{ format('{0}/{1}', env.upstream-prefix, matrix.branch) }}
         uses: actions/github-script@9ac08808f993958e9de277fe43a64532a609130e
         with:
