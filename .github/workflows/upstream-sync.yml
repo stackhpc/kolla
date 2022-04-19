@@ -1,21 +1,20 @@
 ---
-name: Upstream Sync
-"on":
-  schedule:
-    - cron: "15 8 * * 1"
-  workflow_dispatch:
+name: Upstream Sync Workflow
+'on':
+  workflow_call:
+    inputs:
+      branch:
+        description: "OpenStack release name you wish to sync against, for example; xena or wallaby"
+        required: true
+        type: string
 jobs:
   upstream-sync:
     runs-on: ubuntu-20.04
     env:
       downstream-prefix: stackhpc
       upstream-prefix: openstack:stable
-    strategy:
-      fail-fast: false
-      matrix:
-        branch: [xena, wallaby, victoria]
     steps:
-      - name: Check if ${{ format('{0}/{1}', env.upstream-prefix, matrix.branch) }} is ahead of ${{ format('{0}/{1}', env.downstream-prefix, matrix.branch) }}
+      - name: Check if ${{ format('{0}/{1}', env.upstream-prefix, inputs.branch) }} is ahead of ${{ format('{0}/{1}', env.downstream-prefix, inputs.branch) }}
         uses: actions/github-script@9ac08808f993958e9de277fe43a64532a609130e
         id: check-if-ahead
         with:
@@ -24,8 +23,8 @@ jobs:
             const result = await github.rest.repos.compareCommits({
               owner,
               repo,
-              head: '${{ format('{0}/{1}', env.upstream-prefix, matrix.branch) }}',
-              base: '${{ format('{0}/{1}', env.downstream-prefix, matrix.branch) }}',
+              head: '${{ format('{0}/{1}', env.upstream-prefix, inputs.branch) }}',
+              base: '${{ format('{0}/{1}', env.downstream-prefix, inputs.branch) }}',
             });
             return result.data['ahead_by'] > 0 ? 'true' : 'false';
           result-encoding: string
@@ -39,7 +38,7 @@ jobs:
               const result = await github.rest.repos.getCommit({
                 owner: '${{ format('openstack') }}',
                 repo: repo,
-                ref: '${{ format('{0}/{1}', 'stable', matrix.branch) }}',
+                ref: '${{ format('{0}/{1}', 'stable', inputs.branch) }}',
               });
               return result.data['sha'];
             }
@@ -53,7 +52,7 @@ jobs:
               const { repo, owner } = context.repo;
               const date = new Date();
               const prDate = `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`;
-              const branchName = '${{ format('upstream-{0}-', matrix.branch) }}' + prDate;
+              const branchName = '${{ format('upstream-{0}-', inputs.branch) }}' + prDate;
               const result = await github.rest.git.createRef({
                 owner,
                 repo,
@@ -63,21 +62,21 @@ jobs:
               return branchName;
             }
           result-encoding: string
-      - name: Create PR ${{ format('{0}/{1}', env.downstream-prefix, matrix.branch) }} with ${{ steps.branch-name.outputs.result }}
+      - name: Create PR ${{ format('{0}/{1}', env.downstream-prefix, inputs.branch) }} with ${{ steps.branch-name.outputs.result }}
         uses: actions/github-script@9ac08808f993958e9de277fe43a64532a609130e
         with:
           script: |
             if(${{ steps.check-if-ahead.outputs.result }} == true) {
               const { repo, owner } = context.repo;
               const result = await github.rest.pulls.create({
-              title: 'Synchronise ${{ matrix.branch }} with ${{ steps.branch-name.outputs.result }}',
+              title: 'Synchronise ${{ inputs.branch }} with ${{ steps.branch-name.outputs.result }}',
               owner,
               repo,
               head: '${{ steps.branch-name.outputs.result }}',
-              base: '${{ format('{0}/{1}', env.downstream-prefix, matrix.branch) }}',
+              base: '${{ format('{0}/{1}', env.downstream-prefix, inputs.branch) }}',
               maintainer_can_modify: false,
               body: [
-                'The changes from ${{ env.upstream-prefix }}/${{ matrix.branch }} have been included in this automated PR'
+                'The changes from ${{ env.upstream-prefix }}/${{ inputs.branch }} have been included in this automated PR'
               ].join('\n')
             });
             }
