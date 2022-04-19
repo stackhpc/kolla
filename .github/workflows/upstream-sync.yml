@@ -28,13 +28,7 @@ jobs:
               head: '${{ format('{0}/{1}', env.upstream-prefix, matrix.branch) }}',
               base: '${{ format('{0}/{1}', env.downstream-prefix, matrix.branch) }}',
             });
-            const is_ahead = result.data['ahead_by'] > 0;
-            if(is_ahead) {
-              console.log('Base is behind upstream. Proceed with PR');
-            } else {
-              console.log('Base is not behind upstream. Terminate job');
-            }
-            return is_ahead ? 'true' : 'false';
+            return result.data['ahead_by'] > 0 ? 'true' : 'false';
           result-encoding: string
       - name: Get upstream SHA
         uses: actions/github-script@9ac08808f993958e9de277fe43a64532a609130e
