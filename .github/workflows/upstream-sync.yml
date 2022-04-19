@@ -78,7 +78,7 @@ jobs:
               base: '${{ format('{0}/{1}', env.downstream-prefix, matrix.branch) }}',
               maintainer_can_modify: false,
               body: [
-                'This is an automated pull request.'
+                'The changes from ${{ env.upstream-prefix }}/${{ matrix.branch }} have been included in this automated PR'
               ].join('\n')
             });
             }
