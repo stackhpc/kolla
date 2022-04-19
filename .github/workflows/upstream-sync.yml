@@ -10,7 +10,6 @@ jobs:
     env:
       downstream-prefix: stackhpc
       upstream-prefix: openstack:stable
-      upstream-owner: openstack
     strategy:
       fail-fast: false
       matrix:
