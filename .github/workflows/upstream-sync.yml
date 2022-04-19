@@ -54,7 +54,7 @@ jobs:
               const { repo, owner } = context.repo;
               const date = new Date();
               const prDate = `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`;
-              const branchName = '${{ format('upstream-{0}-', matrix.branch) }}' + prDate
+              const branchName = '${{ format('upstream-{0}-', matrix.branch) }}' + prDate;
               const result = await github.rest.git.createRef({
                 owner,
                 repo,
