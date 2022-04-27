@@ -17,8 +17,10 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
             'python3-rtslib',
     ] %}
     {% else %}
+    {# NOTE(hrw): qpid-proton-c 0.26 from centos-openstack-train repo instead of epel #}
     {% set cinder_volume_packages = cinder_volume_packages + [
             'python-rtslib',
+            'qpid-proton-c-0.26.*',
     ] %}
     {% endif %}
 {{ macros.install_packages(cinder_volume_packages | customizable("packages")) }}

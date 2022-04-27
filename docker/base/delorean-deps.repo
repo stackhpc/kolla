@@ -1,0 +1,8 @@
+# Adapted from https://trunk.rdoproject.org/centos8-train/delorean-deps.repo
+
+[delorean-train-deps]
+name=dlrn-train-deps
+baseurl=https://trunk.rdoproject.org/centos8-train/deps/latest/
+enabled=1
+gpgcheck=0
+module_hotfixes=1

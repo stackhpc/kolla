@@ -32,6 +32,12 @@
         label: centos-7
 
 - nodeset:
+    name: kolla-centos8-stream
+    nodes:
+      - name: primary
+        label: centos-8-stream
+
+- nodeset:
     name: kolla-ubuntu-bionic
     nodes:
       - name: primary
@@ -64,8 +70,11 @@
       - ^contrib/
       - ^LICENSE$
       - ^tox\.ini$
+    required-projects:
+      - name: openstack/requirements
     vars:
       publisher: false
+      requirements_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/requirements'].src_dir }}"
     extra-vars:
       kolla_logs_dir: "{{ zuul_output_dir }}/logs/kolla"
       kolla_build_logs_dir: "{{ kolla_logs_dir }}/build"
