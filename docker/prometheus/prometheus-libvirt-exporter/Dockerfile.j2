@@ -20,8 +20,8 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 {{ macros.install_packages(prometheus_libvirt_exporter_packages | customizable("packages")) }}
 
 {% block prometheus_libvirt_exporter_version %}
-ARG prometheus_libvirt_exporter_version=0.1.1
-ARG prometheus_libvirt_exporter_url=https://github.com/kumina/libvirt_exporter/archive/${prometheus_libvirt_exporter_version}.tar.gz
+ARG prometheus_libvirt_exporter_version=v0.2.0
+ARG prometheus_libvirt_exporter_url=https://github.com/kumina/libvirt_exporter/archive/refs/tags/${prometheus_libvirt_exporter_version}.tar.gz
 {% endblock %}
 
 {% block prometheus_libvirt_exporter_install %}
