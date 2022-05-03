@@ -7,8 +7,11 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 
 {{ macros.configure_user(name='elasticsearch', shell='/bin/bash', homedir='/usr/share/elasticsearch') }}
 
+# NOTE(hrw): post-install script of elasticsearch fails when trying to
+# install elasticsearch and java together.
+{{ macros.install_packages(['java-11-openjdk-headless']) }}
+
 {% set elasticsearch_packages = [
-    'java-11-openjdk-headless',
     'elasticsearch-oss',
 ] %}
 
