@@ -504,8 +504,8 @@ class BuildTask(DockerTask):
                     f.write(r.content)
             else:
                 self.logger.error(
-                    'Failed to download archive: status_code %s',
-                    r.status_code)
+                    'Failed to download archive: %s, status_code %s',
+                    source['source'], r.status_code)
                 image.status = STATUS_ERROR
                 return
 
