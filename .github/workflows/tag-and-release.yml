@@ -3,7 +3,7 @@ name: Tag & Release
 'on':
   push:
     branches:
-      - victoria
+      - stackhpc/victoria
 permissions:
   contents: write
 jobs:
