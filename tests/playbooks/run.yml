@@ -8,13 +8,13 @@
       DEFAULT:
         debug: true
         logs_dir: "{{ kolla_build_logs_dir }}"
+        quiet: true
         base: "{{ base_distro }}"
         install_type: "{{ install_type }}"
         template_override: /etc/kolla/template_overrides.j2
         # NOTE(yoctozepto): to avoid issues with IPv6 not enabled in the docker daemon
         # and since we don't need isolated networks here, use host networking
         network_mode: host
-        work_dir: "{{ kolla_work_dir }}"
   tasks:
     - name: Ensure /etc/kolla exists
       file:

@@ -20,10 +20,12 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
     {% elif base_package_type == 'deb' %}
 
         {% set masakari_base_packages = [
+            'libsasl2-modules-gssapi-mit',
             'masakari-host-monitor',
             'masakari-instance-monitor',
             'masakari-introspective-instance-monitor',
             'masakari-process-monitor',
+            'sasl2-bin',
         ] %}
 
     {% endif %}
@@ -35,7 +37,9 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
     {% if base_package_type == 'rpm' %}
 
         {% set masakari_monitors_packages = [
-            'libvirt-devel',
+            'cyrus-sasl-md5',
+            'cyrus-sasl-scram',
+            'python3-libvirt',
             'pacemaker-cli',
             'tcpdump',
         ] %}
@@ -43,8 +47,10 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
     {% elif base_package_type == 'deb' %}
 
         {% set masakari_monitors_packages = [
-            'libvirt-dev',
+            'libsasl2-modules-gssapi-mit',
+            'python3-libvirt',
             'pacemaker-cli-utils',
+            'sasl2-bin',
             'tcpdump',
         ] %}
 
@@ -58,7 +64,9 @@ ADD masakari-monitors-archive /masakari-monitors-source
     '/masakari-monitors'
 ] %}
 
+# NOTE(hrw): distros may provide other version of libvirt
 RUN ln -s masakari-monitors-source/* masakari-monitors \
+    && sed -i -e "/^libvirt-python/d" /requirements/upper-constraints.txt \
     && {{ macros.install_pip(masakari_monitors_pip_packages | customizable("pip_packages")) }} \
     && mkdir -p /etc/masakari-monitors \
     && chown -R masakari: /etc/masakari-monitors
