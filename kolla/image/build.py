@@ -144,6 +144,7 @@ UNBUILDABLE_IMAGES = {
     },
 
     'ubuntu+binary': {
+        "cloudkitty-base",  # no binary packages in UCA
         "senlin-conductor",  # no binary package
         "senlin-health-manager",  # no binary package
         "tacker-base",
@@ -365,6 +366,15 @@ class BuildTask(DockerTask):
     def process_source(self, image, source):
         dest_archive = os.path.join(image.path, source['name'] + '-archive')
 
+        # NOTE(mgoddard): Change ownership of files to root:root. This
+        # avoids an issue introduced by the fix for git CVE-2022-24765,
+        # which breaks PBR when the source checkout is not owned by the
+        # user installing it. LP#1969096
+        def reset_userinfo(tarinfo):
+            tarinfo.uid = tarinfo.gid = 0
+            tarinfo.uname = tarinfo.gname = "root"
+            return tarinfo
+
         if source.get('type') == 'url':
             self.logger.debug("Getting archive from %s", source['source'])
             try:
@@ -410,7 +420,8 @@ class BuildTask(DockerTask):
                 return
 
             with tarfile.open(dest_archive, 'w') as tar:
-                tar.add(clone_dir, arcname=os.path.basename(clone_dir))
+                tar.add(clone_dir, arcname=os.path.basename(clone_dir),
+                        filter=reset_userinfo)
 
         elif source.get('type') == 'local':
             self.logger.debug("Getting local archive from %s",
@@ -418,7 +429,8 @@ class BuildTask(DockerTask):
             if os.path.isdir(source['source']):
                 with tarfile.open(dest_archive, 'w') as tar:
                     tar.add(source['source'],
-                            arcname=os.path.basename(source['source']))
+                            arcname=os.path.basename(source['source']),
+                            filter=reset_userinfo)
             else:
                 shutil.copyfile(source['source'], dest_archive)
 
@@ -642,6 +654,7 @@ class KollaWorker(object):
         self.base_tag = conf.base_tag
         self.install_type = conf.install_type
         self.tag = conf.tag
+        self.repos_yaml = conf.repos_yaml
         self.base_arch = conf.base_arch
         self.debian_arch = self.base_arch
         if self.base_arch == 'aarch64':
@@ -868,6 +881,7 @@ class KollaWorker(object):
                       'base_image': self.conf.base_image,
                       'base_distro_tag': self.base_tag,
                       'base_arch': self.base_arch,
+                      'repos_yaml': self.repos_yaml,
                       'use_dumb_init': self.use_dumb_init,
                       'base_package_type': self.base_package_type,
                       'debian_arch': self.debian_arch,

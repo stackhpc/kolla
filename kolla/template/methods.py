@@ -15,7 +15,11 @@
 import os
 import yaml
 
-from jinja2 import contextfunction
+# NOTE: jinja2 3.1.0 dropped contextfilter in favour of pass_context.
+try:
+    from jinja2 import pass_context
+except ImportError:
+    from jinja2 import contextfilter as pass_context
 
 
 def debian_package_install(packages, clean_package_cache=True):
@@ -49,7 +53,7 @@ def debian_package_install(packages, clean_package_cache=True):
 
     # handle the apt-get install
     if reg_packages:
-        cmds.append('apt-get update')
+        cmds.append('apt-get --error-on=any update')
         cmds.append('apt-get -y install --no-install-recommends {}'.format(
             ' '.join(reg_packages)
         ))
@@ -71,7 +75,7 @@ def debian_package_install(packages, clean_package_cache=True):
     return ' && '.join(cmds)
 
 
-@contextfunction
+@pass_context
 def handle_repos(context, reponames, mode):
     """NOTE(hrw): we need to handle CentOS, Debian and Ubuntu with one macro.
 
@@ -91,7 +95,11 @@ def handle_repos(context, reponames, mode):
     if not isinstance(reponames, list):
         raise TypeError("First argument should be a list of repositories")
 
-    repofile = os.path.dirname(os.path.realpath(__file__)) + '/repos.yaml'
+    if context.get('repos_yaml'):
+        repofile = context.get('repos_yaml')
+    else:
+        repofile = os.path.dirname(os.path.realpath(__file__)) + '/repos.yaml'
+
     with open(repofile, 'r') as repos_file:
         repo_data = {}
         for name, params in yaml.safe_load(repos_file).items():
