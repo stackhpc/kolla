@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Updates the OpenStack exporter for Prometheus to `version 1.6.0
+    <https://github.com/openstack-exporter/openstack-exporter/releases/tag/v1.6.0>`__.
