@@ -1,0 +1,47 @@
+FROM {{ namespace }}/{{ infra_image_prefix }}prometheus-base:{{ tag }}
+{% block labels %}
+LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build_date }}"
+{% endblock %}
+
+{% import "macros.j2" as macros with context %}
+
+{% block prometheus_jiralert_header %}{% endblock %}
+
+{% if base_package_type == 'rpm' %}
+    {% set prometheus_jiralert_packages = [
+        'git',
+        'go',
+        'make',
+    ] %}
+{% elif base_package_type == 'deb' %}
+    {% set prometheus_jiralert_packages = [
+        'golang-go',
+    ] %}
+{% endif %}
+
+{{ macros.install_packages(prometheus_jiralert_packages | customizable("packages")) }}
+
+{% block prometheus_jiralert_version %}
+ARG prometheus_jiralert_version=master
+ARG prometheus_jiralert_url=https://github.com/stackhpc/jiralert/archive/refs/heads/${prometheus_jiralert_version}.tar.gz
+{% endblock %}
+
+{% block prometheus_jiralert_install %}
+ENV GOPATH=/build
+RUN mkdir /build \
+    && cd /build \
+    && curl -o jiralert.tar.gz ${prometheus_jiralert_url} \
+    && tar xvf jiralert.tar.gz \
+    && cd jiralert-${prometheus_jiralert_version} \
+    && make build \
+    && mkdir /opt/jiralert \
+    && install -m 0755 jiralert /opt/jiralert/ \
+    && install -m 0644 LICENSE /opt/jiralert/ \
+    && install -m 0644 README.md /opt/jiralert/ \
+    && rm -rf /build
+{% endblock %}
+
+{% block prometheus_jiralert_footer %}{% endblock %}
+{% block footer %}{% endblock %}
+
+USER prometheus
