@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    ``etcd`` is now installed from the officially published binaries.
