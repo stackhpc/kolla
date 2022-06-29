@@ -174,7 +174,6 @@ UNBUILDABLE_IMAGES = {
     },
 
     'centos8+source': {
-        "bifrost-base",          # Cannot find a valid baseurl for repo: epel
         "cyborg-agent",          # opae-sdk does not support CentOS 8
         "masakari-monitors",     # Fails to install
     },
