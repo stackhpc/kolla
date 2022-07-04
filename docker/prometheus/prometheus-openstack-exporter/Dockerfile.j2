@@ -3,6 +3,8 @@ FROM {{ namespace }}/{{ infra_image_prefix }}prometheus-base:{{ tag }}
 LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build_date }}"
 {% endblock %}
 
+{% import "macros.j2" as macros with context %}
+
 {% block prometheus_openstack_exporter_header %}{% endblock %}
 
 {% block prometheus_openstack_exporter_repository_version %}
