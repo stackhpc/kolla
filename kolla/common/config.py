@@ -610,10 +610,6 @@ SOURCES = {
         'type': 'url',
         'location': ('$tarballs_base/openstack/networking-sfc/'
                      'networking-sfc-stable-train.tar.gz')},
-    'neutron-base-plugin-vmware-nsx': {
-        'type': 'url',
-        'location': ('$tarballs_base/x/vmware-nsx/'
-                     'vmware-nsx-15.0.0.tar.gz')},
     'neutron-base-plugin-vpnaas-agent': {
         'type': 'url',
         'location': ('$tarballs_base/openstack/neutron-vpnaas/'
@@ -642,10 +638,6 @@ SOURCES = {
         'type': 'url',
         'location': ('$tarballs_base/openstack/neutron-dynamic-routing/'
                      'neutron-dynamic-routing-stable-train.tar.gz')},
-    'neutron-server-plugin-vmware-nsxlib': {
-        'type': 'url',
-        'location': ('$tarballs_base/x/vmware-nsxlib/'
-                     'vmware-nsxlib-stable-train.tar.gz')},
     'neutron-vpnaas-agent': {
         'type': 'url',
         'location': ('$tarballs_base/openstack/neutron-vpnaas/'
