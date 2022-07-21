@@ -19,14 +19,20 @@ The following base container images are supported:
    CentOS 7 is no longer supported as a base container image. The Train release
    supports both CentOS 7 and 8 images, and provides a route for migration.
 
-============= ============ ================
-Distribution  Default base Default base tag
-============= ============ ================
-CentOS 8      centos       8
-Debian Buster debian       10
-RHEL 8        rhel         8
-Ubuntu Bionic ubuntu       18.04
-============= ============ ================
+.. note::
+
+   CentOS Linux 8 is no longer supported since it has been marked as End of Life
+   and repositories have been removed from CentOS mirrors.
+   CentOS Stream 8 is supported only for source type builds.
+
+===============  ============ ================
+Distribution     Default base Default base tag
+===============  ============ ================
+CentOS Stream 8  centos       stream8
+Debian Buster    debian       10
+RHEL 8           rhel         8
+Ubuntu Bionic    ubuntu       18.04
+===============  ============ ================
 
 The remainder of this document outlines which images are supported on which of
 these distribution.

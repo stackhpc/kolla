@@ -66,7 +66,7 @@ LABEL fluentd_version="0.14" fluentd_binary="td-agent"
 # Distro specific files and operations
 # Fluentd on rpm-based non-x86_64 is installed from rpm
 {% if base_package_type == 'deb' and base_arch != 'x86_64' %}
-RUN /usr/bin/gem install fluentd --no-rdoc --no-ri
+RUN /usr/bin/gem install yajl-ruby:"<=1.4.1" fluentd --no-rdoc --no-ri
 {% endif %}
 
 COPY fluentd_sudoers /etc/sudoers.d/kolla_fluentd_sudoers
@@ -107,7 +107,7 @@ RUN ln -s /bin/mkdir /usr/bin/mkdir
 ARG monasca_output_plugin_tag=1.0.1
 ARG monasca_output_plugin_url=https://github.com/monasca/fluentd-monasca/archive/$monasca_output_plugin_tag.tar.gz
 
-RUN curl -sSL $monasca_output_plugin_url -o /tmp/fluentd-monasca.tar.gz \
+RUN curl $monasca_output_plugin_url -o /tmp/fluentd-monasca.tar.gz \
     && tar -xvf /tmp/fluentd-monasca.tar.gz -C /tmp \
     && cd /tmp/fluentd-monasca-* \
 {%- if fluentd_user == 'fluentd' %}
