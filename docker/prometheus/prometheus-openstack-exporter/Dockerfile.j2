@@ -3,18 +3,40 @@ FROM {{ namespace }}/{{ infra_image_prefix }}prometheus-base:{{ tag }}
 LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build_date }}"
 {% endblock %}
 
+{% import "macros.j2" as macros with context %}
+
 {% block prometheus_openstack_exporter_header %}{% endblock %}
 
-{% block prometheus_openstack_exporter_repository_version %}
-ARG prometheus_openstack_exporter_version=1.6.0
-ARG prometheus_openstack_exporter_url=https://github.com/openstack-exporter/openstack-exporter/releases/download/v${prometheus_openstack_exporter_version}/openstack-exporter_${prometheus_openstack_exporter_version}_linux_{{debian_arch}}.tar.gz
-{% endblock %}
+{% if base_package_type == 'rpm' %}
+    {% set prometheus_openstack_exporter_packages = [
+        'git',
+        'go',
+        'make',
+    ] %}
+{% elif base_package_type == 'deb' %}
+    {% set prometheus_openstack_exporter_packages = [
+        'build-essential',
+        'git',
+        'golang-go',
+    ] %}
+{% endif %}
+
+{{ macros.install_packages(prometheus_openstack_exporter_packages | customizable("packages")) }}
 
 {% block prometheus_openstack_exporter_install %}
-RUN curl -o /tmp/prometheus_openstack_exporter.tar.gz ${prometheus_openstack_exporter_url} \
+ARG prometheus_openstack_exporter_url=https://github.com/stackhpc/openstack-exporter/archive/refs/heads
+ARG prometheus_openstack_exporter_version=project-parent-id
+ENV GOPATH=/build
+RUN mkdir /build \
+    && cd /build \
+    && curl -o openstack-exporter.tar.gz ${prometheus_openstack_exporter_url}/${prometheus_openstack_exporter_version}.tar.gz  \
+    && tar xvf openstack-exporter.tar.gz \
+    && cd openstack-exporter-${prometheus_openstack_exporter_version} \
+    && make common-build \
+    && mv openstack-exporter-${prometheus_openstack_exporter_version} openstack-exporter \
     && mkdir /opt/openstack-exporter \
-    && tar xvf /tmp/prometheus_openstack_exporter.tar.gz -C /opt/openstack-exporter \
-    && rm -f /tmp/prometheus_openstack_exporter.tar.gz
+    && install -m 0755 openstack-exporter /opt/openstack-exporter/ \
+    && rm -rf /build
 {% endblock %}
 
 {% block prometheus_openstack_exporter_footer %}{% endblock %}
