@@ -1,4 +1,7 @@
 ---
+- project:
+    queue: kolla
+
 - secret:
     name: kolla_dockerhub_creds
     data:
@@ -52,10 +55,10 @@
           0M27tl+OWHO3KkfFR4tWc3dws3r1kYjQeds0adBHyYD0eL8SJfwZkbtojAQ1JM=
 
 - nodeset:
-    name: kolla-centos8
+    name: kolla-centos8-stream
     nodes:
       - name: primary
-        label: centos-8
+        label: centos-8-stream
 
 - nodeset:
     name: kolla-ubuntu-focal
@@ -70,10 +73,10 @@
         label: debian-buster
 
 - nodeset:
-    name: kolla-centos8-aarch64
+    name: kolla-centos8-stream-aarch64
     nodes:
       - name: primary
-        label: centos-8-arm64
+        label: centos-8-stream-arm64
 
 - nodeset:
     name: kolla-debian-buster-aarch64
@@ -110,7 +113,6 @@
       - ^tox\.ini$
     vars:
       publisher: false
-      ansible_python_interpreter: python3
     extra-vars:
       kolla_logs_dir: "{{ zuul_output_dir }}/logs/kolla"
       kolla_build_logs_dir: "{{ kolla_logs_dir }}/build"
