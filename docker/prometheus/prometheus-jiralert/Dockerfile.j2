@@ -15,7 +15,8 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
     ] %}
 {% elif base_package_type == 'deb' %}
     {% set prometheus_jiralert_packages = [
-        'golang-go',
+        'golang-1.16-go',
+        'make',
     ] %}
 {% endif %}
 
@@ -28,7 +29,8 @@ ARG prometheus_jiralert_url=https://github.com/stackhpc/jiralert/archive/refs/he
 
 {% block prometheus_jiralert_install %}
 ENV GOPATH=/build
-RUN mkdir /build \
+RUN PATH={% if base_package_type == 'deb' %}/usr/lib/go-1.16/bin:{% endif %}$PATH \
+    && mkdir /build \
     && cd /build \
     && curl -o jiralert.tar.gz ${prometheus_jiralert_url} \
     && tar xvf jiralert.tar.gz \
