@@ -1,0 +1,58 @@
+---
+name: Tox Workflow
+'on':
+  pull_request:
+jobs:
+  tox:
+      runs-on: ubuntu-20.04
+      strategy:
+        matrix:
+          environment: [pep8,py3]
+          python-minor-version: [6,8,10]
+          is-not-python36: 
+            - ${{
+                 (github.base_ref == 'stackhpc/zed') ||
+                 (github.ref == 'refs/heads/stackhpc/zed') ||
+                 (github.base_ref == 'stackhpc/2023.1') ||
+                 (github.ref == 'refs/heads/stackhpc/2023.1')
+               }}
+          exclude:
+            - environment: pep8
+              python-minor-version: 6
+            - is-not-python36: true
+              python-minor-version: 6
+            - is-not-python36: true
+              environment: pep8
+              python-minor-version: 8
+            - is-not-python36: false
+              python-minor-version: 10
+      name: Tox ${{ matrix.environment }} with Python 3.${{ matrix.python-minor-version }}
+      steps:
+        - name: Github Checkout 🛎
+          uses: actions/checkout@v3
+        - name: Setup Python 3.${{ matrix.python-minor-version }} 🐍
+          uses: actions/setup-python@v4
+          with:
+            python-version: 3.${{ matrix.python-minor-version }}
+        - name: Install bindep 📦
+          run: |
+            if [[ -f bindep.txt ]]; then
+                pip install bindep
+            else
+                echo "No bindep.txt"
+            fi
+        - name: Install missing packages 📦
+          run: |
+            if [[ -f bindep.txt ]]; then
+                sudo apt install $(bindep -b test)
+            else
+                echo "No bindep.txt"
+            fi
+        - name: Install Tox 📦
+          run: pip install tox==3.*
+        - name: Run Tox pep8 🧪
+          run: tox -e pep8
+          if: ${{ matrix.environment == 'pep8' }}
+        - name: Run Tox py3${{ matrix.python-minor-version }} 🧪
+          run: tox -e py3${{ matrix.python-minor-version }}
+          if: ${{ matrix.environment == 'py3' }}
