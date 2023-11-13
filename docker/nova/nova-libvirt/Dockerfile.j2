@@ -25,11 +25,15 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
         'libvirt-daemon-driver-nodedev',
         'openvswitch',
         'qemu-img',
-        'qemu-kvm',
     ] %}
     {% if not base_distro_tag.startswith('stream9') and not base_distro == 'rocky' %}
         {% set nova_libvirt_packages = nova_libvirt_packages + [
+            'qemu-kvm-6.2.0-35.module_el8+466+00f6f2b0.x86_64',
             'trousers'
+        ] %}
+    {% else %}
+        {% set nova_libvirt_packages = nova_libvirt_packages + [
+            'qemu-kvm',
         ] %}
     {% endif %}
     {% if base_arch == 'x86_64' %}
