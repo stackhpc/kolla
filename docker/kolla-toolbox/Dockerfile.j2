@@ -56,7 +56,7 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 
 {% block kolla_toolbox_upper_constraints %}
 RUN mkdir -p /requirements \
-    && curl -o /requirements/upper-constraints.txt ${UPPER_CONSTRAINTS_FILE:-https://releases.openstack.org/constraints/upper/{{ openstack_release }}} \
+    && curl -o /requirements/upper-constraints.txt ${UPPER_CONSTRAINTS_FILE:-https://raw.githubusercontent.com/stackhpc/requirements/{{ requirements_branch }}/upper-constraints.txt} \
     && {{ macros.upper_constraints_remove("openstacksdk") }} \
     && python3 -m venv --system-site-packages {{ venv_path }}
 {% endblock %}
