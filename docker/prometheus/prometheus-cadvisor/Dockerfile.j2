@@ -8,7 +8,7 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 {% import "macros.j2" as macros with context %}
 
 {% block prometheus_cadvisor_repository_version %}
-ARG prometheus_cadvisor_version=0.45.0
+ARG prometheus_cadvisor_version=0.48.0
 {% if debian_arch == 'arm64' %}
 ARG prometheus_cadvisor_sha256sum=bd6dad982c5950d6071ec2e1f9d474102ef3a00451395c58da9398297d35b174
 {% else %}
