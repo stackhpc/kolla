@@ -8,11 +8,11 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 {% import "macros.j2" as macros with context %}
 
 {% block prometheus_cadvisor_repository_version %}
-ARG prometheus_cadvisor_version=0.48.0
+ARG prometheus_cadvisor_version=0.49.1
 {% if debian_arch == 'arm64' %}
-ARG prometheus_cadvisor_sha256sum=bd6dad982c5950d6071ec2e1f9d474102ef3a00451395c58da9398297d35b174
+ARG prometheus_cadvisor_sha256sum=c535f46d789599f25c7c680af193d4402da27a98d9828eb2ec916af6256e0c0c
 {% else %}
-ARG prometheus_cadvisor_sha256sum=9a2a0b69f58d932855c0af23b847cb9de8f8c32264f66f9fb5dcc8f359f34ccd
+ARG prometheus_cadvisor_sha256sum=1d5cc701a3fcdf1e8ed1c86da5304b896a6997d9e6673139e78a6f87812495b0
 {% endif %}
 ARG prometheus_cadvisor_url=https://github.com/google/cadvisor/releases/download/v${prometheus_cadvisor_version}/cadvisor-v${prometheus_cadvisor_version}-linux-{{debian_arch}}
 {% endblock %}
