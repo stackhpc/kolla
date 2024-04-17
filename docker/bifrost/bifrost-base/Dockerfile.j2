@@ -43,7 +43,7 @@ RUN apt-get --error-on=any update && \
 {%- else %}
 RUN echo " " && \
 {%- endif %}
-    bash -c 'TOX_CONSTRAINTS_FILE=/requirements/upper-constraints.txt ANSIBLE_PIP_VERSION=\"\>\=\8\,\<\9\" \
+    bash -c 'TOX_CONSTRAINTS_FILE=/requirements/upper-constraints.txt ANSIBLE_PIP_VERSION=\>\=\8\,\<\9 \
     ./scripts/env-setup.sh && \
     ansible-playbook -vvvv -i /bifrost/playbooks/inventory/target /bifrost/playbooks/install.yaml \
     -e git_branch={{ openstack_branch_slashed }} \
