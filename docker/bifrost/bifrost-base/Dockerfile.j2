@@ -26,6 +26,9 @@ ENV VENV /var/lib/kolla/venv
 
 ADD bifrost-base-archive /bifrost-base-source
 COPY build_arg.yml /tmp/build_arg.yml
+RUN mkdir -p /requirements \
+    && curl -o /requirements/upper-constraints.txt ${UPPER_CONSTRAINTS_FILE:-https://releases.openstack.org/constraints/upper/{{ openstack_release }}} \
+
 RUN ln -s bifrost-base-source/* bifrost \
     && {{ macros.install_pip(bifrost_base_pip_packages | customizable("pip_packages")) }}
 
@@ -44,7 +47,6 @@ RUN echo " " && \
     ansible-playbook -vvvv -i /bifrost/playbooks/inventory/target /bifrost/playbooks/install.yaml \
     -e git_branch={{ openstack_branch_slashed }} \
     -e ipa_upstream_release={{ openstack_branch }} \
-    -e upper_constraints_file=/requirements/upper-constraints.txt \
     -e @/tmp/build_arg.yml && \
 {%- if base_package_type == 'deb' %}
     apt-get clean && rm -rf /var/lib/apt/lists/*'
