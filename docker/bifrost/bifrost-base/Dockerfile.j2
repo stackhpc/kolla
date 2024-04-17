@@ -47,6 +47,7 @@ RUN echo " " && \
     ansible-playbook -vvvv -i /bifrost/playbooks/inventory/target /bifrost/playbooks/install.yaml \
     -e git_branch={{ openstack_branch_slashed }} \
     -e ipa_upstream_release={{ openstack_branch }} \
+    -e upper_constraints_file=/requirements/upper-constraints.txt \
     -e @/tmp/build_arg.yml && \
 {%- if base_package_type == 'deb' %}
     apt-get clean && rm -rf /var/lib/apt/lists/*'
