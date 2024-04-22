@@ -42,10 +42,10 @@ RUN echo " " && \
 {%- endif %}
     bash -c 'TOX_CONSTRAINTS_FILE=/requirements/upper-constraints.txt ./scripts/env-setup.sh && \
     ansible-playbook -vvvv -i /bifrost/playbooks/inventory/target /bifrost/playbooks/install.yaml \
+    -e upper_constraints_file=/requirements/upper-constraints.txt \
     -e git_branch={{ openstack_branch_slashed }} \
     -e ipa_upstream_release={{ openstack_branch }} \
     -e @/tmp/build_arg.yml && \
-    -e upper_constraints_file=/requirements/upper-constraints.txt \
 {%- if base_package_type == 'deb' %}
     apt-get clean && rm -rf /var/lib/apt/lists/*'
 {%- else %}
