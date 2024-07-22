@@ -188,6 +188,8 @@ RUN ln -s openstack-base-source/plugins/* /pycadf \
     && mkdir -p /etc/pycadf \
     && cp /pycadf/etc/pycadf/* /etc/pycadf/
 
+RUN mkdir /requirements
+
 RUN ln -s openstack-base-source/*requirements* /requirements \
 
 {# NOTE(mnasiadka): Remove ovs from upper-constraints.txt because python3-openvswitch
