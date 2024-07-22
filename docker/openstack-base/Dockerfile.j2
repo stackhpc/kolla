@@ -188,7 +188,7 @@ RUN ln -s openstack-base-source/plugins/* /pycadf \
     && mkdir -p /etc/pycadf \
     && cp /pycadf/etc/pycadf/* /etc/pycadf/
 
-RUN echo $(ls -al openstack-base-source)
+RUN echo $(find . -name "upper-constraints.txt")
 
 RUN ln -s openstack-base-source/*requirements* /requirements \
 
