@@ -188,9 +188,9 @@ RUN ln -s openstack-base-source/plugins/* /pycadf \
     && mkdir -p /etc/pycadf \
     && cp /pycadf/etc/pycadf/* /etc/pycadf/
 
-RUN echo $(find . -name "upper-constraints.txt")
+RUN echo $(ls -al /)
 
-RUN ln -s openstack-base-source/*requirements* /requirements \
+RUN ln -s openstack-base-source/openstack-base-archive-stackhpc-2024.1 /requirements \
 
 {# NOTE(mnasiadka): Remove ovs from upper-constraints.txt because python3-openvswitch
                     is usually newer than UC entry and older version would get installed
