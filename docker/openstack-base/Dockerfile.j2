@@ -198,7 +198,9 @@ RUN ln -s openstack-base-source/* /requirements \
 #}
     && {{ macros.upper_constraints_remove("ovs") }} \
     && mkdir -p /var/lib/kolla \
-    && python3 -m venv --system-site-packages /var/lib/kolla/venv
+    && python3 -m venv --system-site-packages /var/lib/kolla/venv \
+    ; echo $(ls -al /) \
+    ; echo $(ls -al /requirements)
 
 {# Block used for overriding global version constraints.
 
