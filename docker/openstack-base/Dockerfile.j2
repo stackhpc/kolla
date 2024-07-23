@@ -188,9 +188,9 @@ RUN ln -s openstack-base-source/plugins/* /pycadf \
     && mkdir -p /etc/pycadf \
     && cp /pycadf/etc/pycadf/* /etc/pycadf/
 
-RUN echo $(ls -al /)
+RUN echo $(ls -al /openstack-base-source)
 
-RUN ln -s openstack-base-source/* /requirements \
+RUN ln -s openstack-base-source/openstack-base-archive* /requirements \
 
 {# NOTE(mnasiadka): Remove ovs from upper-constraints.txt because python3-openvswitch
                     is usually newer than UC entry and older version would get installed
@@ -199,7 +199,7 @@ RUN ln -s openstack-base-source/* /requirements \
     && {{ macros.upper_constraints_remove("ovs") }} \
     && mkdir -p /var/lib/kolla \
     && python3 -m venv --system-site-packages /var/lib/kolla/venv \
-    ; echo $(ls -al /) \
+    ; echo $(ls -al /openstack-base-archive-stackhpc-2024.1) \
     ; echo $(ls -al /requirements)
 
 {# Block used for overriding global version constraints.
