@@ -199,7 +199,7 @@ RUN ln -s openstack-base-source/openstack-base-archive* /requirements \
     && {{ macros.upper_constraints_remove("ovs") }} \
     && mkdir -p /var/lib/kolla \
     && python3 -m venv --system-site-packages /var/lib/kolla/venv \
-    ; echo $(ls -al /openstack-base-archive-stackhpc-2024.1) \
+    ; echo $(ls -al /openstack-base-source/openstack-base-archive*) \
     ; echo $(ls -al /requirements)
 
 {# Block used for overriding global version constraints.
