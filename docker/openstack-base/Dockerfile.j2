@@ -190,7 +190,7 @@ RUN ln -s /openstack-base-source/plugins/* /pycadf \
 
 RUN echo $(ls -al /)
 
-RUN ln -s openstack-base-source/$(ls openstack-base-source | grep -v plugins) /requirements
+RUN ln -s openstack-base-source/$(ls openstack-base-source | grep -v plugins) /requirements \
 
 {# NOTE(mnasiadka): Remove ovs from upper-constraints.txt because python3-openvswitch
                     is usually newer than UC entry and older version would get installed
