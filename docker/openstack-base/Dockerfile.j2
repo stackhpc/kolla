@@ -182,15 +182,13 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 %}
 
 ADD openstack-base-archive /openstack-base-source
-ADD plugins-archive /openstack-base-source
+ADD plugins-archive /
 
-RUN ln -s /openstack-base-source/plugins/* /pycadf \
+RUN ln -s plugins/* /pycadf \
     && mkdir -p /etc/pycadf \
     && cp /pycadf/etc/pycadf/* /etc/pycadf/
 
-RUN echo $(ls -al /)
-
-RUN ln -s openstack-base-source/$(ls openstack-base-source | grep -v plugins) /requirements \
+RUN ln -s openstack-base-source/* /requirements \
 
 {# NOTE(mnasiadka): Remove ovs from upper-constraints.txt because python3-openvswitch
                     is usually newer than UC entry and older version would get installed
@@ -198,9 +196,7 @@ RUN ln -s openstack-base-source/$(ls openstack-base-source | grep -v plugins) /r
 #}
     && {{ macros.upper_constraints_remove("ovs") }} \
     && mkdir -p /var/lib/kolla \
-    && python3 -m venv --system-site-packages /var/lib/kolla/venv \
-    ; echo $(ls -al openstack-base-source/*) \
-    ; echo $(ls -al /requirements)
+    && python3 -m venv --system-site-packages /var/lib/kolla/venv
 
 {# Block used for overriding global version constraints.
 
@@ -214,6 +210,9 @@ ENV PATH /var/lib/kolla/venv/bin:$PATH
 
 RUN {{ macros.install_pip(['pip', 'wheel', 'setuptools==67.2.*']) }} \
     && {{ macros.install_pip(openstack_base_pip_packages | customizable("pip_packages")) }}
+
+RUN unlink /pycadf \
+    && rm -rf plugins/*
 
 {% if base_package_type == 'rpm' %}
 RUN sed -i -r 's,^(Listen 80),#\1,' /etc/httpd/conf/httpd.conf \
