@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    ``MariaDB`` version has been updated to ``11.4 LTS``.
+    This version will be supported until 29th May 2029.
+
+    MariaDB Clustercheck is no longer supported with MariaDB 11.4.
+    It is recommended to switch to use ProxySQL.
