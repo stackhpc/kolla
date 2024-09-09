@@ -8,11 +8,15 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 {% block prometheus_memcached_exporter_install %}
 ADD prometheus-memcached-exporter-archive /prometheus-memcached-exporter-source
 
-RUN ls -l /
-
 RUN ls -l /prometheus-memcached-exporter-source/
 
 RUN ln -s /prometheus-memcached-exporter-source/* prometheus-memcached-exporter
+
+RUN ls -l /
+
+RUN ls -l /prometheus-memcached-exporter/
+
+RUN ls -l /prometheus-memcached-exporter/memcached_exporter
 
 RUN mkdir -p /opt/memcached_exporter/
 
