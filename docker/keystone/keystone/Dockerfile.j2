@@ -32,6 +32,10 @@ ADD plugins-archive /
     '/plugins/*',
 ] %}
 
+RUN echo $(ls -al /)
+
+RUN echo $(ls -al /plugins)
+
 COPY keystone_bootstrap.sh /usr/local/bin/kolla_keystone_bootstrap
 COPY extend_start.sh /usr/local/bin/kolla_extend_start
 
