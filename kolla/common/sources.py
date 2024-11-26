@@ -292,11 +292,11 @@ SOURCES = {
                      'blackbox_exporter'
                      '-${version}.linux-${debian_arch}.tar.gz')},
     'prometheus-cadvisor': {
-        'version': '0.51.0',
+        'version': '0.50.0',
         'type': 'url',
         'sha256': {
-            'amd64': 'cc3d2555f1eed948c5b3d448766107ba5ea90e9b5f8a06c60f010826fbb806a7',  # noqa: E501
-            'arm64': '518f05a7aeb122be88ecb0fa3fb905aa0840bb029cb08de0e4b523b7e8aae1e1'},  # noqa: E501
+            'amd64': 'c63976400ca980b4b34bd074ef93c5321650050e45e6dc4d0cb1baf7dc772639',  # noqa: E501
+            'arm64': '37c998d54dc0e8b1635d9be4c0ab15dfc3123aa41805ad0bd909c896d5a1a89b'},  # noqa: E501
         'location': ('https://github.com/'
                      'google/cadvisor/'
                      'releases/download/v${version}/'
@@ -401,11 +401,11 @@ SOURCES = {
                      'ovn-exporter'
                      '_${version}_linux_${debian_arch}.tar.gz')},
     'prometheus-v2-server': {
-        'version': '2.55.1',
+        'version': '3.0.0',
         'type': 'url',
         'sha256': {
-            'amd64': '19700bdd42ec31ee162e4079ebda4cd0a44432df4daa637141bdbea4b1cd8927',  # noqa: E501
-            'arm64': 'af43368bc6379c3c8bd5ac0b82208060bba22267bf01ad3ab5df56ad5725bf88'},  # noqa: E501
+            'amd64': '614ce24f4802f1a2d3dc35ab9bd35047f428469c7e029163602a40078bf7508b',  # noqa: E501
+            'arm64': 'b2e6947d5fad863c89f56cee8047e8f57b63fde6b41c918300e1e88c1c62d1b5'},  # noqa: E501
         'location': ('https://github.com/'
                      'prometheus/prometheus/'
                      'releases/download/v${version}/'
