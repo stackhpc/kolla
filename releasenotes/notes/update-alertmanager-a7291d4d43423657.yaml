@@ -1,0 +1,13 @@
+---
+upgrade:
+  - |
+    Upgrade prometheus alertmanager to newest available version
+
+    * prometheus-alertmanager: 0.28.0 -> 0.28.1
+fixes:
+  - |
+    Resolves an issue with long text being truncated when using
+    Microsoft Teams as an alert destination. See `issue 4222
+    <https://github.com/prometheus/alertmanager/pull/4222>`__
+    for details.
+
