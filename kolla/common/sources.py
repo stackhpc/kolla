@@ -274,11 +274,11 @@ SOURCES = {
         'location': ('$tarballs_base/openstack/placement/'
                      'placement-${openstack_branch}.tar.gz')},
     'prometheus-alertmanager': {
-        'version': '0.28.0',
+        'version': '0.28.1',
         'type': 'url',
         'sha256': {
-            'amd64': '6b5a38d32cddef23aad4435a58c1ea39dc0a07b4b155029c601d200720da9ca4',  # noqa: E501
-            'arm64': '70d7c85a364d5d5d20e36dfff6886fbc5e105822642d5603cc2f38340dd2f7ee'},  # noqa: E501
+            'amd64': '5ac7ab5e4b8ee5ce4d8fb0988f9cb275efcc3f181b4b408179fafee121693311',  # noqa: E501
+            'arm64': 'd8832540e5b9f613d2fd759e31d603173b9c61cc7bb5e3bc7ae2f12038b1ce4f'},  # noqa: E501
         'location': ('https://github.com/'
                      'prometheus/alertmanager/'
                      'releases/download/v${version}/'
@@ -394,12 +394,12 @@ SOURCES = {
                      'releases/download/v${version}/'
                      'ovn-exporter'
                      '_${version}_linux_${debian_arch}.tar.gz')},
-    'prometheus-v2-server': {
-        'version': '2.55.1',
+    'prometheus-server': {
+        'version': '3.2.1',
         'type': 'url',
         'sha256': {
-            'amd64': '19700bdd42ec31ee162e4079ebda4cd0a44432df4daa637141bdbea4b1cd8927',  # noqa: E501
-            'arm64': 'af43368bc6379c3c8bd5ac0b82208060bba22267bf01ad3ab5df56ad5725bf88'},  # noqa: E501
+            'amd64': 'a622e3007c9109a7f470e1433cbd29bf392596715cf7eea8b81b37fa9d26b7be',  # noqa: E501
+            'arm64': 'f2dec3178f1181c1b795b275750d056e71ead13f7fbfe08b76834c4ec20b748e'},  # noqa: E501
         'location': ('https://github.com/'
                      'prometheus/prometheus/'
                      'releases/download/v${version}/'
