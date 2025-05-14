@@ -1,0 +1,14 @@
+# CentOS-OpenStack-epoxy.repo
+#
+# Please see http://wiki.centos.org/SpecialInterestGroup/Cloud for more
+# information
+
+[centos-openstack-epoxy]
+name=CentOS-$releasever - OpenStack epoxy
+#baseurl=http://mirror.stream.centos.org/SIGs/9-stream/cloud/$basearch/openstack-epoxy/
+metalink=https://mirrors.centos.org/metalink?repo=centos-cloud-sig-openstack-epoxy-$releasever-stream&arch=$basearch&protocol=https,http
+gpgcheck=1
+enabled=1
+#gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud
+gpgkey=https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud
+module_hotfixes=1
