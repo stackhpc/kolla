@@ -173,11 +173,11 @@ SOURCES = {
         'location': ('$tarballs_base/openstack/kuryr-libnetwork/'
                      'kuryr-libnetwork-${openstack_branch}.tar.gz')},
     'letsencrypt-lego': {
-        'version': 'v4.20.4',
+        'version': 'v4.23.1',
         'type': 'url',
         'sha256': {
-            'amd64': 'fed2cd32fa0042feda44a4a81d73e76f51d692a779f689d3df8082dcadcc73ba',  # noqa: E501
-            'arm64': '6bde708d9c8b2e914120772bb6491d7c3dccb7f98746e171ff4c435948f599e1'},  # noqa: E501
+            'amd64': '1fd60b1fd59c239bed22719a5de402cb745d1f933540cb1ec196e2c03e6e8882',  # noqa: E501
+            'arm64': '1114745108343286d4bff189b4bdee3cba9d07ebcacc673860d91ab951d31e0d'},  # noqa: E501
         'location': ('https://github.com/go-acme/lego/'
                      'releases/download/${version}/'
                      'lego_${version}_linux_${debian_arch}.tar.gz')},
