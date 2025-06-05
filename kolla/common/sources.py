@@ -186,11 +186,11 @@ SOURCES = {
         'location': ('$tarballs_base/openstack/magnum/'
                      'magnum-${openstack_branch}.tar.gz')},
     'magnum-conductor-plugin-helm': {
-        'version': 'v3.18.0',
+        'version': 'v3.18.2',
         'type': 'url',
         'sha256': {
-            'amd64': '961e587fc2c03807f8a99ac25ef063fa9e6915f1894729399cbb95d2a79af931',  # noqa: E501
-            'arm64': '489c9d2d3ea4e095331249d74b4407fb5ac1d338c28429d70cdedccfe6e2b029'},  # noqa: E501
+            'amd64': 'c5deada86fe609deefdf40e9cbbe3da2f8cf3f6a4551a0ebe7886dc8fcf98bce',  # noqa: E501
+            'arm64': '03181a494a0916b370a100a5b2536104963b095be53fb23d1e29b2afb1c7de8d'},  # noqa: E501
         'location': ('https://get.helm.sh/helm'
                      '-${version}-linux-${debian_arch}.tar.gz')},
     'manila-base': {
