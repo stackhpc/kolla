@@ -118,7 +118,7 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
         'oslo.db',
         'oslo.i18n',
         'oslo.log',
-        'oslo.messaging',
+        '\'oslo.messaging @ git+https://github.com/stackhpc/oslo.messaging@stream-segment-max-size\'',
         'oslo.middleware',
         'oslo.policy',
         'oslo.privsep',
