@@ -188,7 +188,7 @@ rocky-aarch64:
 ubuntu:
   docker-ce:
     url: "https://download.docker.com/linux/ubuntu"
-    suite: "noble"
+    suite: "jammy"
     component: "stable"
     gpg_key: "docker-ce.asc"
   erlang:
