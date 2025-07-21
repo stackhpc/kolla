@@ -177,11 +177,11 @@ SOURCES = {
         'location': ('$tarballs_base/openstack/kuryr-libnetwork/'
                      'kuryr-libnetwork-${openstack_branch}.tar.gz')},
     'letsencrypt-lego': {
-        'version': 'v4.15.0',
+        'version': 'v4.20.4',
         'type': 'url',
         'sha256': {
-            'amd64': 'b26cdc57462124a7aa877f58ad59015ba90fa0b2d8f40e6cbd34408af1e9b607',  # noqa: E501
-            'arm64': '0bfb5e245a78e7e20c759c491ecb05aa68ad89024ed5cf710e6e7f4eab90e190'},  # noqa: E501
+            'amd64': 'fed2cd32fa0042feda44a4a81d73e76f51d692a779f689d3df8082dcadcc73ba',  # noqa: E501
+            'arm64': '6bde708d9c8b2e914120772bb6491d7c3dccb7f98746e171ff4c435948f599e1'},  # noqa: E501
         'location': ('https://github.com/go-acme/lego/'
                      'releases/download/${version}/'
                      'lego_${version}_linux_${debian_arch}.tar.gz')},
@@ -278,11 +278,11 @@ SOURCES = {
         'location': ('$tarballs_base/openstack/placement/'
                      'placement-${openstack_branch}.tar.gz')},
     'prometheus-alertmanager': {
-        'version': '0.28.0',
+        'version': '0.28.1',
         'type': 'url',
         'sha256': {
-            'amd64': '6b5a38d32cddef23aad4435a58c1ea39dc0a07b4b155029c601d200720da9ca4',  # noqa: E501
-            'arm64': '70d7c85a364d5d5d20e36dfff6886fbc5e105822642d5603cc2f38340dd2f7ee'},  # noqa: E501
+            'amd64': '5ac7ab5e4b8ee5ce4d8fb0988f9cb275efcc3f181b4b408179fafee121693311',  # noqa: E501
+            'arm64': 'd8832540e5b9f613d2fd759e31d603173b9c61cc7bb5e3bc7ae2f12038b1ce4f'},  # noqa: E501
         'location': ('https://github.com/'
                      'prometheus/alertmanager/'
                      'releases/download/v${version}/'

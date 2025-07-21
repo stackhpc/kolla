@@ -51,6 +51,11 @@ ubuntu:
     suite: "noble"
     component: "main"
     gpg_key: "rabbitmq.gpg"
+  docker-ce:
+    url: "https://download.docker.com/linux/ubuntu"
+    suite: "noble"
+    component: "stable"
+    gpg_key: "docker-ce.asc"
 
 ubuntu-aarch64:
   erlang-26:
@@ -105,3 +110,8 @@ ubuntu-aarch64:
     component: "main"
     arch: "amd64"
     gpg_key: "rabbitmq.gpg"
+  docker-ce:
+    url: "https://download.docker.com/linux/ubuntu"
+    suite: "noble"
+    component: "stable"
+    gpg_key: "docker-ce.asc"

@@ -2,6 +2,7 @@
 centos:
   ceph: "centos-ceph-reef"
   crb: "crb"
+  docker-ce: "docker-ce"
   epel: "epel"
   erlang: "rabbitmq_rabbitmq-erlang"
   extras: "extras"
@@ -20,6 +21,7 @@ centos:
 centos-aarch64:
   ceph: "centos-ceph-reef"
   crb: "crb"
+  docker-ce: "docker-ce"
   epel: "epel"
   erlang: "copr-rabbitmq-erlang"
   extras: "extras"
@@ -39,6 +41,11 @@ centos-aarch64:
 # https://www.rabbitmq.com/install-debian.html#apt-cloudsmith
 
 debian:
+  docker-ce:
+    url: "https://download.docker.com/linux/debian"
+    suite: "bookworm"
+    component: "stable"
+    gpg_key: "docker-ce.asc"
   erlang-26:
     url: "https://ppa.launchpadcontent.net/rabbitmq/rabbitmq-erlang-26/ubuntu"
     suite: "jammy"
@@ -91,6 +98,11 @@ debian:
     gpg_key: "rabbitmq.gpg"
 
 debian-aarch64:
+  docker-ce:
+    url: "https://download.docker.com/linux/debian"
+    suite: "bookworm"
+    component: "stable"
+    gpg_key: "docker-ce.asc"
   erlang-26:
     url: "https://ppa.launchpadcontent.net/rabbitmq/rabbitmq-erlang-26/ubuntu"
     suite: "jammy"
@@ -148,6 +160,7 @@ debian-aarch64:
 rocky:
   ceph: "centos-ceph-reef"
   crb: "crb"
+  docker-ce: "docker-ce"
   epel: "epel"
   erlang: "rabbitmq_rabbitmq-erlang"
   extras: "extras"
@@ -166,6 +179,7 @@ rocky:
 rocky-aarch64:
   ceph: "centos-ceph-reef"
   crb: "crb"
+  docker-ce: "docker-ce"
   epel: "epel"
   erlang: "copr-rabbitmq-erlang"
   extras: "extras"
@@ -182,6 +196,11 @@ rocky-aarch64:
   rabbitmq: "rabbitmq_rabbitmq-server"
 
 ubuntu:
+  docker-ce:
+    url: "https://download.docker.com/linux/ubuntu"
+    suite: "jammy"
+    component: "stable"
+    gpg_key: "docker-ce.asc"
   erlang-26:
     url: "https://ppa.launchpadcontent.net/rabbitmq/rabbitmq-erlang-26/ubuntu"
     suite: "jammy"
@@ -234,6 +253,11 @@ ubuntu:
     gpg_key: "rabbitmq.gpg"
 
 ubuntu-aarch64:
+  docker-ce:
+    url: "https://download.docker.com/linux/ubuntu"
+    suite: "noble"
+    component: "stable"
+    gpg_key: "docker-ce.asc"
   erlang-26:
     url: "https://ppa.launchpadcontent.net/rabbitmq/rabbitmq-erlang-26/ubuntu"
     suite: "jammy"
