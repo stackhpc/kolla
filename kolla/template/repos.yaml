@@ -46,8 +46,13 @@ debian:
     suite: "bookworm"
     component: "stable"
     gpg_key: "docker-ce.asc"
-  erlang:
-    url: "https://ppa.launchpadcontent.net/rabbitmq/rabbitmq-erlang/ubuntu"
+  erlang-26:
+    url: "https://ppa.launchpadcontent.net/rabbitmq/rabbitmq-erlang-26/ubuntu"
+    suite: "jammy"
+    component: "main"
+    gpg_key: "erlang-ppa.gpg"
+  erlang-27:
+    url: "https://ppa.launchpadcontent.net/rabbitmq/rabbitmq-erlang-27/ubuntu"
     suite: "jammy"
     component: "main"
     gpg_key: "erlang-ppa.gpg"
@@ -98,8 +103,13 @@ debian-aarch64:
     suite: "bookworm"
     component: "stable"
     gpg_key: "docker-ce.asc"
-  erlang:
-    url: "https://ppa.launchpadcontent.net/rabbitmq/rabbitmq-erlang/ubuntu"
+  erlang-26:
+    url: "https://ppa.launchpadcontent.net/rabbitmq/rabbitmq-erlang-26/ubuntu"
+    suite: "jammy"
+    component: "main"
+    gpg_key: "erlang-ppa.gpg"
+  erlang-27:
+    url: "https://ppa.launchpadcontent.net/rabbitmq/rabbitmq-erlang-27/ubuntu"
     suite: "jammy"
     component: "main"
     gpg_key: "erlang-ppa.gpg"
@@ -191,8 +201,13 @@ ubuntu:
     suite: "jammy"
     component: "stable"
     gpg_key: "docker-ce.asc"
-  erlang:
-    url: "https://ppa.launchpadcontent.net/rabbitmq/rabbitmq-erlang/ubuntu"
+  erlang-26:
+    url: "https://ppa.launchpadcontent.net/rabbitmq/rabbitmq-erlang-26/ubuntu"
+    suite: "jammy"
+    component: "main"
+    gpg_key: "erlang-ppa.gpg"
+  erlang-27:
+    url: "https://ppa.launchpadcontent.net/rabbitmq/rabbitmq-erlang-27/ubuntu"
     suite: "jammy"
     component: "main"
     gpg_key: "erlang-ppa.gpg"
@@ -243,8 +258,13 @@ ubuntu-aarch64:
     suite: "noble"
     component: "stable"
     gpg_key: "docker-ce.asc"
-  erlang:
-    url: "https://ppa.launchpadcontent.net/rabbitmq/rabbitmq-erlang/ubuntu"
+  erlang-26:
+    url: "https://ppa.launchpadcontent.net/rabbitmq/rabbitmq-erlang-26/ubuntu"
+    suite: "jammy"
+    component: "main"
+    gpg_key: "erlang-ppa.gpg"
+  erlang-27:
+    url: "https://ppa.launchpadcontent.net/rabbitmq/rabbitmq-erlang-27/ubuntu"
     suite: "jammy"
     component: "main"
     gpg_key: "erlang-ppa.gpg"
