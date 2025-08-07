@@ -72,7 +72,7 @@ debian:
     component: "stable"
     gpg_key: "influxdb.asc"
   mariadb:
-    url: "https://dlm.mariadb.com/repo/mariadb-server/10.11/repo/debian"
+    url: "https://dlm.mariadb.com/repo/mariadb-server/10.11.13/repo/debian"
     suite: "bookworm"
     component: "main"
     gpg_key: "mariadb.gpg"
@@ -129,7 +129,7 @@ debian-aarch64:
     component: "stable"
     gpg_key: "influxdb.asc"
   mariadb:
-    url: "https://dlm.mariadb.com/repo/mariadb-server/10.11/repo/debian"
+    url: "https://dlm.mariadb.com/repo/mariadb-server/10.11.13/repo/debian"
     suite: "bookworm"
     component: "main"
     gpg_key: "mariadb.gpg"
@@ -227,7 +227,7 @@ ubuntu:
     component: "stable"
     gpg_key: "influxdb.asc"
   mariadb:
-    url: "https://dlm.mariadb.com/repo/mariadb-server/10.11/repo/ubuntu"
+    url: "https://dlm.mariadb.com/repo/mariadb-server/10.11.13/repo/ubuntu"
     suite: "jammy"
     component: "main"
     gpg_key: "mariadb.gpg"
@@ -284,7 +284,7 @@ ubuntu-aarch64:
     component: "stable"
     gpg_key: "influxdb.asc"
   mariadb:
-    url: "https://dlm.mariadb.com/repo/mariadb-server/10.11/repo/ubuntu"
+    url: "https://dlm.mariadb.com/repo/mariadb-server/10.11.13/repo/ubuntu"
     suite: "jammy"
     component: "main"
     gpg_key: "mariadb.gpg"
