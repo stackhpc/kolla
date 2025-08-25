@@ -17,7 +17,6 @@
 UNBUILDABLE_IMAGES = {
     'aarch64': {
         "bifrost-base",        # someone need to get upstream working first
-        "prometheus-mtail",    # no aarch64 binary
     },
 
     # Issues for SHA1 keys:
@@ -49,10 +48,8 @@ UNBUILDABLE_IMAGES = {
     },
 
     'ubuntu+aarch64': {
-        "barbican-base",  # https://github.com/unbit/uwsgi/issues/2434
     },
 
     'centos+aarch64': {
-        "telegraf",      # no binary package
     },
 }
