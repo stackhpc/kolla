@@ -23,7 +23,8 @@ centos-aarch64:
   crb: "crb"
   docker-ce: "docker-ce"
   epel: "epel"
-  erlang: "copr-rabbitmq-erlang"
+  erlang-26: "copr-rabbitmq-erlang-26"
+  erlang-27: "copr-rabbitmq-erlang-27"
   extras: "extras"
   fluentd: "fluent-package-lts"
   grafana: "grafana"
@@ -72,7 +73,7 @@ debian:
     component: "stable"
     gpg_key: "influxdb.asc"
   mariadb:
-    url: "https://dlm.mariadb.com/repo/mariadb-server/10.11.11/repo/debian"
+    url: "https://dlm.mariadb.com/repo/mariadb-server/10.11/repo/debian"
     suite: "bookworm"
     component: "main"
     gpg_key: "mariadb.gpg"
@@ -129,7 +130,7 @@ debian-aarch64:
     component: "stable"
     gpg_key: "influxdb.asc"
   mariadb:
-    url: "https://dlm.mariadb.com/repo/mariadb-server/10.11.11/repo/debian"
+    url: "https://dlm.mariadb.com/repo/mariadb-server/10.11/repo/debian"
     suite: "bookworm"
     component: "main"
     gpg_key: "mariadb.gpg"
@@ -181,7 +182,8 @@ rocky-aarch64:
   crb: "crb"
   docker-ce: "docker-ce"
   epel: "epel"
-  erlang: "copr-rabbitmq-erlang"
+  erlang-26: "copr-rabbitmq-erlang-26"
+  erlang-27: "copr-rabbitmq-erlang-27"
   extras: "extras"
   fluentd: "fluent-package-lts"
   grafana: "grafana"
@@ -203,12 +205,12 @@ ubuntu:
     gpg_key: "docker-ce.asc"
   erlang-26:
     url: "https://ppa.launchpadcontent.net/rabbitmq/rabbitmq-erlang-26/ubuntu"
-    suite: "jammy"
+    suite: "noble"
     component: "main"
     gpg_key: "erlang-ppa.gpg"
   erlang-27:
     url: "https://ppa.launchpadcontent.net/rabbitmq/rabbitmq-erlang-27/ubuntu"
-    suite: "jammy"
+    suite: "noble"
     component: "main"
     gpg_key: "erlang-ppa.gpg"
   fluentd:
@@ -228,7 +230,7 @@ ubuntu:
     component: "stable"
     gpg_key: "influxdb.asc"
   mariadb:
-    url: "https://dlm.mariadb.com/repo/mariadb-server/10.11.11/repo/ubuntu"
+    url: "https://dlm.mariadb.com/repo/mariadb-server/10.11/repo/ubuntu"
     suite: "noble"
     component: "main"
     gpg_key: "mariadb.gpg"
@@ -261,12 +263,12 @@ ubuntu-aarch64:
     gpg_key: "docker-ce.asc"
   erlang-26:
     url: "https://ppa.launchpadcontent.net/rabbitmq/rabbitmq-erlang-26/ubuntu"
-    suite: "jammy"
+    suite: "noble"
     component: "main"
     gpg_key: "erlang-ppa.gpg"
   erlang-27:
     url: "https://ppa.launchpadcontent.net/rabbitmq/rabbitmq-erlang-27/ubuntu"
-    suite: "jammy"
+    suite: "noble"
     component: "main"
     gpg_key: "erlang-ppa.gpg"
   fluentd:
@@ -286,7 +288,7 @@ ubuntu-aarch64:
     component: "stable"
     gpg_key: "influxdb.asc"
   mariadb:
-    url: "https://dlm.mariadb.com/repo/mariadb-server/10.11.11/repo/ubuntu"
+    url: "https://dlm.mariadb.com/repo/mariadb-server/10.11/repo/ubuntu"
     suite: "noble"
     component: "main"
     gpg_key: "mariadb.gpg"
