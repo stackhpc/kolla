@@ -32,6 +32,7 @@ backup_full() {
         --backup \
         --stream=mbstream \
         --history="${LAST_FULL_DATE}" \
+        --log-bin \
         | gzip > "${BACKUP_PATH}/${BACKUP_FILE}"
 
     echo "${BACKUP_PATH}/${BACKUP_FILE}" > "${BACKUP_DIR}/last_full_file"
@@ -62,6 +63,7 @@ backup_incremental() {
         --stream=mbstream \
         --incremental-basedir="${TMP_BASEDIR}" \
         --history="incr-${NOW}" \
+        --log-bin \
         | gzip > "${INCR_DIR}/backup-incremental-${NOW}.mbs.gz"
 
     rm -rf "${TMP_BASEDIR}"
