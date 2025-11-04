@@ -40,7 +40,15 @@ ADD plugins-archive /
 ] %}
 
 {% set horizon_plugins_pip_packages = [
-    '/plugins/*'
+    '/plugins/cloudkitty-dashboard*',
+    '/plugins/designate-dashboard*',
+    '/plugins/heat-dashboard*',
+    '/plugins/ironic-ui*',
+    '/plugins/magnum-ui*',
+    '/plugins/manila-ui*',
+    '/plugins/masakari-dashboard*',
+    '/plugins/neutron-vpnaas-dashboard*',
+    '/plugins/octavia-dashboard*'
 ] %}
 
 COPY extend_start.sh /usr/local/bin/kolla_extend_start
