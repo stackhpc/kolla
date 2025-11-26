@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Drops Horizon plugins for projects absent in the Release Train. Removes:
+    freezer, mistral, murano, sahara, senlin, solum, tacker, trove, vitrage,
+    watcher, zun dashboards.
