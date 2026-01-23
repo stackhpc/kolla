@@ -1,0 +1,32 @@
+FROM {{ namespace }}/{{ image_prefix }}base:{{ tag }}
+{% block labels %}
+LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build_date }}"
+{% endblock %}
+
+{% block alloy_header %}{% endblock %}
+
+{% import "macros.j2" as macros with context %}
+
+{{ macros.enable_extra_repos(['grafana']) }}
+
+{% set grafana_packages = ['alloy'] %}
+
+{{ macros.configure_user(name='alloy', homedir='/usr/share/alloy') }}
+
+{{ macros.install_packages(grafana_packages | customizable("packages")) }}
+
+WORKDIR /usr/share/alloy
+
+COPY alloy_sudoers /etc/sudoers.d/kolla_alloy_sudoers
+COPY extend_start.sh /usr/local/bin/kolla_extend_start
+
+RUN chmod 750 /etc/sudoers.d \
+    && chmod 440 /etc/sudoers.d/kolla_alloy_sudoers \
+    && chmod 644 /usr/local/bin/kolla_extend_start
+
+{{ macros.kolla_patch_sources() }}
+
+{% block alloy_footer %}{% endblock %}
+{% block footer %}{% endblock %}
+
+USER alloy

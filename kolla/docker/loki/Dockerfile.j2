@@ -1,0 +1,42 @@
+FROM {{ namespace }}/{{ image_prefix }}base:{{ tag }}
+{% block labels %}
+LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build_date }}"
+{% endblock %}
+
+{% block loki_header %}{% endblock %}
+
+{% import "macros.j2" as macros with context %}
+
+{{ macros.enable_extra_repos(['grafana']) }}
+
+{% set grafana_packages = ['loki'] %}
+
+{{ macros.configure_user(name='loki', homedir='/usr/share/loki') }}
+
+{{ macros.install_packages(grafana_packages | customizable("packages")) }}
+
+WORKDIR /usr/share/loki
+
+COPY loki_sudoers /etc/sudoers.d/kolla_loki_sudoers
+COPY extend_start.sh /usr/local/bin/kolla_extend_start
+
+#{% block loki_plugins_install %}
+
+#{% set loki_default_plugins = ['grafana-opensearch-datasource']  %}
+#{% set loki_plugins =  loki_default_plugins | customizable("plugins") %}
+
+#{% if grafana_plugins | length > 0 %}
+#RUN {{ (['grafana-cli plugins install %s'] * grafana_plugins | length ) | join(' && ') | format(*grafana_plugins) }}
+#{% endif %}
+#{% endblock %}
+
+RUN chmod 750 /etc/sudoers.d \
+    && chmod 440 /etc/sudoers.d/kolla_loki_sudoers \
+    && chmod 644 /usr/local/bin/kolla_extend_start
+
+{{ macros.kolla_patch_sources() }}
+
+{% block loki_footer %}{% endblock %}
+{% block footer %}{% endblock %}
+
+USER loki

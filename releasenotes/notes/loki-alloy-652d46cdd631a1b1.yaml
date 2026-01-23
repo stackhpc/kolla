@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Added support for building Grafana Loki and Grafana Alloy container
+    images. These images allow for integrated log aggregation and
+    observability data collection within the Kolla ecosystem.

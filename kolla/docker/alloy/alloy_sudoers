@@ -1,0 +1,1 @@
+%kolla ALL=(root) NOPASSWD: /usr/bin/chown -R alloy\: /var/lib/alloy/, /bin/chown -R alloy\: /var/lib/alloy/

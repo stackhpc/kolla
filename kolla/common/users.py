@@ -353,5 +353,13 @@ USERS = {
     'kerbside-user': {
         'uid': 42495,
         'gid': 42495,
-     }
+     },
+    'loki-user': {
+        'uid': 42496,
+        'gid': 42496,
+    },
+    'alloy-user': {
+        'uid': 42497,
+        'gid': 42497,
+    },
 }
