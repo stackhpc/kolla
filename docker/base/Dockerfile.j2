@@ -160,7 +160,6 @@ RUN rm -f /etc/rpm/macros.image-language-conf \
     {% set base_centos_yum_repos_to_disable = [
         'centos-ceph-squid',
         'centos-nfv-openvswitch',
-        'epel',
         'influxdb',
         'opensearch-2.x',
         'opensearch-dashboards-2.x',
@@ -170,7 +169,6 @@ RUN rm -f /etc/rpm/macros.image-language-conf \
         'centos-ceph-reef',
         'centos-nfv-openvswitch',
         'centos-opstools',
-        'epel',
         'influxdb',
         'opensearch-2.x',
         'opensearch-dashboards-2.x',
@@ -194,8 +192,8 @@ RUN {{ macros.install_packages(base_centos_yum_repo_packages | customizable("cen
 
 {% block base_redhat_binary_versionlock %}{% endblock %}
 
-{# NOTE(mnasiadka): In EL10 we install dumb-init from epel #}
-{% if base_distro_tag.startswith('10') or base_distro_tag.startswith('stream10') %}
+{# NOTE(mnasiadka): In EL10 we install dumb-init from epel. In EL9 we install iptables-legacy. #}
+{% if base_package_type == 'rpm' %}
 RUN dnf config-manager --enable epel
 {% endif %}
 
