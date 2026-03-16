@@ -12,6 +12,9 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 
 {% if base_package_type == 'rpm' %}
 
+    # FIXME(wszumski): iptables-nft is deprecated. We need to advise users
+    # to migrate to some other firewall driver as we cannot rely on this
+    # package forever, see: https://access.redhat.com/solutions/6739041
     {% set neutron_base_packages = [
         'conntrack-tools',
         'dnsmasq',
@@ -21,6 +24,7 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
         'iproute-tc',
         'ipset',
         'iptables',
+        'iptables-nft',
         'iputils',
         'keepalived',
         'net-tools',
