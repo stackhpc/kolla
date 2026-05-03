@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Add ``ironic-vnc-container`` container image which provides a headless
+    Firefox and x11vnc environment for Ironic graphical console drivers,
+    introduced in the 2025.1 (Epoxy) release.
