@@ -1,0 +1,21 @@
+FROM {{ namespace }}/{{ image_prefix }}ironic-base:{{ tag }}
+{% block labels %}
+LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build_date }}"
+{% endblock %}
+
+{% block ironic_novncproxy_header %}{% endblock %}
+
+{% import "macros.j2" as macros with context %}
+
+{% set ironic_novncproxy_packages = [
+    'novnc'
+] %}
+
+{{ macros.install_packages(ironic_novncproxy_packages | customizable("packages")) }}
+
+{{ macros.kolla_patch_sources() }}
+
+{% block ironic_novncproxy_footer %}{% endblock %}
+{% block footer %}{% endblock %}
+
+USER ironic

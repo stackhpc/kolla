@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Add ``ironic-novncproxy`` container image for the new Ironic noVNC proxy
+    service, introduced in the 2025.1 (Epoxy) release, which provides
+    graphical console access to bare metal nodes.
