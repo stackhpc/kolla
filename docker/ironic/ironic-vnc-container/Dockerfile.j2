@@ -1,0 +1,71 @@
+FROM {{ namespace }}/{{ image_prefix }}ironic-base:{{ tag }}
+{% block labels %}
+LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build_date }}"
+{% endblock %}
+
+{% block ironic_vnc_container_header %}{% endblock %}
+
+{% import "macros.j2" as macros with context %}
+
+{% set ironic_vnc_container_path = '/var/lib/kolla/venv/share/ironic/vnc-container' %}
+
+{% if base_package_type == 'rpm' %}
+{{ macros.enable_extra_repos(['crb', 'epel']) }}
+{% endif %}
+{% if base_distro == 'ubuntu' %}
+{{ macros.enable_extra_repos(['mozillateam-ppa']) }}
+{% endif %}
+
+{% if base_package_type == 'rpm' %}
+    {% set ironic_firefox_name = 'firefox' %}
+    {% set ironic_firefox_extension_path = '/usr/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/@ironic-console.openstack.org' %}
+    {% set ironic_vnc_container_packages = [
+        ironic_firefox_name,
+        'iproute',
+        'procps',
+        'psmisc',
+        'python3-requests'
+    ] %}
+    {# TODO(stevebaker): RHEL 10 and family no longer packages x11vnc and xvfb.
+                         These will need to be installed from source#}
+{% elif base_package_type == 'deb' %}
+    {% set ironic_firefox_name = 'firefox-esr' %}
+    {% set ironic_firefox_extension_path = '/usr/lib/firefox-esr-addons/extensions/@ironic-console.openstack.org' %}
+
+    {% set ironic_vnc_container_packages = [
+        ironic_firefox_name,
+        'iproute2',
+        'procps',
+        'psmisc',
+        'python3-requests',
+        'software-properties-common',
+        'x11vnc',
+        'xvfb'
+    ] %}
+{% endif %}
+
+{{ macros.install_packages(ironic_vnc_container_packages | customizable("packages")) }}
+
+RUN useradd --create-home --shell /bin/bash firefox \
+    && cp -r {{ ironic_vnc_container_path }}/bin/* /usr/local/bin \
+    && cp -r {{ ironic_vnc_container_path }}/drivers /drivers \
+    && cp -r {{ ironic_vnc_container_path }}/extension "{{ ironic_firefox_extension_path }}"
+
+ENV DISPLAY_WIDTH=1280 \
+    DISPLAY_HEIGHT=960 \
+    APP='fake' \
+    APP_INFO={} \
+    READ_ONLY=False \
+    DEBUG=0 \
+    FIREFOX={{ ironic_firefox_name }} \
+    FIREFOX_CONFIG_DIR=/home/firefox/.mozilla/{{ ironic_firefox_name }} \
+    EXTENSION_PATH="{{ ironic_firefox_extension_path }}"
+
+{{ macros.kolla_patch_sources() }}
+
+{% block ironic_vnc_container_footer %}{% endblock %}
+{% block footer %}{% endblock %}
+
+USER firefox
+ENTRYPOINT ["dumb-init", "--"]
+CMD ["/usr/local/bin/start-x11vnc.sh"]
