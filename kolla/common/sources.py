@@ -139,10 +139,6 @@ SOURCES = {
         'type': 'url',
         'location': ('$tarballs_base/openstack/watcher-dashboard/'
                      'watcher-dashboard-${openstack_branch}.tar.gz')},
-    'horizon-plugin-zun-ui': {
-        'type': 'url',
-        'location': ('$tarballs_base/openstack/zun-ui/'
-                     'zun-ui-${openstack_branch}.tar.gz')},
     'ironic-base': {
         'type': 'url',
         'location': ('$tarballs_base/openstack/ironic/'
@@ -160,14 +156,6 @@ SOURCES = {
         'type': 'url',
         'location': ('$tarballs_base/openstack/requirements/'
                      'requirements-${openstack_branch}.tar.gz')},
-    'kuryr-base': {
-        'type': 'url',
-        'location': ('$tarballs_base/openstack/kuryr/'
-                     'kuryr-${openstack_branch}.tar.gz')},
-    'kuryr-libnetwork': {
-        'type': 'url',
-        'location': ('$tarballs_base/openstack/kuryr-libnetwork/'
-                     'kuryr-libnetwork-${openstack_branch}.tar.gz')},
     'letsencrypt-lego': {
         'version': 'v4.27.0',
         'type': 'url',
@@ -385,17 +373,22 @@ SOURCES = {
                      'openstack-exporter'
                      '_${version}_linux_${debian_arch}.tar.gz')},
     'prometheus-openstack-network-exporter': {
-        'version': '0.0.2',
-        'type': 'url',
-        'location': ('https://github.com/'
-                     'openstack-k8s-operators/openstack-network-exporter/'
-                     'archive/v${version}.tar.gz')},
-    'prometheus-server': {
-        'version': '3.5.1',
+        'version': '0.2.0',
         'type': 'url',
         'sha256': {
-            'amd64': 'cd6aea0ab214b05838470668dfcee7d01a7d91913509a227b00401ca872423f0',  # noqa: E501
-            'arm64': 'cdb1de33d6d3ed73b4633cebedb70258c29e41bd132d287d387f322a046143d2'},  # noqa: E501
+            'amd64': 'c93e6c62a0b861af50292f51b1443114e2178d89450b37cb0462723eaa3b2338',  # noqa: E501
+            'arm64': '478de6e005188d0e2545e34ca2c5b93a33a32dc7d1f1b03dc3210c4ef7e44305'},  # noqa: E501
+        'location': ('https://github.com/'
+                     'openstack-k8s-operators/openstack-network-exporter/'
+                     'releases/download/v${version}/'
+                     'openstack-network-exporter'
+                     '-linux-${debian_arch}')},
+    'prometheus-server': {
+        'version': '3.5.2',
+        'type': 'url',
+        'sha256': {
+            'amd64': '552c6d701e27d3c77983bb8a76e61953cb60021f6e10f17a929546a6dedc436a',  # noqa: E501
+            'arm64': '06a77b3f580b0db0f41e1c52274503b609db58660e44577facb0ee53e4ff8b27'},  # noqa: E501
         'location': ('https://github.com/'
                      'prometheus/prometheus/'
                      'releases/download/v${version}/'
@@ -435,9 +428,5 @@ SOURCES = {
     'watcher-base': {
         'type': 'url',
         'location': ('$tarballs_base/openstack/watcher/'
-                     'watcher-${openstack_branch}.tar.gz')},
-    'zun-base': {
-        'type': 'url',
-        'location': ('$tarballs_base/openstack/zun/'
-                     'zun-${openstack_branch}.tar.gz')}
+                     'watcher-${openstack_branch}.tar.gz')}
 }
