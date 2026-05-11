@@ -40,7 +40,7 @@ ENV PS1="$(tput bold)($(printenv KOLLA_SERVICE_NAME))$(tput sgr0)[$(id -un)@$(ho
 # desire such functionality.  I think we will :)
 
 ENV KOLLA_RPM_OVS_VERSION=3.5 \
-    KOLLA_RPM_OVN_VERSION=25.09
+    KOLLA_RPM_OVN_VERSION=26.03
 
 RUN cat /tmp/kolla_bashrc >> /etc/bashrc \
     && sed -i 's|^\(override_install_langs=.*\)|# \1|' /etc/dnf/dnf.conf
@@ -247,7 +247,6 @@ COPY apt_preferences /etc/apt/preferences.d/kolla-custom
    {'name': 'docker-ce', 'url': 'https://download.docker.com/linux/debian/gpg'},
    {'name': 'fluentd', 'url': 'https://fluentd.cdn.cncf.io/GPG-KEY-fluent-package'},
    {'name': 'grafana', 'url': 'https://rpm.grafana.com/gpg.key'},
-   {'name': 'influxdb', 'url': 'https://repos.influxdata.com/influxdata-archive.key'},
    {'name': 'mariadb', 'url': 'https://downloads.mariadb.com/MariaDB/mariadb-keyring-2019.gpg', 'type': 'gpg'},
    {'name': 'opensearch', 'url': 'https://artifacts.opensearch.org/publickeys/opensearch-release.pgp'},
    {'name': 'proxysql', 'url': 'https://repo.proxysql.com/ProxySQL/proxysql-3.0.x/repo_pub_key'},
@@ -304,7 +303,6 @@ COPY set_configs.py /usr/local/bin/kolla_set_configs
 COPY start.sh /usr/local/bin/kolla_start
 COPY copy_cacerts.sh /usr/local/bin/kolla_copy_cacerts
 COPY install_projects.sh /usr/local/bin/kolla_install_projects
-COPY httpd_setup.sh /usr/local/bin/kolla_httpd_setup
 COPY kolla_patch.sh /usr/local/bin/kolla_patch
 COPY sudoers /etc/sudoers
 
@@ -327,7 +325,7 @@ RUN touch /usr/local/bin/kolla_extend_start \
                  /usr/local/bin/kolla_copy_cacerts \
                  /usr/local/bin/kolla_install_projects \
                  /usr/local/bin/kolla_patch \
-    && chmod 644 /usr/local/bin/kolla_extend_start /usr/local/bin/kolla_httpd_setup \
+    && chmod 644 /usr/local/bin/kolla_extend_start \
     && chmod 440 /etc/sudoers \
     && mkdir -p /var/log/kolla \
     && chown :kolla /var/log/kolla \
