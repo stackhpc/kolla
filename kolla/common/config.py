@@ -38,7 +38,7 @@ DISTRO_PRETTY_NAME = {
     'ubuntu': 'Ubuntu 24.04.* LTS',
 }
 
-OPENSTACK_RELEASE = '2026.1'
+OPENSTACK_RELEASE = 'master'
 OPENSTACK_RELEASE_CODENAME = 'Gazpacho'
 
 # TODO(mandre) check for file integrity instead of downloading from an HTTPS
@@ -88,6 +88,7 @@ _PROFILE_OPTS = [
                     'designate',
                     'gnocchi',
                     'ironic',
+                    'kerbside',
                     'magnum',
                     'manila',
                     'masakari',
