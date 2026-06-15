@@ -10,6 +10,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
+import tempfile
+
+import yaml
+
 from kolla.template import methods
 from kolla.tests import base
 
@@ -30,7 +35,9 @@ class MethodsTest(base.TestCase):
         }
 
         result = methods.handle_repos(template_vars, ["grafana"], "enable")
-        expectCmd = "RUN echo '[grafana]' "
+        expectCmd = "RUN grep -rlF '[grafana]' /etc/yum.repos.d/ "
+        expectCmd += "2>/dev/null | xargs -r rm -f && "
+        expectCmd += "echo '[grafana]' "
         expectCmd += ">/etc/yum.repos.d/grafana.repo && "
         expectCmd += "echo 'name=grafana' "
         expectCmd += ">>/etc/yum.repos.d/grafana.repo && "
@@ -42,7 +49,7 @@ class MethodsTest(base.TestCase):
         expectCmd += ">>/etc/yum.repos.d/grafana.repo"
         self.assertEqual(expectCmd, result)
 
-    def test_enable_repos_centos_metalink(self):
+    def test_enable_repos_centos_ceph_distro(self):
         template_vars = {
             'base_arch': 'x86_64',
             'base_distro': 'centos',
@@ -50,16 +57,7 @@ class MethodsTest(base.TestCase):
         }
 
         result = methods.handle_repos(template_vars, ["ceph"], "enable")
-        expectCmd = "RUN echo '[centos-ceph-squid]' "
-        expectCmd += ">/etc/yum.repos.d/ceph.repo && "
-        expectCmd += "echo 'name=centos-ceph-squid' "
-        expectCmd += ">>/etc/yum.repos.d/ceph.repo && "
-        expectCmd += "echo 'enabled=1' "
-        expectCmd += ">>/etc/yum.repos.d/ceph.repo && "
-        expectCmd += "echo 'gpgkey=https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Storage' "  # noqa: E501
-        expectCmd += ">>/etc/yum.repos.d/ceph.repo && "
-        expectCmd += "echo 'metalink=https://mirrors.centos.org/metalink?repo=centos-storage-sig-ceph-squid-10-stream&arch=$basearch' "  # noqa: E501
-        expectCmd += ">>/etc/yum.repos.d/ceph.repo"
+        expectCmd = "RUN dnf config-manager --enable centos-ceph-squid || true"
         self.assertEqual(expectCmd, result)
 
     def test_enable_repos_centos_arch(self):
@@ -70,7 +68,9 @@ class MethodsTest(base.TestCase):
         }
 
         result = methods.handle_repos(template_vars, ["grafana"], "enable")
-        expectCmd = "RUN echo '[grafana]' "
+        expectCmd = "RUN grep -rlF '[grafana]' /etc/yum.repos.d/ "
+        expectCmd += "2>/dev/null | xargs -r rm -f && "
+        expectCmd += "echo '[grafana]' "
         expectCmd += ">/etc/yum.repos.d/grafana.repo && "
         expectCmd += "echo 'name=grafana' "
         expectCmd += ">>/etc/yum.repos.d/grafana.repo && "
@@ -91,7 +91,9 @@ class MethodsTest(base.TestCase):
 
         result = methods.handle_repos(template_vars,
                                       ["grafana", "rabbitmq"], "enable")
-        expectCmd = "RUN echo '[grafana]' "
+        expectCmd = "RUN grep -rlF '[grafana]' /etc/yum.repos.d/ "
+        expectCmd += "2>/dev/null | xargs -r rm -f && "
+        expectCmd += "echo '[grafana]' "
         expectCmd += ">/etc/yum.repos.d/grafana.repo && "
         expectCmd += "echo 'name=grafana' "
         expectCmd += ">>/etc/yum.repos.d/grafana.repo && "
@@ -102,6 +104,8 @@ class MethodsTest(base.TestCase):
         expectCmd += "echo 'baseurl=https://rpm.grafana.com' "
         expectCmd += ">>/etc/yum.repos.d/grafana.repo && "
 
+        expectCmd += "grep -rlF '[rabbitmq_rabbitmq-server]' "
+        expectCmd += "/etc/yum.repos.d/ 2>/dev/null | xargs -r rm -f && "
         expectCmd += "echo '[rabbitmq_rabbitmq-server]' "
         expectCmd += ">/etc/yum.repos.d/rabbitmq.repo && "
         expectCmd += "echo 'name=rabbitmq_rabbitmq-server' "
@@ -151,6 +155,8 @@ class MethodsTest(base.TestCase):
         result = methods.handle_repos(template_vars,
                                       ['crb', 'grafana'], 'enable')
         expectCmd = "RUN dnf config-manager --enable crb || true && "
+        expectCmd += "grep -rlF '[grafana]' /etc/yum.repos.d/ "
+        expectCmd += "2>/dev/null | xargs -r rm -f && "
         expectCmd += "echo '[grafana]' "
         expectCmd += ">/etc/yum.repos.d/grafana.repo && "
         expectCmd += "echo 'name=grafana' "
@@ -168,6 +174,7 @@ class MethodsTest(base.TestCase):
             "base_arch": "x86_64",
             "base_distro": "debian",
             "base_package_type": "deb",
+            "openstack_release_codename": "Gazpacho",
         }
 
         result = methods.handle_repos(template_vars, ["grafana"], "enable")
@@ -188,6 +195,7 @@ class MethodsTest(base.TestCase):
             'base_arch': 'aarch64',
             'base_distro': 'debian',
             'base_package_type': 'deb',
+            'openstack_release_codename': 'Gazpacho',
         }
 
         result = methods.handle_repos(template_vars, ["rabbitmq"], "enable")
@@ -220,6 +228,7 @@ class MethodsTest(base.TestCase):
             'base_arch': 'x86_64',
             'base_distro': 'debian',
             'base_package_type': 'deb',
+            'openstack_release_codename': 'Gazpacho',
         }
 
         result = methods.handle_repos(template_vars,
@@ -273,3 +282,192 @@ class MethodsTest(base.TestCase):
                                r'repositories',
                                methods.handle_repos, template_vars, 'grafana',
                                'disable')
+
+    def test_enable_repos_debian_distro_noop(self):
+        template_vars = {
+            'base_arch': 'x86_64',
+            'base_distro': 'debian',
+            'base_package_type': 'deb',
+        }
+
+        result = methods.handle_repos(template_vars, ['debian'], 'enable')
+        self.assertEqual('', result)
+
+    def test_enable_repos_deb_absolute_signed_by(self):
+        repos = {'debian': {'test-repo': {
+            'url': 'http://example.com/debian',
+            'suite': 'trixie',
+            'component': 'main',
+            'gpg_key': '/usr/share/keyrings/test.gpg',
+        }}}
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml',
+                                         delete=False) as f:
+            yaml.dump(repos, f)
+            fname = f.name
+        try:
+            template_vars = {
+                'base_arch': 'x86_64',
+                'base_distro': 'debian',
+                'base_package_type': 'deb',
+                'openstack_release_codename': 'Gazpacho',
+                'repos_yaml': fname,
+            }
+            result = methods.handle_repos(
+                template_vars, ['test-repo'], 'enable')
+            self.assertIn(
+                'Signed-By: /usr/share/keyrings/test.gpg', result)
+        finally:
+            os.unlink(fname)
+
+    def test_repos_yaml_merge_keeps_default_repos(self):
+        repos = {'rocky': {'baseos': {
+            'name': 'baseos',
+            'baseurl': 'http://mirror.example.com/rocky/10/BaseOS/$basearch/',
+            'gpgkey': 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10',
+        }}}
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml',
+                                         delete=False) as f:
+            yaml.dump(repos, f)
+            fname = f.name
+        try:
+            template_vars = {
+                'base_arch': 'x86_64',
+                'base_distro': 'centos',
+                'base_package_type': 'rpm',
+                'repos_yaml': fname,
+            }
+            result = methods.handle_repos(
+                template_vars, ['grafana'], 'enable')
+            self.assertIn('grafana', result)
+        finally:
+            os.unlink(fname)
+
+    def test_repos_yaml_distro_override_validation(self):
+        repos = {'rocky': {
+            'baseos': {
+                'name': 'baseos',
+                'baseurl': 'http://mirror.example.com/rocky/10/BaseOS/',
+                'gpgkey': 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10',
+            },
+            'appstream': {
+                'name': 'appstream',
+                'baseurl': 'http://mirror.example.com/rocky/10/AppStream/',
+                'gpgkey': 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10',
+            },
+        }}
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml',
+                                         delete=False) as f:
+            yaml.dump(repos, f)
+            fname = f.name
+        try:
+            template_vars = {
+                'base_arch': 'x86_64',
+                'base_distro': 'rocky',
+                'base_package_type': 'rpm',
+                'repos_yaml': fname,
+            }
+            self.assertRaises(ValueError, methods.handle_repos,
+                              template_vars, ['baseos'], 'enable')
+        finally:
+            os.unlink(fname)
+
+    def test_enable_repos_rpm_missing_url_raises(self):
+        repos = {'rpm': {'test-repo': {'name': 'test-repo'}}}
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml',
+                                         delete=False) as f:
+            yaml.dump(repos, f)
+            fname = f.name
+        try:
+            template_vars = {
+                'base_arch': 'x86_64',
+                'base_distro': 'centos',
+                'base_package_type': 'rpm',
+                'repos_yaml': fname,
+            }
+            self.assertRaises(ValueError, methods.handle_repos,
+                              template_vars, ['test-repo'], 'enable')
+        finally:
+            os.unlink(fname)
+
+    def test_enable_repos_rpm_missing_gpgkey_raises(self):
+        repos = {'rpm': {'test-repo': {
+            'name': 'test-repo',
+            'baseurl': 'http://mirror.example.com/repo/',
+        }}}
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml',
+                                         delete=False) as f:
+            yaml.dump(repos, f)
+            fname = f.name
+        try:
+            template_vars = {
+                'base_arch': 'x86_64',
+                'base_distro': 'centos',
+                'base_package_type': 'rpm',
+                'repos_yaml': fname,
+            }
+            self.assertRaises(ValueError, methods.handle_repos,
+                              template_vars, ['test-repo'], 'enable')
+        finally:
+            os.unlink(fname)
+
+    def test_repos_yaml_rpm_section_override_not_blocked_by_distro_section(self):
+        """Overriding distro repos in 'rpm' section must not be undone by the
+        more-specific distro section merging distro:True back on top."""
+        repos = {'rpm': {
+            'baseos': {
+                'name': 'baseos',
+                'baseurl': 'http://mirror.example.com/centos/10/BaseOS/$basearch/',
+                'gpgkey': 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial',
+            },
+            'appstream': {
+                'name': 'appstream',
+                'baseurl': 'http://mirror.example.com/centos/10/AppStream/$basearch/',
+                'gpgkey': 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial',
+            },
+            'crb': {
+                'name': 'crb',
+                'baseurl': 'http://mirror.example.com/centos/10/CRB/$basearch/',
+                'gpgkey': 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial',
+            },
+        }}
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml',
+                                         delete=False) as f:
+            yaml.dump(repos, f)
+            fname = f.name
+        try:
+            template_vars = {
+                'base_arch': 'x86_64',
+                'base_distro': 'centos',
+                'base_package_type': 'rpm',
+                'repos_yaml': fname,
+            }
+            result = methods.handle_repos(
+                template_vars, ['baseos', 'appstream', 'crb'], 'enable')
+            self.assertIn('mirror.example.com', result)
+        finally:
+            os.unlink(fname)
+
+    def test_enable_repos_openstack_release_codename_substitution(self):
+        repos = {'ubuntu': {'ubuntu-cloud-archive': {
+            'url': 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
+            'suite': 'noble-updates/{openstack_release_codename}',
+            'component': 'main',
+            'gpg_key': '/usr/share/keyrings/ubuntu-cloud-keyring.gpg',
+        }}}
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml',
+                                         delete=False) as f:
+            yaml.dump(repos, f)
+            fname = f.name
+        try:
+            template_vars = {
+                'base_arch': 'x86_64',
+                'base_distro': 'ubuntu',
+                'base_package_type': 'deb',
+                'openstack_release_codename': 'Gazpacho',
+                'repos_yaml': fname,
+            }
+            result = methods.handle_repos(
+                template_vars, ['ubuntu-cloud-archive'], 'enable')
+            self.assertIn('noble-updates/gazpacho', result)
+        finally:
+            os.unlink(fname)
