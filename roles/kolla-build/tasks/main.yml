@@ -8,15 +8,6 @@
     group: zuul
   when: kolla_build_repos_yaml_path | length > 0
 
-- name: Template template_overrides.j2
-  ansible.builtin.template:
-    src: "{{ kolla_build_template_overrides_path }}"
-    dest: /etc/kolla/template_overrides.j2
-    mode: "0660"
-    owner: zuul
-    group: zuul
-  when: kolla_build_template_overrides_path | length > 0
-
 - name: Run kolla-build to template out dockerfiles
   ansible.builtin.command:
     cmd: >-
