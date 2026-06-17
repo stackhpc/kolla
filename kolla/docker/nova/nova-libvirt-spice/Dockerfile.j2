@@ -13,7 +13,20 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 
 {% if base_package_type == 'rpm' %}
 
-{{ macros.enable_extra_repos(['ceph', 'crb', 'epel', 'openvswitch']) }}
+    {% set nova_libvirt_extra_repos = ['ceph', 'crb', 'epel', 'openvswitch'] %}
+    {% if base_distro == 'rocky' %}
+        {#
+            The stock Rocky qemu-kvm has SPICE compiled out. To enable
+            Kerbside and the nova ``spice-direct`` console we therefore
+            layer the ligenix COPR in so that qemu-kvm and spice-server
+            are available with SPICE re-enabled. The repo definition
+            lives in kolla/template/repos.yaml so deployers can override
+            it like any other extra repo.
+        #}
+        {% set nova_libvirt_extra_repos = nova_libvirt_extra_repos + ['ligenix-qemu-spice'] %}
+    {% endif %}
+
+{{ macros.enable_extra_repos(nova_libvirt_extra_repos) }}
 
     {% set nova_libvirt_packages = [
         'ceph-common',
@@ -38,6 +51,13 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
     {% elif base_arch == 'aarch64' %}
         {% set nova_libvirt_packages = nova_libvirt_packages + [
             'edk2-aarch64'
+        ] %}
+    {% endif %}
+
+    {% if use_ligenix_qemu | default(false) and base_distro == 'rocky' %}
+        {% set nova_libvirt_packages = nova_libvirt_packages + [
+            'qemu-kvm-ui-spice',
+            'spice-server',
         ] %}
     {% endif %}
 
