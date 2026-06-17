@@ -410,6 +410,214 @@ class MethodsTest(base.TestCase):
         finally:
             os.unlink(fname)
 
+    def test_handle_repos_deb_build_only_backup(self):
+        repos = {'debian': {'build-only-mirror': {
+            'build_only': True,
+            'url': 'http://mirror.example.com/debian',
+            'suite': 'trixie',
+            'component': 'main',
+            'gpg_key': '/usr/share/keyrings/debian-archive-keyring.gpg',
+        }}}
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml',
+                                         delete=False) as f:
+            yaml.dump(repos, f)
+            fname = f.name
+        try:
+            template_vars = {
+                'base_arch': 'x86_64',
+                'base_distro': 'debian',
+                'base_package_type': 'deb',
+                'openstack_release_codename': 'Gazpacho',
+                'repos_yaml': fname,
+            }
+            result = methods.handle_repos(
+                template_vars, ['build-only-mirror'], 'enable')
+            self.assertIn('mkdir -p /tmp/kolla-repos-backup', result)
+            self.assertIn(
+                'cp /etc/apt/sources.list.d/build-only-mirror.sources'
+                ' /tmp/kolla-repos-backup/build-only-mirror.sources',
+                result)
+            self.assertIn(
+                'touch /tmp/kolla-repos-backup/build-only-mirror.enabled',
+                result)
+            # backup must precede the actual repo write
+            self.assertLess(
+                result.index('cp /etc/apt/sources.list.d/build-only-mirror'),
+                result.index("echo 'Uris:"))
+        finally:
+            os.unlink(fname)
+
+    def test_handle_repos_rpm_build_only_backup(self):
+        repos = {'rpm': {'build-only-mirror': {
+            'build_only': True,
+            'name': 'build-only-mirror',
+            'baseurl': 'http://mirror.example.com/rpm/',
+            'gpgkey': 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10',
+        }}}
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml',
+                                         delete=False) as f:
+            yaml.dump(repos, f)
+            fname = f.name
+        try:
+            template_vars = {
+                'base_arch': 'x86_64',
+                'base_distro': 'centos',
+                'base_package_type': 'rpm',
+                'repos_yaml': fname,
+            }
+            result = methods.handle_repos(
+                template_vars, ['build-only-mirror'], 'enable')
+            self.assertIn('mkdir -p /tmp/kolla-repos-backup', result)
+            self.assertIn(
+                'cp /etc/yum.repos.d/build-only-mirror.repo'
+                ' /tmp/kolla-repos-backup/build-only-mirror.repo',
+                result)
+            self.assertIn(
+                'touch /tmp/kolla-repos-backup/build-only-mirror.enabled',
+                result)
+            # backup must precede DNF_REMOVE_EXISTING
+            self.assertLess(
+                result.index(
+                    'cp /etc/yum.repos.d/build-only-mirror.repo'),
+                result.index('grep -rlF'))
+        finally:
+            os.unlink(fname)
+
+    def test_handle_repos_build_only_no_double_backup(self):
+        """Each distinct file is backed up exactly once per handle_repos."""
+        repos = {'debian': {
+            'mirror-a': {
+                'build_only': True,
+                'url': 'http://mirror.example.com/a',
+                'suite': 'trixie',
+                'component': 'main',
+                'gpg_key': '/usr/share/keyrings/debian-archive-keyring.gpg',
+            },
+            'mirror-b': {
+                'build_only': True,
+                'url': 'http://mirror.example.com/b',
+                'suite': 'trixie',
+                'component': 'main',
+                'gpg_key': '/usr/share/keyrings/debian-archive-keyring.gpg',
+            },
+        }}
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml',
+                                         delete=False) as f:
+            yaml.dump(repos, f)
+            fname = f.name
+        try:
+            template_vars = {
+                'base_arch': 'x86_64',
+                'base_distro': 'debian',
+                'base_package_type': 'deb',
+                'openstack_release_codename': 'Gazpacho',
+                'repos_yaml': fname,
+            }
+            result = methods.handle_repos(
+                template_vars, ['mirror-a', 'mirror-b'], 'enable')
+            self.assertEqual(
+                1,
+                result.count(
+                    'cp /etc/apt/sources.list.d/mirror-a.sources'
+                    ' /tmp/kolla-repos-backup/mirror-a.sources'))
+            self.assertEqual(
+                1,
+                result.count(
+                    'cp /etc/apt/sources.list.d/mirror-b.sources'
+                    ' /tmp/kolla-repos-backup/mirror-b.sources'))
+        finally:
+            os.unlink(fname)
+
+    def test_handle_repos_without_build_only_no_backup(self):
+        template_vars = {
+            'base_arch': 'x86_64',
+            'base_distro': 'debian',
+            'base_package_type': 'deb',
+            'openstack_release_codename': 'Gazpacho',
+        }
+        result = methods.handle_repos(template_vars, ['grafana'], 'enable')
+        self.assertNotIn('kolla-repos-backup', result)
+
+    def test_get_cleanup_commands_deb(self):
+        repos = {'debian': {'build-only-mirror': {
+            'build_only': True,
+            'url': 'http://mirror.example.com/debian',
+            'suite': 'trixie',
+            'component': 'main',
+            'gpg_key': '/usr/share/keyrings/debian-archive-keyring.gpg',
+        }}}
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml',
+                                         delete=False) as f:
+            yaml.dump(repos, f)
+            fname = f.name
+        try:
+            result = methods.get_cleanup_commands(
+                fname, 'deb', 'debian', 'x86_64')
+            self.assertTrue(result.startswith('RUN '))
+            self.assertIn(
+                '[ -f /tmp/kolla-repos-backup/build-only-mirror.enabled ]',
+                result)
+            self.assertIn(
+                'mv /tmp/kolla-repos-backup/build-only-mirror.sources'
+                ' /etc/apt/sources.list.d/build-only-mirror.sources',
+                result)
+            self.assertIn(
+                'rm -f /etc/apt/sources.list.d/build-only-mirror.sources',
+                result)
+            self.assertIn('rm -rf /tmp/kolla-repos-backup', result)
+        finally:
+            os.unlink(fname)
+
+    def test_get_cleanup_commands_rpm(self):
+        repos = {'rpm': {'build-only-mirror': {
+            'build_only': True,
+            'name': 'build-only-mirror',
+            'baseurl': 'http://mirror.example.com/',
+            'gpgkey': 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10',
+        }}}
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml',
+                                         delete=False) as f:
+            yaml.dump(repos, f)
+            fname = f.name
+        try:
+            result = methods.get_cleanup_commands(
+                fname, 'rpm', 'centos', 'x86_64')
+            self.assertTrue(result.startswith('RUN '))
+            self.assertIn(
+                '[ -f /tmp/kolla-repos-backup/build-only-mirror.enabled ]',
+                result)
+            self.assertIn(
+                'mv /tmp/kolla-repos-backup/build-only-mirror.repo'
+                ' /etc/yum.repos.d/build-only-mirror.repo',
+                result)
+            self.assertIn(
+                'rm -f /etc/yum.repos.d/build-only-mirror.repo',
+                result)
+            self.assertIn('rm -rf /tmp/kolla-repos-backup', result)
+        finally:
+            os.unlink(fname)
+
+    def test_get_cleanup_commands_empty_without_build_only(self):
+        result = methods.get_cleanup_commands(None, 'deb', 'debian', 'x86_64')
+        self.assertEqual('', result)
+
+    def test_get_cleanup_commands_skips_distro_repos(self):
+        """distro: True repos are a no-op in handle_repos."""
+        repos = {'debian': {'debian': {
+            'build_only': True,
+            'distro': True,
+        }}}
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml',
+                                         delete=False) as f:
+            yaml.dump(repos, f)
+            fname = f.name
+        try:
+            result = methods.get_cleanup_commands(
+                fname, 'deb', 'debian', 'x86_64')
+            self.assertEqual('', result)
+        finally:
+            os.unlink(fname)
+
     def test_repos_yaml_rpm_section_override_not_blocked_by_distro_section(self):
         """Overriding distro repos in 'rpm' section must not be undone by the
         more-specific distro section merging distro:True back on top."""

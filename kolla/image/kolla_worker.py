@@ -326,6 +326,7 @@ class KollaWorker(object):
         return {
             'debian_package_install': jinja_methods.debian_package_install,
             'handle_repos': jinja_methods.handle_repos,
+            'cleanup_repos': jinja_methods.cleanup_repos,
             'raise_error': jinja_methods.raise_error,
         }
 
@@ -359,6 +360,12 @@ class KollaWorker(object):
             version.version_info.cached_version_string()
         supported_distro_name = common_config.DISTRO_PRETTY_NAME.get(
             self.base)
+        repos_cleanup_cmd = jinja_methods.get_cleanup_commands(
+            self.conf.repos_yaml,
+            self.base_package_type,
+            self.base,
+            self.base_arch,
+        )
         for path in self.docker_build_paths:
             template_name = "Dockerfile.j2"
             image_name = path.split("/")[-1]
@@ -426,6 +433,15 @@ class KollaWorker(object):
                     if line.startswith('FROM '):
                         lines[i + 1:i + 1] = pip_args
                         break
+                content = '\n'.join(lines)
+            if repos_cleanup_cmd:
+                lines = content.split('\n')
+                for i in range(len(lines) - 1, -1, -1):
+                    if lines[i].startswith('CMD '):
+                        lines.insert(i, repos_cleanup_cmd)
+                        break
+                else:
+                    lines.append(repos_cleanup_cmd)
                 content = '\n'.join(lines)
             content_path = os.path.join(path, 'Dockerfile')
             with open(content_path, 'w') as f:
