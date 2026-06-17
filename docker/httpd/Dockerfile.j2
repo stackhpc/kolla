@@ -7,6 +7,8 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 
 {% import "macros.j2" as macros with context %}
 
+{{ macros.kolla_enable_base_repos() }}
+
 {% if base_package_type == 'rpm' %}
 {# NOTE(mnasiadka): mod_auth_mellon missing in CentOS 10 Stream - temporarily from Kolla COPR #}
 {{ macros.enable_extra_repos(['epel', 'kolla_el10']) }}
@@ -38,6 +40,8 @@ RUN echo > /etc/apache2/ports.conf
 COPY extend_start.sh /usr/local/bin/kolla_extend_start
 COPY httpd_setup.sh /usr/local/bin/kolla_httpd_setup
 RUN chmod 644 /usr/local/bin/kolla_extend_start /usr/local/bin/kolla_httpd_setup
+{{ macros.kolla_patch_sources() }}
 USER root
 
 {% block apache_footer %}{% endblock %}
+{{ macros.kolla_cleanup_repos() }}
