@@ -171,6 +171,14 @@ _CLI_OPTS = [
                help='The Docker namespace name'),
     cfg.StrOpt('network_mode', default='host',
                help='The network mode for Docker build. Example: host'),
+    cfg.BoolOpt('buildkit', default=True,
+                help='Use Docker BuildKit (docker buildx build) when building '
+                     'images. Requires the docker-buildx-plugin to be '
+                     'installed. Only valid with --engine docker.'),
+    cfg.StrOpt('buildkit-builder', default=None,
+               help='Name of the docker buildx builder instance to use. '
+                    'If unset the currently active builder is used. '
+                    'Only valid with --buildkit.'),
     cfg.BoolOpt('cache', default=True,
                 help='Use the container engine cache when building'),
     cfg.StrOpt('patches-path', default=None,
@@ -256,7 +264,7 @@ _CLI_OPTS = [
     cfg.StrOpt('image-name-prefix', default='',
                help='Prefix prepended to image names'),
     cfg.StrOpt('repos-yaml', default='',
-               help='Path to alternative repos.yaml file'),
+               help='Path to repos.yaml override file'),
     cfg.StrOpt('engine', default='docker', choices=['docker', 'podman'],
                help='Container engine to build images on.'),
     cfg.StrOpt('podman_base_url', default='unix:///run/podman/podman.sock',
