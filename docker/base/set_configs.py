@@ -258,7 +258,7 @@ class ConfigFile(object):
 
 def validate_config(config):
     required_keys = {'source', 'dest'}
-    required_dir_keys = {'path', 'owner', 'perm'}
+    required_path_keys = {'path', 'owner', 'perm'}
 
     if 'command' not in config:
         raise InvalidConfig('Config is missing required "command" key')
@@ -274,11 +274,24 @@ def validate_config(config):
             raise InvalidConfig(
                 'Config needs preserve_properties or owner and perm')
 
-    for data in config.get('directories', list()):
-        if not set(data.keys()) >= required_dir_keys:
-            message = ('directories config is missing required keys: %s'
-                       % (required_dir_keys - set(data.keys())))
-            raise InvalidConfig(message)
+    for section in ('directories', 'files'):
+        for data in config.get(section, list()):
+            missing = required_path_keys - set(data.keys())
+            if missing:
+                raise InvalidConfig(
+                    '%s config is missing required keys: %s'
+                    % (section, missing))
+
+            for key in required_path_keys:
+                if data.get(key) is None:
+                    raise InvalidConfig(
+                        '%s config key "%s" must not be null'
+                        % (section, key))
+
+            if glob.has_magic(data['path']):
+                raise InvalidConfig(
+                    '%s config does not support glob paths: %s'
+                    % (section, data['path']))
 
 
 def validate_source(data):
@@ -375,6 +388,28 @@ def create_directories(config):
         handle_permissions({'permissions': [data]})
 
 
+def create_files(config):
+    if 'files' not in config:
+        return
+    LOG.info('Creating files')
+    for data in config['files']:
+        path = data['path']
+        if os.path.islink(path):
+            raise OSError(
+                "Path is a symbolic link, expected regular file (%s)" % path)
+        if os.path.isdir(path):
+            raise OSError(
+                "Path is a directory, expected file (%s)" % path)
+        parent = os.path.dirname(path)
+        if parent and not os.path.isdir(parent):
+            raise OSError(
+                "Parent directory does not exist (%s)" % parent)
+        if not os.path.exists(path):
+            with open(path, 'a'):
+                pass
+        handle_permissions({'permissions': [data]})
+
+
 def user_group(owner):
     if ':' in owner:
         user, group = owner.split(':', 1)
@@ -410,11 +445,20 @@ def handle_permissions(config):
                               path, uid, gid)
 
             if perm:
-                # NOTE(Jeffrey4l): py3 need '0oXXX' format for octal literals,
-                # and py2 support such format too.
-                if len(perm) == 4 and perm[1] != 'o':
-                    perm = ''.join([perm[:1], 'o', perm[1:]])
-                perm = int(perm, base=0)
+                # Accept valid UNIX permission notation
+                # (e.g. 644, 0600, 1777, 2755)
+                # or equivalent Python octal literals
+                # (e.g. 0o644, 0o1777, 0o2755).
+                if re.fullmatch(r'[0-7]{3,4}', perm):
+                    perm = int(perm, 8)
+                elif re.fullmatch(r'0o[0-7]{3,4}', perm):
+                    perm = int(perm, 0)
+                else:
+                    raise ValueError(
+                        f"Invalid permission '{perm}'. Expected a valid UNIX "
+                        "permission (e.g. 644, 0600, 2755) or a Python octal "
+                        "literal (e.g. 0o644, 0o0600, 0o2755)."
+                    )
 
                 # Ensure execute bit on directory if read bit is set
                 if os.path.isdir(path):
@@ -602,6 +646,7 @@ def execute_config_strategy(config):
     LOG.info("Kolla config strategy set to: %s", config_strategy)
     if config_strategy == "COPY_ALWAYS":
         create_directories(config)
+        create_files(config)
         handle_defaults(config)
         copy_config(config)
         handle_permissions(config)
@@ -612,6 +657,7 @@ def execute_config_strategy(config):
                 exit_code=0)
         else:
             create_directories(config)
+            create_files(config)
             handle_defaults(config)
             copy_config(config)
             handle_permissions(config)
