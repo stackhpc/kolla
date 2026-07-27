@@ -40,7 +40,7 @@ COPY apt_preferences_rabbitmq.{{ base_distro }} /etc/apt/preferences.d/rabbitmq
         'openvswitch${KOLLA_RPM_OVS_VERSION}',
         'python3',
         'python3-devel',
-        'rabbitmq-server-4.2.*'
+        'rabbitmq-server-4.3.*'
     ] %}
 
 {% elif base_package_type == 'deb' %}
@@ -82,7 +82,7 @@ RUN case "$UPPER_CONSTRAINTS_FILE" in \
 ENV PATH {{ venv_path }}/bin:$PATH
 
 {% set kolla_toolbox_pip_packages = [
-        'ansible-core==2.20.*',
+        'ansible-core==2.21.*',
         'ansible-runner',
         'cmd2',
         'openstacksdk',
