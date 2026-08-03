@@ -2,14 +2,12 @@
 {% if base_distro == 'debian' %}
 debian:
   debian:
-    build_only: true
     component: "main"
     gpg_key: "/usr/share/keyrings/debian-archive-keyring.gpg"
     suite: "trixie trixie-updates trixie-backports"
     trusted: True
     url: "http://{{ nodepool_mirror_host }}/debian"
   debian-security:
-    build_only: true
     component: "main"
     gpg_key: "/usr/share/keyrings/debian-archive-keyring.gpg"
     suite: "trixie-security"
@@ -32,21 +30,18 @@ rocky:
 {% elif base_distro == 'ubuntu' %}
 ubuntu:
   ubuntu:
-    build_only: true
     component: "main universe"
     gpg_key: "/usr/share/keyrings/ubuntu-archive-keyring.gpg"
     suite: "noble noble-updates noble-backports"
     trusted: True
     url: "http://{{ nodepool_mirror_host }}/ubuntu/"
   ubuntu-security:
-    build_only: true
     component: "main universe"
     gpg_key: "/usr/share/keyrings/ubuntu-archive-keyring.gpg"
     suite: "noble-security"
     trusted: True
     url: "http://{{ nodepool_mirror_host }}/ubuntu/"
   ubuntu-cloud-archive:
-    build_only: true
     component: "main"
     gpg_key: "/usr/share/keyrings/ubuntu-cloud-keyring.gpg"
     suite: "noble-updates/gazpacho"
@@ -54,14 +49,12 @@ ubuntu:
     url: "http://{{ nodepool_mirror_host }}/ubuntu-cloud-archive"
 ubuntu-aarch64:
   ubuntu:
-    build_only: true
     component: "main universe"
     gpg_key: "/usr/share/keyrings/ubuntu-archive-keyring.gpg"
     suite: "noble noble-updates noble-backports"
     trusted: True
     url: "http://{{ nodepool_mirror_host }}/ubuntu-ports/"
   ubuntu-security:
-    build_only: true
     component: "main universe"
     gpg_key: "/usr/share/keyrings/ubuntu-archive-keyring.gpg"
     suite: "noble-security"

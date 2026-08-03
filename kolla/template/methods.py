@@ -45,22 +45,6 @@ echo 'enabled=1' >>/etc/yum.repos.d/{repo}.repo"
 DNF_REPO_GPGCHECK = " && echo 'repo_gpgcheck={repo_gpgcheck}' \
 >>/etc/yum.repos.d/{repo}.repo"
 
-BACKUP_DIR = '/tmp/kolla-repos-backup'  # nosec B108
-APT_BACKUP = (
-    'mkdir -p {backup_dir}'
-    ' && cp /etc/apt/sources.list.d/{repo}.sources'
-    ' {backup_dir}/{repo}.sources 2>/dev/null || true'
-    ' && touch {backup_dir}/{repo}.enabled'
-    ' && '
-)
-RPM_BACKUP = (
-    'mkdir -p {backup_dir}'
-    ' && cp /etc/yum.repos.d/{repo}.repo'
-    ' {backup_dir}/{repo}.repo 2>/dev/null || true'
-    ' && touch {backup_dir}/{repo}.enabled'
-    ' && '
-)
-
 
 def debian_package_install(packages, clean_package_cache=True):
     """Jinja utility method for building debian-based package install command.
@@ -115,41 +99,6 @@ def debian_package_install(packages, clean_package_cache=True):
     return ' && '.join(cmds)
 
 
-def _load_repos(repos_yaml_override=None):
-    """Load default repos.yaml and merge an optional override file."""
-    default_repofile = os.path.dirname(
-        os.path.realpath(__file__)) + '/repos.yaml'
-    with open(default_repofile, 'r') as f:
-        repo_data = yaml.safe_load(f)
-
-    if repos_yaml_override:
-        with open(repos_yaml_override, 'r') as f:
-            for section, repos in yaml.safe_load(f).items():
-                if section in repo_data:
-                    repo_data[section].update(repos)
-                else:
-                    repo_data[section] = repos
-
-    return repo_data
-
-
-def _build_repo_list(repo_data, base_package_type, base_distro, base_arch):
-    """Flatten repo_data sections for the current distro/arch into one dict."""
-    result = {}
-    for section in (base_package_type, base_distro,
-                    '%s-%s' % (base_distro, base_arch)):
-        for repo_name, repo_info in repo_data.get(section, {}).items():
-            if repo_name in result:
-                merged = {**result[repo_name], **repo_info}
-                if any(k in merged for k in
-                       ('baseurl', 'metalink', 'mirrorlist', 'url')):
-                    merged.pop('distro', None)
-                result[repo_name] = merged
-            else:
-                result[repo_name] = repo_info
-    return result
-
-
 @pass_context
 def handle_repos(context, reponames, mode):
     """NOTE(hrw): we need to handle CentOS, Debian and Ubuntu with one macro.
@@ -163,9 +112,19 @@ def handle_repos(context, reponames, mode):
     if not isinstance(reponames, list):
         raise TypeError("First argument should be a list of repositories")
 
-    repos_yaml = context.get('repos_yaml')
-    repo_data = _load_repos(repos_yaml)
-    default_repo_data = _load_repos()
+    default_repofile = os.path.dirname(
+      os.path.realpath(__file__)) + '/repos.yaml'
+    with open(default_repofile, 'r') as repos_file:
+        repo_data = yaml.safe_load(repos_file)
+    default_repo_data = {k: dict(v) for k, v in repo_data.items()}
+
+    if context.get('repos_yaml'):
+        with open(context.get('repos_yaml'), 'r') as repos_file:
+            for section, repos in yaml.safe_load(repos_file).items():
+                if section in repo_data:
+                    repo_data[section].update(repos)
+                else:
+                    repo_data[section] = repos
 
     base_package_type = context.get('base_package_type')
     base_distro = context.get('base_distro')
@@ -174,18 +133,30 @@ def handle_repos(context, reponames, mode):
     openstack_release_codename = context.get('openstack_release_codename')
 
     commands = ''
-    backed_up_files = set()
+
+    def _build_repo_list(data):
+        result = {}
+        for section in (base_package_type, base_distro,
+                        '%s-%s' % (base_distro, base_arch)):
+            for repo_name, repo_info in data.get(section, {}).items():
+                if repo_name in result:
+                    merged = {**result[repo_name], **repo_info}
+                    if any(k in merged for k in
+                           ('baseurl', 'metalink', 'mirrorlist', 'url')):
+                        merged.pop('distro', None)
+                    result[repo_name] = merged
+                else:
+                    result[repo_name] = repo_info
+        return result
 
     try:
-        repo_list = _build_repo_list(
-            repo_data, base_package_type, base_distro, base_arch)
+        repo_list = _build_repo_list(repo_data)
     except KeyError:
         # NOTE(hrw): Fallback to distro list
         repo_list = repo_data[base_distro]
 
-    if base_package_type == 'rpm' and repos_yaml:
-        default_repo_list = _build_repo_list(
-            default_repo_data, base_package_type, base_distro, base_arch)
+    if base_package_type == 'rpm' and context.get('repos_yaml'):
+        default_repo_list = _build_repo_list(default_repo_data)
         distro_overridden = {r for r, d in repo_list.items()
                              if not d.get('distro')
                              and default_repo_list.get(r, {}).get('distro')}
@@ -213,12 +184,6 @@ def handle_repos(context, reponames, mode):
             if base_package_type == 'rpm':
                 if mode == 'enable':
                     if not _repo.get('distro'):
-                        if _repo.get('build_only'):
-                            repo_file = '/etc/yum.repos.d/{}.repo'.format(repo)
-                            if repo_file not in backed_up_files:
-                                commands += RPM_BACKUP.format(
-                                    backup_dir=BACKUP_DIR, repo=repo)
-                                backed_up_files.add(repo_file)
                         commands += DNF_REMOVE_EXISTING.format(
                             name=_repo['name'])
                         commands += " && "
@@ -279,13 +244,6 @@ def handle_repos(context, reponames, mode):
 
             elif base_package_type == "deb":
                 if mode == "enable" and not _repo.get('distro'):
-                    if _repo.get('build_only'):
-                        sources_file = (
-                            '/etc/apt/sources.list.d/{}.sources'.format(repo))
-                        if sources_file not in backed_up_files:
-                            commands += APT_BACKUP.format(
-                                backup_dir=BACKUP_DIR, repo=repo)
-                            backed_up_files.add(sources_file)
                     gpg_key = _repo['gpg_key']
                     signed_by = gpg_key if gpg_key.startswith('/') \
                         else '/etc/kolla/apt-keys/' + gpg_key
@@ -318,60 +276,6 @@ def handle_repos(context, reponames, mode):
         commands = "RUN %s" % commands
 
     return commands
-
-
-def get_cleanup_commands(repos_yaml, base_package_type, base_distro,
-                         base_arch):
-    """Return a RUN command string restoring or removing build_only repos.
-
-    Repos marked build_only: true are backed up before being overwritten in
-    handle_repos(). This function generates the matching restore commands so
-    that mirror URLs are not baked into the final image. Repos that had no
-    prior file (no backup exists) are deleted instead of restored.
-
-    Returns an empty string when there are no build_only repos.
-    """
-    repo_data = _load_repos(repos_yaml)
-    repo_list = _build_repo_list(
-        repo_data, base_package_type, base_distro, base_arch)
-
-    cleanup_cmds = []
-    for repo_name, repo_info in repo_list.items():
-        if not repo_info.get('build_only'):
-            continue
-        if base_package_type == 'rpm' and not repo_info.get('distro'):
-            cleanup_cmds.append(
-                '[ -f {backup_dir}/{repo}.enabled ]'
-                ' && ( mv {backup_dir}/{repo}.repo'
-                ' /etc/yum.repos.d/{repo}.repo 2>/dev/null'
-                ' || rm -f /etc/yum.repos.d/{repo}.repo )'
-                ' || true'.format(
-                    backup_dir=BACKUP_DIR, repo=repo_name))
-        elif base_package_type == 'deb' and not repo_info.get('distro'):
-            cleanup_cmds.append(
-                '[ -f {backup_dir}/{repo}.enabled ]'
-                ' && ( mv {backup_dir}/{repo}.sources'
-                ' /etc/apt/sources.list.d/{repo}.sources 2>/dev/null'
-                ' || rm -f /etc/apt/sources.list.d/{repo}.sources )'
-                ' || true'.format(
-                    backup_dir=BACKUP_DIR, repo=repo_name))
-
-    if not cleanup_cmds:
-        return ''
-
-    cleanup_cmds.append('rm -rf {}'.format(BACKUP_DIR))
-    return 'RUN ' + ' \\\n    && '.join(cleanup_cmds)
-
-
-@pass_context
-def cleanup_repos(context):
-    """Jinja2-callable wrapper around get_cleanup_commands()."""
-    return get_cleanup_commands(
-        context.get('repos_yaml'),
-        context.get('base_package_type'),
-        context.get('base_distro'),
-        context.get('base_arch'),
-    )
 
 
 def raise_error(msg: str) -> t.NoReturn:
