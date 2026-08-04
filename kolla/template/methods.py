@@ -54,9 +54,8 @@ APT_BACKUP = (
     ' && '
 )
 RPM_BACKUP = (
-    'mkdir -p {backup_dir}'
-    ' && cp /etc/yum.repos.d/{repo}.repo'
-    ' {backup_dir}/{repo}.repo 2>/dev/null || true'
+    'mkdir -p {backup_dir}/rpm'
+    ' && (grep -rlF \'[{name}]\' /etc/yum.repos.d/ 2>/dev/null | xargs -r -I % cp % {backup_dir}/rpm/ || true)'
     ' && touch {backup_dir}/{repo}.enabled'
     ' && '
 )
@@ -217,7 +216,7 @@ def handle_repos(context, reponames, mode):
                             repo_file = '/etc/yum.repos.d/{}.repo'.format(repo)
                             if repo_file not in backed_up_files:
                                 commands += RPM_BACKUP.format(
-                                    backup_dir=BACKUP_DIR, repo=repo)
+                                    backup_dir=BACKUP_DIR, repo=repo, name=_repo['name'])
                                 backed_up_files.add(repo_file)
                         commands += DNF_REMOVE_EXISTING.format(
                             name=_repo['name'])
@@ -342,9 +341,7 @@ def get_cleanup_commands(repos_yaml, base_package_type, base_distro,
         if base_package_type == 'rpm' and not repo_info.get('distro'):
             cleanup_cmds.append(
                 '[ -f {backup_dir}/{repo}.enabled ]'
-                ' && ( mv {backup_dir}/{repo}.repo'
-                ' /etc/yum.repos.d/{repo}.repo 2>/dev/null'
-                ' || rm -f /etc/yum.repos.d/{repo}.repo )'
+                ' && rm -f /etc/yum.repos.d/{repo}.repo'
                 ' || true'.format(
                     backup_dir=BACKUP_DIR, repo=repo_name))
         elif base_package_type == 'deb' and not repo_info.get('distro'):
@@ -358,6 +355,9 @@ def get_cleanup_commands(repos_yaml, base_package_type, base_distro,
 
     if not cleanup_cmds:
         return ''
+
+    if base_package_type == 'rpm':
+        cleanup_cmds.append('cp -a {backup_dir}/rpm/* /etc/yum.repos.d/ 2>/dev/null || true'.format(backup_dir=BACKUP_DIR))
 
     cleanup_cmds.append('rm -rf {}'.format(BACKUP_DIR))
     return 'RUN ' + ' \\\n    && '.join(cleanup_cmds)
