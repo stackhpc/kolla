@@ -372,9 +372,22 @@ verification purposes.
 Python packages build options
 -----------------------------
 
-The block ``base_pip_conf`` in the ``base`` Dockerfile can be used to provide
-the PyPI build customisation options via the standard environment variables
-like ``PIP_INDEX_URL``, ``PIP_TRUSTED_HOST``, etc.
+The PyPI mirror used during image builds can be configured directly in
+``kolla-build.conf``:
+
+.. path /etc/kolla/kolla-build.conf
+.. code-block:: ini
+
+   [DEFAULT]
+   pip_index_url = https://pypi.example.com/simple
+   pip_trusted_host = pypi.example.com
+   pip_extra_index_url = https://wheels.example.com/simple
+
+These options set the ``PIP_INDEX_URL``, ``PIP_TRUSTED_HOST``, and
+``PIP_EXTRA_INDEX_URL`` ARG variables in the base image via the
+``base_pip_conf`` Dockerfile block. The ``pip_extra_index_url`` option is
+optional. For further customisation, the block ``base_pip_conf`` can be
+overridden via the template_override mechanism.
 
 To override PYPI upper-constraints of all OpenStack images, you can
 define the source location of openstack-base. in ``kolla-build.conf``.
@@ -679,6 +692,143 @@ Can I use the ``--template-override`` option for custom templates? Yes!
 Custom repos
 ------------
 
+repos.yaml
+^^^^^^^^^^
+
+Kolla uses ``kolla/template/repos.yaml`` to define repositories used during
+image builds. Each entry is keyed by a logical name and contains the
+information needed to configure the repository.
+
+Repositories marked with ``distro: True`` are default repos that require no
+additional configuration. For RPM-based distros they are enabled via
+``dnf config-manager --enable``; for Debian-based distros they are a no-op
+as the sources are already provided by the base image. Examples include
+``crb``, ``extras``, and the base repos ``baseos`` and ``appstream`` for
+CentOS and Rocky Linux, as well as ``debian``, ``debian-security``,
+``ubuntu``, ``ubuntu-security``.
+
+Repositories without ``distro: True`` are fully templated into a new
+repository file and must provide at least one of ``baseurl``, ``metalink``,
+or ``mirrorlist`` (RPM), or ``url`` (Debian/Ubuntu).
+
+To override repositories (e.g. to point base repos at a local mirror),
+provide a custom ``repos.yaml`` via the ``--repos-yaml`` option and supply
+entries without ``distro: True`` and with the desired URL.
+
+Example for Rocky Linux:
+
+.. code-block:: yaml
+
+   rocky:
+     baseos:
+       name: "baseos"
+       baseurl: "https://my-mirror.example.com/rocky/10/BaseOS/$basearch/os/"
+       gpgkey: "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10"
+     appstream:
+       name: "appstream"
+       baseurl: "https://my-mirror.example.com/rocky/10/AppStream/$basearch/os/"
+       gpgkey: "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10"
+     crb:
+       name: "crb"
+       baseurl: "https://my-mirror.example.com/rocky/10/CRB/$basearch/os/"
+       gpgkey: "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10"
+
+Example for Debian:
+
+.. code-block:: yaml
+
+   debian:
+     debian:
+       component: "main"
+       gpg_key: "/usr/share/keyrings/debian-archive-keyring.gpg"
+       suite: "trixie trixie-updates trixie-backports"
+       url: "https://my-mirror.example.com/debian"
+     debian-security:
+       component: "main"
+       gpg_key: "/usr/share/keyrings/debian-archive-keyring.gpg"
+       suite: "trixie-security"
+       url: "https://my-mirror.example.com/debian-security"
+
+Example for Ubuntu:
+
+.. code-block:: yaml
+
+   ubuntu:
+     ubuntu:
+       component: "main universe"
+       gpg_key: "/usr/share/keyrings/ubuntu-archive-keyring.gpg"
+       suite: "noble noble-updates noble-backports"
+       url: "https://my-mirror.example.com/ubuntu/"
+     ubuntu-security:
+       component: "main universe"
+       gpg_key: "/usr/share/keyrings/ubuntu-archive-keyring.gpg"
+       suite: "noble-security"
+       url: "https://my-mirror.example.com/ubuntu/"
+
+.. code-block:: ini
+
+   repos_yaml = /path/to/custom-repos.yaml
+
+When overriding a base repo, any existing ``.repo`` file on the image
+containing that repository ID is automatically removed before the new one
+is created.
+
+Some distro repos share a single ``.repo`` file on disk (for example,
+``baseos``, ``appstream``, and ``crb`` all live in ``rocky.repo`` on Rocky
+Linux). These repos are annotated with a ``file_group`` field in
+``repos.yaml`` that names the shared file. If any repo in a ``file_group``
+is overridden, all other repos sharing that ``file_group`` must also be
+overridden — otherwise removing the shared file would silently disable them.
+Kolla validates this at build time and raises an error listing the missing
+overrides. For Rocky Linux this means overriding ``baseos`` or ``appstream``
+requires also overriding ``crb``.
+
+Build-time-only repositories
+""""""""""""""""""""""""""""
+
+Repositories that point to CI mirrors or other infrastructure-internal URLs
+should not be baked into the final image — they may be unreachable at runtime
+and would expose internal infrastructure details. Mark such repositories with
+``build_only: true`` to have kolla automatically restore or remove the
+repository file at the end of each image build.
+
+When ``build_only: true`` is set on a repository:
+
+* **Before** writing the mirror configuration, kolla backs up the existing
+  repository file (if any) to ``/tmp/kolla-repos-backup/``.
+* The repository file is written normally so all package installations in that
+  image can use the mirror.
+* **After** all package installations, kolla injects a cleanup step into every
+  rendered Dockerfile that restores the original file from the backup, or
+  removes the file entirely if no original existed.
+
+This means the repository files in the final image contain the upstream URLs
+(or are absent, leaving the distro defaults in place) rather than mirror URLs.
+
+Example — Debian with a CI mirror marked build-time-only:
+
+.. code-block:: yaml
+
+   debian:
+     debian:
+       build_only: true
+       component: "main"
+       gpg_key: "/usr/share/keyrings/debian-archive-keyring.gpg"
+       suite: "trixie trixie-updates trixie-backports"
+       url: "http://ci-mirror.internal/debian"
+     debian-security:
+       build_only: true
+       component: "main"
+       gpg_key: "/usr/share/keyrings/debian-archive-keyring.gpg"
+       suite: "trixie-security"
+       url: "http://ci-mirror.internal/debian-security"
+
+.. note::
+
+   ``build_only: true`` is only effective for non-distro repository entries
+   (those that write a ``.repo`` or ``.sources`` file). Repositories with
+   ``distro: True`` are a no-op in ``handle_repos()`` and require no cleanup.
+
 Red Hat
 ^^^^^^^
 
@@ -741,6 +891,29 @@ variables that will be picked up from the user env:
 Also these variables could be overwritten using ``--build-args``, which have
 precedence.
 
+Docker BuildKit
+---------------
+
+When using ``--engine docker``, ``kolla-build`` builds images via
+``docker buildx build`` (Docker BuildKit) by default. This requires the
+``docker-buildx-plugin`` package to be installed.
+
+To disable BuildKit and fall back to the legacy docker-py SDK, set
+``buildkit = False`` in ``kolla-build.conf`` or pass ``--nobuildkit`` on the
+command line.
+
+To use a specific buildx builder instance (e.g. a ``docker-container`` or
+remote driver), pass ``--buildkit-builder``:
+
+.. code-block:: console
+
+   kolla-build --buildkit-builder mybuilder
+
+.. note::
+
+   ``--buildkit`` and ``--squash`` are mutually exclusive. Use one or the
+   other.
+
 Cross-compiling
 ---------------
 
@@ -756,7 +929,11 @@ To build ``ARM`` images on ``x86_64`` platform, pass the ``--base-arch`` and
 
 .. note::
 
-   To make this work on x86_64 platform you can use tools like: `qemu-user-static
+   Cross-compilation is natively handled by Docker BuildKit; using BuildKit
+   (the default) is recommended for multi-platform builds.
+
+   To make this work on x86_64 platform with the docker-py based builder
+   (``--nobuildkit``) you can use tools like: `qemu-user-static
    <https://github.com/multiarch/qemu-user-static>`_ or `binfmt
    <https://github.com/tonistiigi/binfmt>`_.
 

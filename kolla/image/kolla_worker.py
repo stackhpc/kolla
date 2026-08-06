@@ -326,6 +326,7 @@ class KollaWorker(object):
         return {
             'debian_package_install': jinja_methods.debian_package_install,
             'handle_repos': jinja_methods.handle_repos,
+            'cleanup_repos': jinja_methods.cleanup_repos,
             'raise_error': jinja_methods.raise_error,
         }
 
@@ -412,6 +413,21 @@ class KollaWorker(object):
                 env.globals.update(self._get_methods())
                 template = env.get_template(template_name)
             content = template.render(values, env=os.environ)
+            pip_args = [
+                'ARG {}'.format(k)
+                for k, v in (
+                    ('PIP_INDEX_URL', self.conf.pip_index_url),
+                    ('PIP_TRUSTED_HOST', self.conf.pip_trusted_host),
+                    ('PIP_EXTRA_INDEX_URL', self.conf.pip_extra_index_url),
+                ) if v
+            ]
+            if pip_args:
+                lines = content.split('\n')
+                for i, line in enumerate(lines):
+                    if line.startswith('FROM '):
+                        lines[i + 1:i + 1] = pip_args
+                        break
+                content = '\n'.join(lines)
             content_path = os.path.join(path, 'Dockerfile')
             with open(content_path, 'w') as f:
                 LOG.debug("Rendered %s into:", tpl_path)
