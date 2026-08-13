@@ -519,6 +519,7 @@ class BuildTask(EngineTask):
             return
 
         cmd = ['docker', 'buildx', 'build', '--progress=plain']
+        cmd.append('--provenance=false')
         if self.conf.buildkit_builder:
             cmd.extend(['--builder', self.conf.buildkit_builder])
         if pull:
