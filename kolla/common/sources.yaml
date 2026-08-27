@@ -1,0 +1,317 @@
+---
+openstack-base:
+  type: "url"
+  location: "$tarballs_base/openstack/requirements/requirements-${openstack_branch}.tar.gz"
+aodh-base:
+  type: "url"
+  location: "$tarballs_base/openstack/aodh/aodh-${openstack_branch}.tar.gz"
+barbican-base:
+  type: "url"
+  location: "$tarballs_base/openstack/barbican/barbican-${openstack_branch}.tar.gz"
+bifrost-base:
+  type: "url"
+  location: "$tarballs_base/openstack/bifrost/bifrost-${openstack_branch}.tar.gz"
+blazar-base:
+  type: "url"
+  location: "$tarballs_base/openstack/blazar/blazar-${openstack_branch}.tar.gz"
+ceilometer-base:
+  type: "url"
+  location: "$tarballs_base/openstack/ceilometer/ceilometer-${openstack_branch}.tar.gz"
+cinder-base:
+  type: "url"
+  location: "$tarballs_base/openstack/cinder/cinder-${openstack_branch}.tar.gz"
+cloudkitty-base:
+  type: "url"
+  location: "$tarballs_base/openstack/cloudkitty/cloudkitty-${openstack_branch}.tar.gz"
+cyborg-base:
+  type: "url"
+  location: "$tarballs_base/openstack/cyborg/cyborg-${openstack_branch}.tar.gz"
+designate-base:
+  type: "url"
+  location: "$tarballs_base/openstack/designate/designate-${openstack_branch}.tar.gz"
+etcd:
+  # NOTE(wszumski): Upgrade one minor version at a time:
+  # https://etcd.io/docs/v3.6/upgrades/upgrade_3_6/
+  # NOTE(mnasiadka): lts_branch pins check_sources.py to the 3.6.x
+  # release series instead of jumping to the latest major.minor.
+  lts_branch: "3.6"
+  version: "3.6.14"
+  type: "url"
+  sha256:
+    amd64: "ffe840ff9295808e88cce2794a18a5ac87f12a5203c8314d0bf6aa119b41bac5"
+    arm64: "fa1b80565ee6fc2df1ae6f57a508b221f3ecc7d591c317c581cd8281b0842b3e"
+  location: "https://github.com/etcd-io/etcd/releases/download/v${version}/etcd-v${version}-linux-${debian_arch}.tar.gz"
+glance-base:
+  type: "url"
+  location: "$tarballs_base/openstack/glance/glance-${openstack_branch}.tar.gz"
+gnocchi-base:
+  type: "git"
+  reference: "4.7.0"
+  location: "https://github.com/gnocchixyz/gnocchi.git"
+heat-base:
+  type: "url"
+  location: "$tarballs_base/openstack/heat/heat-${openstack_branch}.tar.gz"
+horizon:
+  type: "url"
+  location: "$tarballs_base/openstack/horizon/horizon-${openstack_branch}.tar.gz"
+horizon-plugin-blazar-dashboard:
+  type: "url"
+  location: "$tarballs_base/openstack/blazar-dashboard/blazar-dashboard-${openstack_branch}.tar.gz"
+horizon-plugin-cloudkitty-dashboard:
+  type: "url"
+  location: "$tarballs_base/openstack/cloudkitty-dashboard/cloudkitty-dashboard-${openstack_branch}.tar.gz"
+horizon-plugin-designate-dashboard:
+  type: "url"
+  location: "$tarballs_base/openstack/designate-dashboard/designate-dashboard-${openstack_branch}.tar.gz"
+horizon-plugin-fwaas-dashboard:
+  type: "url"
+  location: "$tarballs_base/openstack/neutron-fwaas-dashboard/neutron-fwaas-dashboard-${openstack_branch}.tar.gz"
+horizon-plugin-heat-dashboard:
+  type: "url"
+  location: "$tarballs_base/openstack/heat-dashboard/heat-dashboard-${openstack_branch}.tar.gz"
+horizon-plugin-ironic-ui:
+  type: "url"
+  location: "$tarballs_base/openstack/ironic-ui/ironic-ui-${openstack_branch}.tar.gz"
+horizon-plugin-magnum-ui:
+  type: "url"
+  location: "$tarballs_base/openstack/magnum-ui/magnum-ui-${openstack_branch}.tar.gz"
+horizon-plugin-manila-ui:
+  type: "url"
+  location: "$tarballs_base/openstack/manila-ui/manila-ui-${openstack_branch}.tar.gz"
+horizon-plugin-masakari-dashboard:
+  type: "url"
+  location: "$tarballs_base/openstack/masakari-dashboard/masakari-dashboard-${openstack_branch}.tar.gz"
+horizon-plugin-mistral-dashboard:
+  type: "url"
+  location: "$tarballs_base/openstack/mistral-dashboard/mistral-dashboard-${openstack_branch}.tar.gz"
+horizon-plugin-neutron-vpnaas-dashboard:
+  type: "url"
+  location: "$tarballs_base/openstack/neutron-vpnaas-dashboard/neutron-vpnaas-dashboard-${openstack_branch}.tar.gz"
+horizon-plugin-octavia-dashboard:
+  type: "url"
+  location: "$tarballs_base/openstack/octavia-dashboard/octavia-dashboard-${openstack_branch}.tar.gz"
+horizon-plugin-tacker-dashboard:
+  type: "url"
+  location: "$tarballs_base/openstack/tacker-horizon/tacker-horizon-${openstack_branch}.tar.gz"
+horizon-plugin-trove-dashboard:
+  type: "url"
+  location: "$tarballs_base/openstack/trove-dashboard/trove-dashboard-${openstack_branch}.tar.gz"
+horizon-plugin-watcher-dashboard:
+  type: "url"
+  location: "$tarballs_base/openstack/watcher-dashboard/watcher-dashboard-${openstack_branch}.tar.gz"
+ironic-base:
+  type: "url"
+  location: "$tarballs_base/openstack/ironic/ironic-${openstack_branch}.tar.gz"
+ironic-conductor-plugin-prometheus-exporter:
+  type: "url"
+  location: "$tarballs_base/openstack/ironic-prometheus-exporter/ironic-prometheus-exporter-${openstack_branch}.tar.gz"
+keystone-base:
+  type: "url"
+  location: "$tarballs_base/openstack/keystone/keystone-${openstack_branch}.tar.gz"
+kerbside-base:
+  type: "git"
+  reference: "develop"
+  location: "https://github.com/shakenfist/kerbside"
+kolla-toolbox:
+  type: "url"
+  location: "$tarballs_base/openstack/requirements/requirements-${openstack_branch}.tar.gz"
+letsencrypt-lego:
+  version: "v5.4.0"
+  type: "url"
+  sha256:
+    amd64: "d3adf89392d606ce84d485c1cc20832edd42ace6ff9ced9dd3670d9d8b8aca38"
+    arm64: "a86e946e0415e14e28d6dfe3c95914b088b3f5f6e13209e07e2e8c3a64d7280b"
+  location: "https://github.com/go-acme/lego/releases/download/${version}/lego_${version}_linux_${debian_arch}.tar.gz"
+magnum-base:
+  type: "url"
+  location: "$tarballs_base/openstack/magnum/magnum-${openstack_branch}.tar.gz"
+magnum-conductor-plugin-helm:
+  version: "v4.2.4"
+  type: "url"
+  # NOTE(mnasiadka): location points to get.helm.sh, but
+  # check_sources needs github releases access
+  github: "helm/helm"
+  sha256:
+    amd64: "c306b46f719b0a4da32d0f78ee21bf90ce8d602f15b22ab753f0674d1670a7f3"
+    arm64: "564de2191b881e9f71b5606b25345821ea1682f06ab90499d3ab22b530176da1"
+  location: "https://get.helm.sh/helm-${version}-linux-${debian_arch}.tar.gz"
+manila-base:
+  type: "url"
+  location: "$tarballs_base/openstack/manila/manila-${openstack_branch}.tar.gz"
+mariadb-server-plugin-mariadb-docker:
+  # NOTE(seunghun1ee): This repo is needed to get MariaDB healthcheck.sh
+  type: "git"
+  reference: "master"
+  location: "https://github.com/MariaDB/mariadb-docker"
+masakari-base:
+  type: "url"
+  location: "$tarballs_base/openstack/masakari/masakari-${openstack_branch}.tar.gz"
+masakari-monitors:
+  type: "url"
+  location: "$tarballs_base/openstack/masakari-monitors/masakari-monitors-${openstack_branch}.tar.gz"
+mistral-base:
+  type: "url"
+  location: "$tarballs_base/openstack/mistral/mistral-${openstack_branch}.tar.gz"
+mistral-base-plugin-tacker:
+  type: "url"
+  location: "$tarballs_base/openstack/tacker/tacker-${openstack_branch}.tar.gz"
+neutron-base:
+  type: "url"
+  location: "$tarballs_base/openstack/neutron/neutron-${openstack_branch}.tar.gz"
+neutron-base-plugin-neutron-fwaas:
+  type: "url"
+  location: "$tarballs_base/openstack/neutron-fwaas/neutron-fwaas-${openstack_branch}.tar.gz"
+neutron-base-plugin-networking-baremetal:
+  type: "url"
+  location: "$tarballs_base/openstack/networking-baremetal/networking-baremetal-${openstack_branch}.tar.gz"
+neutron-base-plugin-networking-generic-switch:
+  type: "url"
+  location: "$tarballs_base/openstack/networking-generic-switch/networking-generic-switch-${openstack_branch}.tar.gz"
+neutron-base-plugin-networking-sfc:
+  type: "url"
+  location: "$tarballs_base/openstack/networking-sfc/networking-sfc-${openstack_branch}.tar.gz"
+neutron-base-plugin-tap-as-a-service:
+  type: "url"
+  location: "$tarballs_base/openstack/tap-as-a-service/tap-as-a-service-${openstack_branch}.tar.gz"
+neutron-base-plugin-vpnaas-agent:
+  type: "url"
+  location: "$tarballs_base/openstack/neutron-vpnaas/neutron-vpnaas-${openstack_branch}.tar.gz"
+neutron-bgp-dragent:
+  type: "url"
+  location: "$tarballs_base/openstack/neutron-dynamic-routing/neutron-dynamic-routing-${openstack_branch}.tar.gz"
+neutron-server-plugin-neutron-dynamic-routing:
+  type: "url"
+  location: "$tarballs_base/openstack/neutron-dynamic-routing/neutron-dynamic-routing-${openstack_branch}.tar.gz"
+neutron-vpnaas-agent:
+  type: "url"
+  location: "$tarballs_base/openstack/neutron-vpnaas/neutron-vpnaas-${openstack_branch}.tar.gz"
+nova-base:
+  type: "url"
+  location: "$tarballs_base/openstack/nova/nova-${openstack_branch}.tar.gz"
+nova-base-plugin-blazar:
+  type: "url"
+  location: "$tarballs_base/openstack/blazar-nova/blazar-nova-${openstack_branch}.tar.gz"
+octavia-base:
+  type: "url"
+  location: "$tarballs_base/openstack/octavia/octavia-${openstack_branch}.tar.gz"
+octavia-api-plugin-ovn-octavia-provider:
+  type: "url"
+  location: "$tarballs_base/openstack/ovn-octavia-provider/ovn-octavia-provider-${openstack_branch}.tar.gz"
+octavia-driver-agent-plugin-ovn-octavia-provider:
+  type: "url"
+  location: "$tarballs_base/openstack/ovn-octavia-provider/ovn-octavia-provider-${openstack_branch}.tar.gz"
+placement-base:
+  type: "url"
+  location: "$tarballs_base/openstack/placement/placement-${openstack_branch}.tar.gz"
+prometheus-alertmanager:
+  version: "0.34.0"
+  type: "url"
+  sha256:
+    amd64: "19c75a11d8c03dc4ade7abdbddfb3a8f28c9e7b000d0849cda0cd71dffd74a03"
+    arm64: "a96ef16598ddc58e84d28167b3352b30e3205698d76c56ef467e4504d7664da4"
+  location: "https://github.com/prometheus/alertmanager/releases/download/v${version}/alertmanager-${version}.linux-${debian_arch}.tar.gz"
+prometheus-blackbox-exporter:
+  version: "0.28.0"
+  type: "url"
+  sha256:
+    amd64: "caf5d242fb1cf6d5cb678f3f799f22703d4fafea26b03dcbbd7e1f1825e06329"
+    arm64: "63312be0983d85e5109710a7dc93df3051157ae581853fa3655d171cc1b2806e"
+  location: "https://github.com/prometheus/blackbox_exporter/releases/download/v${version}/blackbox_exporter-${version}.linux-${debian_arch}.tar.gz"
+prometheus-cadvisor:
+  version: "0.60.5"
+  type: "url"
+  sha256:
+    amd64: "6f258bed28113218c88729634c47ead8d928b81b1504b75fd911b98d29003a87"
+    arm64: "6f93087c114bc64a7b8d5c4148190b4d9b95511b9bf023246ce4c76dc448a48a"
+  location: "https://github.com/google/cadvisor/releases/download/v${version}/cadvisor-v${version}-linux-${debian_arch}"
+prometheus-elasticsearch-exporter:
+  version: "1.11.0"
+  type: "url"
+  sha256:
+    amd64: "2bebc50d6980578ad37a376000bc039485ceea129ae229f78baed3379db4f61c"
+    arm64: "7020d10e29896d329cecc7bfe2e90dcc376d68fc0c75ac27014af3747870ce1f"
+  location: "https://github.com/prometheus-community/elasticsearch_exporter/releases/download/v${version}/elasticsearch_exporter-${version}.linux-${debian_arch}.tar.gz"
+prometheus-libvirt-exporter:
+  version: "2.5.0"
+  type: "url"
+  sha256:
+    amd64: "07a49f3d0424259eba88cbc41310017fbbbd6d8ce0b2a0e4dfad3d973b55f558"
+    arm64: "4d13a4a930adabc9c2be8c83c7a8bb2b3e81d8743e9b645590f3d28311e1e8cb"
+  location: "https://github.com/inovex/prometheus-libvirt-exporter/releases/download/v${version}/prometheus-libvirt-exporter-${version}.linux-${debian_arch}.tar.gz"
+prometheus-memcached-exporter:
+  version: "0.17.0"
+  type: "url"
+  sha256:
+    amd64: "40e85262e4340a56fa7cc96722cd596d25ed76ab501459b0b42f1f8e0562d0d1"
+    arm64: "d1abf0ef1196ff5de5cf3462eb962b4a3d6733327951ae6d81c062902b5f2a60"
+  location: "https://github.com/prometheus/memcached_exporter/releases/download/v${version}/memcached_exporter-${version}.linux-${debian_arch}.tar.gz"
+prometheus-mtail:
+  version: "3.4.9"
+  type: "url"
+  sha256:
+    amd64: "2d8f076432d260a26cdcdac9480942aa10c5cb95b0cc43e920d5bb5269a145f1"
+    arm64: "fb24e6b3270b8e9c8dbd7e263d27e2310249dd9d5a793608fe80b19784fefcf9"
+  location: "https://github.com/jaqx0r/mtail/releases/download/v${version}/mtail_${version}_linux_${debian_arch}.tar.gz"
+prometheus-mysqld-exporter:
+  version: "0.20.0"
+  type: "url"
+  sha256:
+    amd64: "5773496e9962ca3817b3599fe4d74f218c95c1295eb2a742462df8e035fe51bd"
+    arm64: "837804c0a59cbe1f3ab46670dec1b4c37940c8d48062374691b27f1f37abf8dd"
+  location: "https://github.com/prometheus/mysqld_exporter/releases/download/v${version}/mysqld_exporter-${version}.linux-${debian_arch}.tar.gz"
+prometheus-node-exporter:
+  version: "1.12.1"
+  type: "url"
+  sha256:
+    amd64: "b51d8a76aa2a9156a55d501aca6276fae09e262259a5e4e831d2c2222f084e63"
+    arm64: "ad35b605f9954b9f1ffddf5ba054bdc5a98d790b9eae5291e1eeb83f1ecbd0e7"
+  location: "https://github.com/prometheus/node_exporter/releases/download/v${version}/node_exporter-${version}.linux-${debian_arch}.tar.gz"
+prometheus-openstack-exporter:
+  version: "1.7.0"
+  type: "url"
+  sha256:
+    amd64: "dfaa0d3dcff22e882d3f61c56bb9ac6f70790df9d67361464159bbb4c7223192"
+    arm64: "d6e0b23fe755732a93796255e3a2be8ec5a699b0a64c21afd377c60ccf60cd55"
+  location: "https://github.com/openstack-exporter/openstack-exporter/releases/download/v${version}/openstack-exporter_${version}_linux_${debian_arch}.tar.gz"
+prometheus-openstack-network-exporter:
+  version: "0.2.0"
+  type: "url"
+  sha256:
+    amd64: "c93e6c62a0b861af50292f51b1443114e2178d89450b37cb0462723eaa3b2338"
+    arm64: "478de6e005188d0e2545e34ca2c5b93a33a32dc7d1f1b03dc3210c4ef7e44305"
+  location: "https://github.com/openstack-k8s-operators/openstack-network-exporter/releases/download/v${version}/openstack-network-exporter-linux-${debian_arch}"
+prometheus-server:
+  # NOTE(mnasiadka): lts_branch pins check_sources.py to the 3.5.x
+  # release series instead of jumping to the latest major.minor.
+  lts_branch: "3.5"
+  version: "3.5.5"
+  type: "url"
+  sha256:
+    amd64: "64d0beab873272b861a91df41668bc852c7e2e5b23f75c16059fb15b5630c577"
+    arm64: "b4676dba3271deea2a92a3e85ac31cde67be707fdff54c5dbf48c9f2ecac5085"
+  location: "https://github.com/prometheus/prometheus/releases/download/v${version}/prometheus-${version}.linux-${debian_arch}.tar.gz"
+prometheus-valkey-exporter:
+  version: "1.89.0"
+  type: "url"
+  sha256:
+    amd64: "f7db4f86272f272bbc08971ce0e34dd675f992c55bd788b0c9fb21158bcec502"
+    arm64: "1a70d42cd1d96a9388f8b528f55ad5bdc2c3cbd911c1dff3875fcb9ac01fa28a"
+  location: "https://github.com/oliver006/redis_exporter/releases/download/v${version}/redis_exporter-v${version}.linux-${debian_arch}.tar.gz"
+skyline-apiserver:
+  type: "url"
+  location: "$tarballs_base/openstack/skyline-apiserver/skyline-apiserver-${openstack_branch}.tar.gz"
+skyline-console:
+  type: "url"
+  location: "$tarballs_base/openstack/skyline-console/skyline-console-${openstack_branch}.tar.gz"
+tacker-base:
+  type: "url"
+  location: "$tarballs_base/openstack/tacker/tacker-${openstack_branch}.tar.gz"
+tacker-base-plugin-networking-sfc:
+  type: "url"
+  location: "$tarballs_base/openstack/networking-sfc/networking-sfc-${openstack_branch}.tar.gz"
+trove-base:
+  type: "url"
+  location: "$tarballs_base/openstack/trove/trove-${openstack_branch}.tar.gz"
+watcher-base:
+  type: "url"
+  location: "$tarballs_base/openstack/watcher/watcher-${openstack_branch}.tar.gz"
