@@ -126,14 +126,14 @@ magnum-base:
   type: "url"
   location: "$tarballs_base/openstack/magnum/magnum-${openstack_branch}.tar.gz"
 magnum-conductor-plugin-helm:
-  version: "v4.2.4"
+  version: "v4.3.0"
   type: "url"
   # NOTE(mnasiadka): location points to get.helm.sh, but
   # check_sources needs github releases access
   github: "helm/helm"
   sha256:
-    amd64: "c306b46f719b0a4da32d0f78ee21bf90ce8d602f15b22ab753f0674d1670a7f3"
-    arm64: "564de2191b881e9f71b5606b25345821ea1682f06ab90499d3ab22b530176da1"
+    amd64: "86584a54def73570558f66f5111cc53dfed56689637ae32c1201205d494f54fb"
+    arm64: "31c5794dd55c66a51e6b7d2e2ac7a114ae8b1de41ff1d9ba51748ac973b06a08"
   location: "https://get.helm.sh/helm-${version}-linux-${debian_arch}.tar.gz"
 manila-base:
   type: "url"
@@ -246,11 +246,11 @@ prometheus-memcached-exporter:
     arm64: "d1abf0ef1196ff5de5cf3462eb962b4a3d6733327951ae6d81c062902b5f2a60"
   location: "https://github.com/prometheus/memcached_exporter/releases/download/v${version}/memcached_exporter-${version}.linux-${debian_arch}.tar.gz"
 prometheus-mtail:
-  version: "3.4.10"
+  version: "3.4.11"
   type: "url"
   sha256:
-    amd64: "353eae1d355075871a891cc8364dbc0f33910f23c5ecbe2b334e7eceb4ded1de"
-    arm64: "470d434ff46e8898857b20b9cab177a1c322d7db18dcba269d9f8db1b1747f12"
+    amd64: "641a85ae818d8218ea4fc4bfde73b3dcea2b2bdbbc6cfb31c0d94091101c9c9e"
+    arm64: "0fd30fc3430f36e984bfecdfda47e8b276ac8e85418596f324f36368e3e64b12"
   location: "https://github.com/jaqx0r/mtail/releases/download/v${version}/mtail_${version}_linux_${debian_arch}.tar.gz"
 prometheus-mysqld-exporter:
   version: "0.20.0"
@@ -274,28 +274,28 @@ prometheus-openstack-exporter:
     arm64: "d6e0b23fe755732a93796255e3a2be8ec5a699b0a64c21afd377c60ccf60cd55"
   location: "https://github.com/openstack-exporter/openstack-exporter/releases/download/v${version}/openstack-exporter_${version}_linux_${debian_arch}.tar.gz"
 prometheus-openstack-network-exporter:
-  version: "0.2.0"
+  version: "0.3.0"
   type: "url"
   sha256:
-    amd64: "c93e6c62a0b861af50292f51b1443114e2178d89450b37cb0462723eaa3b2338"
-    arm64: "478de6e005188d0e2545e34ca2c5b93a33a32dc7d1f1b03dc3210c4ef7e44305"
+    amd64: "bca401a6854bdc350578ff9e3477b4c54527c3f677d7549191e2523f1d03605d"
+    arm64: "06640f01fd088068f2552e702b624d4b9f2441d532409f8be7d94206fc18b9c0"
   location: "https://github.com/openstack-k8s-operators/openstack-network-exporter/releases/download/v${version}/openstack-network-exporter-linux-${debian_arch}"
 prometheus-server:
   # NOTE(mnasiadka): lts_branch pins check_sources.py to the 3.13.x
   # release series instead of jumping to the latest major.minor.
   lts_branch: "3.13"
-  version: "3.13.2"
+  version: "3.13.3"
   type: "url"
   sha256:
-    amd64: "0e8c4d46101bd025ea8265e377d2caabc57f488fc1be1c367f37db69ea41be6f"
-    arm64: "7cecb17a6f41d59814e1a0581a1f81f79051ad5973d1ecf39e23a9f747d6572a"
+    amd64: "b349c732d8a853e657d0e7ae1bbad4d11b586615fb65fdc59d896b9f869c001e"
+    arm64: "aa9be9c36608e7ab7cc089726195d0e4fa74f87b330538df9d30d3da1f2b0e18"
   location: "https://github.com/prometheus/prometheus/releases/download/v${version}/prometheus-${version}.linux-${debian_arch}.tar.gz"
 prometheus-valkey-exporter:
-  version: "1.90.0"
+  version: "1.91.1"
   type: "url"
   sha256:
-    amd64: "311205fdc6ea2fccd6368de32e0cbd1497d10bffd61e51cad7334a3898e9d508"
-    arm64: "ddea9ed55be95e7588d7dcc03394d7b1e13c956c94f65da576b25d95c3d59c73"
+    amd64: "4552451000b6345011bfc50d77fd3be625aa0be47ac07e98a40384038ecffaab"
+    arm64: "7ee124bd17733cce535b87da17e79f0346d3edb4a20759cf3bfca8b4e0d6886f"
   location: "https://github.com/oliver006/redis_exporter/releases/download/v${version}/redis_exporter-v${version}.linux-${debian_arch}.tar.gz"
 skyline-apiserver:
   type: "url"
