@@ -116,11 +116,12 @@ kolla-toolbox:
   type: "url"
   location: "$tarballs_base/openstack/requirements/requirements-${openstack_branch}.tar.gz"
 letsencrypt-lego:
-  version: "v5.4.1"
+  lts_branch: "4"
+  version: "v4.35.2"
   type: "url"
   sha256:
-    amd64: "ebb33f1bead5a7c99dd46f1c5734b44cf1eab5b5c12faf397cd14d50a5916419"
-    arm64: "8494c06bde449ac4d65c726b7ea50d67ac61f422e698c9b78b47778445b098f2"
+    amd64: "ee5be4bf457de8e3efa86a51651c75c87f0ee0e4e9f3ae14f6034d68365770f3"
+    arm64: "e1f153179098d27ce044aaaa168c0e323d50ae71b0f1a147aa8ae49ac6b14d89"
   location: "https://github.com/go-acme/lego/releases/download/${version}/lego_${version}_linux_${debian_arch}.tar.gz"
 magnum-base:
   type: "url"
@@ -246,11 +247,11 @@ prometheus-memcached-exporter:
     arm64: "d1abf0ef1196ff5de5cf3462eb962b4a3d6733327951ae6d81c062902b5f2a60"
   location: "https://github.com/prometheus/memcached_exporter/releases/download/v${version}/memcached_exporter-${version}.linux-${debian_arch}.tar.gz"
 prometheus-mtail:
-  version: "3.4.11"
+  version: "3.4.12"
   type: "url"
   sha256:
-    amd64: "641a85ae818d8218ea4fc4bfde73b3dcea2b2bdbbc6cfb31c0d94091101c9c9e"
-    arm64: "0fd30fc3430f36e984bfecdfda47e8b276ac8e85418596f324f36368e3e64b12"
+    amd64: "c5f1cca4891589ffa52a7c3a32e4802c1d4959e31626df953f3d388393720916"
+    arm64: "acfde7e7cdbf8ecb1865d0cc9bc9dfe7dd657822377bfd5f81405c93b5fedaab"
   location: "https://github.com/jaqx0r/mtail/releases/download/v${version}/mtail_${version}_linux_${debian_arch}.tar.gz"
 prometheus-mysqld-exporter:
   version: "0.20.0"
