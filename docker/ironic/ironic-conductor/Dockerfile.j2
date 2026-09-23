@@ -7,10 +7,13 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 
 {% import "macros.j2" as macros with context %}
 
+
+{{ macros.enable_extra_repos(['docker-ce']) }}
 {{ macros.kolla_enable_base_repos() }}
 
 {% if base_package_type == 'rpm' %}
     {% set ironic_conductor_packages = [
+        'docker-ce-cli',
         'dosfstools',
         'e2fsprogs',
         'fuse',
@@ -35,6 +38,7 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 {% elif base_package_type == 'deb' %}
     {% set ironic_conductor_packages = [
         'bsdmainutils',
+        'docker-ce-cli',
         'dosfstools',
         'e2fsprogs',
         'gdisk',
