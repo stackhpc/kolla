@@ -73,7 +73,7 @@ RUN printf "export WLR_BACKENDS=headless\nexport WLR_RENDERER=pixman\nexport WLR
 RUN printf "#!/bin/bash\necho starting kiosk\nwayvnc 0.0.0.0 &\nwhile true; do\n firefox\n    sleep 1\ndone" >> kiosk.sh
 RUN chmod +x main.sh
 RUN chmod +x kiosk.sh
-CMD /main.sh
+RUN mkdir -p /run/user/0
 
 USER firefox
 ENTRYPOINT ["dumb-init", "--"]
