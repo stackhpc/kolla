@@ -38,9 +38,11 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
         'procps',
         'psmisc',
         'python3-requests',
-        'software-properties-common',
-        'x11vnc',
-        'xvfb'
+	'wayvnc',
+	'xwayland',
+	'cage',
+	'wget',
+	'python3-pyxdg'
     ] %}
 {% endif %}
 
@@ -66,7 +68,15 @@ ENV DISPLAY_WIDTH=1280 \
 {% block ironic_vnc_container_footer %}{% endblock %}
 {% block footer %}{% endblock %}
 
+WORKDIR /
+RUN printf "export WLR_BACKENDS=headless\nexport WLR_RENDERER=pixman\nexport WLR_LIBINPUT_NO_DEVICES=1\nexport XDG_RUNTIME_DIR=/run/user/0\nexport WAYLAND_DISPLAY=wayland-1\nwhile true; do\n    cage /kiosk.sh\n    sleep 1\ndone" >> main.sh
+RUN printf "#!/bin/bash\necho starting kiosk\nwayvnc 0.0.0.0 &\nwhile true; do\n firefox\n    sleep 1\ndone" >> kiosk.sh
+RUN chmod +x main.sh
+RUN chmod +x kiosk.sh
+CMD /main.sh
+
 USER firefox
 ENTRYPOINT ["dumb-init", "--"]
-CMD ["/usr/local/bin/start-x11vnc.sh"]
+#CMD ["/usr/local/bin/start-x11vnc.sh"]
+CMD ["/main.sh"]
 
