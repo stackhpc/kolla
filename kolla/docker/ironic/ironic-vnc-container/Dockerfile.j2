@@ -53,6 +53,9 @@ RUN useradd --create-home --shell /bin/bash firefox \
     && cp -r {{ ironic_vnc_container_path }}/drivers /drivers \
     && cp -r {{ ironic_vnc_container_path }}/extension "{{ ironic_firefox_extension_path }}"
 
+RUN touch {{ ironic_firefox_extension_path }}/APP_NAME.js
+RUN touch {{ ironic_firefox_extension_path }}/APP_NAME.css
+
 ENV DISPLAY_WIDTH=1280 \
     DISPLAY_HEIGHT=960 \
     APP='fake' \
