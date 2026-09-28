@@ -71,7 +71,7 @@ ENV DISPLAY_WIDTH=1280 \
 
 WORKDIR /
 RUN printf "export WLR_BACKENDS=headless\nexport WLR_RENDERER=pixman\nexport WLR_LIBINPUT_NO_DEVICES=1\nexport XDG_RUNTIME_DIR=/run/user/0\nexport WAYLAND_DISPLAY=wayland-1\nwhile true; do\n    cage /kiosk.sh\n    sleep 1\ndone" >> main.sh
-RUN printf "#!/bin/bash\necho starting kiosk\nwayvnc 0.0.0.0 &\n/usr/bin/start-x11vnc.py &\nwhile true; do\n /usr/local/bin/start-firefox.sh\n    sleep 1\ndone" >> kiosk.sh
+RUN printf "#!/bin/bash\necho starting kiosk\nwayvnc 0.0.0.0 &\n/usr/local/bin/start-x11vnc.py &\nwhile true; do\n /usr/local/bin/start-firefox.sh\n    sleep 1\ndone" >> kiosk.sh
 RUN chmod +x main.sh
 RUN chmod +x kiosk.sh
 RUN mkdir -p /run/user/0
