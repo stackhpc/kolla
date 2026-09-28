@@ -21,7 +21,6 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 
 {% if base_package_type == 'rpm' %}
     {% set ironic_firefox_name = 'firefox' %}
-    {% set ironic_firefox_extension_path = '/usr/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/@ironic-console.openstack.org' %}
     {% set ironic_vnc_container_packages = [
         ironic_firefox_name,
         'iproute',
@@ -33,7 +32,6 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
                          These will need to be installed from source#}
 {% elif base_package_type == 'deb' %}
     {% set ironic_firefox_name = 'firefox-esr' %}
-    {% set ironic_firefox_extension_path = '/usr/lib/firefox-esr-addons/extensions/@ironic-console.openstack.org' %}
 
     {% set ironic_vnc_container_packages = [
         ironic_firefox_name,
