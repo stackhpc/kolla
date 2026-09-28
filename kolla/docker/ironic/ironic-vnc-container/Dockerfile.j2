@@ -75,7 +75,7 @@ RUN chmod +x main.sh
 RUN chmod +x kiosk.sh
 RUN mkdir -p /run/user/0
 
-USER firefox
+#USER firefox
 ENTRYPOINT ["dumb-init", "--"]
 #CMD ["/usr/local/bin/start-x11vnc.sh"]
 CMD ["/main.sh"]
