@@ -5,8 +5,8 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}"
 
 RUN . /etc/os-release;\
     if [ "${PRETTY_NAME#{{ supported_distro_name }}}" = "$PRETTY_NAME" ]; then \
-        echo "Only releases \"{{ supported_distro_name }}\" are supported on {{ base_distro }}"; false; \
         echo "PRETTY_NAME=${PRETTY_NAME}";\n
+        echo "Only releases \"{{ supported_distro_name }}\" are supported on {{ base_distro }}"; false; \
     fi
 
 # We use curl in this dockerfile so let configure it before first use
