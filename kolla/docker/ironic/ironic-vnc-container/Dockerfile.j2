@@ -13,7 +13,10 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build
 {{ macros.enable_extra_repos(['crb', 'epel']) }}
 {% endif %}
 {% if base_distro == 'ubuntu' %}
-{{ macros.enable_extra_repos(['mozillateam-ppa']) }}
+    {{ macros.enable_extra_repos(['mozillateam-ppa']) }}
+    {% set ironic_firefox_extension_path = '/usr/lib/firefox-esr-addons/extensions/@ironic-console.openstack.org' %}
+{% else % }
+    {% set ironic_firefox_extension_path = '/usr/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/@ironic-console.openstack.org' %}
 {% endif %}
 
 {% if base_package_type == 'rpm' %}
