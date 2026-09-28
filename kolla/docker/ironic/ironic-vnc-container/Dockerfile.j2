@@ -61,7 +61,7 @@ ENV DISPLAY_WIDTH=1280 \
     DEBUG=2 \
     FIREFOX={{ ironic_firefox_name }} \
     FIREFOX_CONFIG_DIR=/home/firefox/.mozilla/{{ ironic_firefox_name }} \
-    FIREFOX_PROFILE_DIR=/.ironic-vnc-profile \
+    FIREFOX_PROFILE_DIR=/home/firefox/.ironic-vnc-profile \
     EXTENSION_PATH="{{ ironic_firefox_extension_path }}"
 
 {{ macros.kolla_patch_sources() }}
