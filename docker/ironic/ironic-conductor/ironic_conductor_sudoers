@@ -1,0 +1,1 @@
+ironic ALL = (root) NOPASSWD:SETENV: /var/lib/kolla/venv/bin/ironic-conductor
