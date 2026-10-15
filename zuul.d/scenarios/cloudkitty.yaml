@@ -1,0 +1,11 @@
+---
+- project-template:
+    name: kolla-scenario-cloudkitty
+    check:
+      jobs:
+        - kolla-ansible-debian-trixie-cloudkitty: &files
+            files:
+              - ^kolla/common/sources.yaml
+              - ^kolla/docker/(base|cloudkitty)/
+        - kolla-ansible-rocky-10-cloudkitty: *files
+        - kolla-ansible-ubuntu-noble-cloudkitty: *files
