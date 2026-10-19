@@ -10,6 +10,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from copy import deepcopy
 import datetime
 import fixtures
 import io
@@ -429,6 +430,118 @@ class TasksTest(base.TestCase):
             members = tar.getmembers()
             self.assertEqual(['plugins'], [m.name for m in members])
             self.assertEqual(0, members[0].mtime)
+
+    @mock.patch.dict(os.environ, clear=True)
+    def test_cache_invalidation_minor_changes(self):
+        """Test that small changes to source correctly invalidate build cache."""
+        src_dir = self.useFixture(fixtures.TempDir()).path
+        plugins_dir = self.useFixture(fixtures.TempDir()).path
+        additions_dir = self.useFixture(fixtures.TempDir()).path
+
+        working_dir = self.useFixture(fixtures.TempDir()).path
+        containerfile_path = os.path.join(working_dir, "Dockerfile")
+        with open(containerfile_path, "w") as f:
+            f.write("""
+                FROM alpine
+                ADD fake-image-base-archive /source
+                ADD plugins-archive /
+                ADD additions-archive /
+                """)
+
+        def build_image_and_get_file(text: bytes, buildkit: bool, podman: bool) -> tuple[bytes, bytes, bytes]:
+            file_path = os.path.join(src_dir, "test.txt")
+            with open(file_path, "wb") as f:
+                f.write(text)
+
+            file_path = os.path.join(plugins_dir, "test.txt")
+            with open(file_path, "wb") as f:
+                f.write(text)
+
+            file_path = os.path.join(additions_dir, "test.txt")
+            with open(file_path, "wb") as f:
+                f.write(text)
+
+            source = {
+                "name": "fake-image-base",
+                "type": "local",
+                "enabled": True,
+                "source": src_dir,
+            }
+            plugin = {**source, "source": plugins_dir}
+            addition = {**source, "source": additions_dir}
+
+            push_queue = mock.Mock()
+
+            image = FAKE_IMAGE.copy()
+            image.source = source
+            image.path = working_dir
+            image.plugins = [plugin]
+            image.additions = [addition]
+            conf = deepcopy(self.conf)
+            conf.set_override("buildkit", buildkit)
+            if podman:
+                conf.set_override("engine", "podman")
+            builder = tasks.BuildTask(conf, image, push_queue)
+            builder.builder(image)
+
+            built_image = image
+            built_image = builder.engine_client.images.get("image-base")
+            file_contents = builder.engine_client.containers.run(
+                built_image,
+                ["/bin/sh", "-c", "cat /source/tmp*/test.txt"],
+                auto_remove=True,
+            )
+            plugin_contents = builder.engine_client.containers.run(
+                built_image,
+                ["/bin/sh", "-c", "cat /plugins/tmp*/test.txt"],
+                auto_remove=True,
+            )
+            addition_contents = builder.engine_client.containers.run(
+                built_image,
+                ["/bin/sh", "-c", "cat /additions/tmp*/test.txt"],
+                auto_remove=True,
+            )
+
+            return (file_contents, plugin_contents, addition_contents)
+
+        text_a = b"""Dolore nisi laborum duis sit ad sit veniam ex ipsum eu
+        mollit dolore do proident culpa. Reprehenderit qui non pariatur
+        culpa velit sunt culpa velit. Deserunt consequat velit adipisicing
+        consequat officia fugiat sunt exercitation aliquip qui cillum
+        occaecat occaecat anim consequat.
+        irure ad est. Nostrud fugiat fugiat qui officia deserunt sit nisi
+        incididunt veniam. Est enim laboris minim commodo ut quis ut
+        deserunt velit velit cillum voluptate cupidatat dolor."""
+
+        text_b = text_a + b"\nSome extra text."
+
+        file_a, plugin_a, addition_a = build_image_and_get_file(text_a, buildkit=False, podman=True)
+        self.assertEqual(text_a, file_a)
+        self.assertEqual(text_a, plugin_a)
+        self.assertEqual(text_a, addition_a)
+        file_b, plugin_b, addition_b = build_image_and_get_file(text_b, buildkit=False, podman=True)
+        self.assertEqual(text_b, file_b)
+        self.assertEqual(text_b, plugin_b)
+        self.assertEqual(text_b, addition_b)
+
+        file_a, plugin_a, addition_a = build_image_and_get_file(text_a, buildkit=False, podman=False)
+        self.assertEqual(text_a, file_a)
+        self.assertEqual(text_a, plugin_a)
+        self.assertEqual(text_a, addition_a)
+        file_b, plugin_b, addition_b = build_image_and_get_file(text_b, buildkit=False, podman=False)
+        self.assertEqual(text_b, file_b)
+        self.assertEqual(text_b, plugin_b)
+        self.assertEqual(text_b, addition_b)
+
+        file_a, plugin_a, addition_a = build_image_and_get_file(text_a, buildkit=True, podman=False)
+        self.assertEqual(text_a, file_a)
+        self.assertEqual(text_a, plugin_a)
+        self.assertEqual(text_a, addition_a)
+        file_b, plugin_b, addition_b = build_image_and_get_file(text_b, buildkit=True, podman=False)
+        self.assertEqual(text_b, file_b)
+        self.assertEqual(text_b, plugin_b)
+        self.assertEqual(text_b, addition_b)
+
 
     @mock.patch.dict(os.environ, clear=True)
     @mock.patch(engine_client)

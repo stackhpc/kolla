@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Fix Buildkit incorrectly re-using cached source archive when changes don't affect archive size.
+    `LP#2171614 <https://bugs.launchpad.net/kolla/+bug/2171614>`__

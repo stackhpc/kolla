@@ -292,9 +292,6 @@ class BuildTask(EngineTask):
             image.status = Status.ERROR
             return
 
-        # Set time on destination archive to epoch 0
-        os.utime(dest_archive, (0, 0))
-
         return dest_archive
 
     def update_buildargs(self):
