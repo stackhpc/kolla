@@ -5,7 +5,7 @@ LABEL maintainer="{{ maintainer }}" name="{{ image_name }}"
 
 RUN . /etc/os-release;\
     if [ "${PRETTY_NAME#{{ supported_distro_name }}}" = "$PRETTY_NAME" ]; then \
-        echo "Only releases \"{{ supported_distro_name }}\" are supported on {{ base_distro }}"; false; \
+        echo "Only releases \"{{ supported_distro_name }}\" are supported on {{ base_distro }}. Release is $PRETTY_NAME."; false; \
     fi
 
 # We use curl in this dockerfile so let configure it before first use
@@ -245,6 +245,7 @@ COPY apt_preferences /etc/apt/preferences.d/kolla-custom
 
 {% set base_apt_keys = [
    {'name': 'erlang-ppa', 'keyid': 'F77F1EDA57EBB1CC'},
+   {'name': 'mozillateam-ppa', 'keyid': 'AEBDF4819BE21867'},
    {'name': 'rabbitmq',   'keyid': '6B73A36E6026DFCA'},
    {'name': 'haproxy',    'keyid': 'CFFB779AADC995E4F350A060505D97A41C61B9CD'},
 ] %}

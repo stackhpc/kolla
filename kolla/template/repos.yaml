@@ -96,6 +96,11 @@ ubuntu:
     suite: "noble"
     component: "main"
     gpg_key: "mariadb.gpg"
+  mozillateam-ppa:
+    url: "https://ppa.launchpadcontent.net/mozillateam/ppa/ubuntu"
+    suite: "noble"
+    component: "main"
+    gpg_key: "mozillateam-ppa.gpg"
   proxysql:
     url: "https://repo.proxysql.com/ProxySQL/proxysql-3.0.x/noble/"
     suite: "./"

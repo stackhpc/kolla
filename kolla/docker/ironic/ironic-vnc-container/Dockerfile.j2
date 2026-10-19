@@ -1,0 +1,89 @@
+FROM {{ namespace }}/{{ image_prefix }}ironic-base:{{ tag }}
+{% block labels %}
+LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build_date }}"
+{% endblock %}
+
+{% block ironic_vnc_container_header %}{% endblock %}
+
+{% import "macros.j2" as macros with context %}
+
+{% if base_distro == 'rocky' %}
+RUN fail "Cannot be built on Rocky until cage 0.3.1 has been packaged for EPEL 10: https://packages.fedoraproject.org/pkgs/cage/cage/index.html"
+{% endif %}
+
+{% set ironic_vnc_container_path = '/var/lib/kolla/venv/share/ironic/vnc-container' %}
+
+{% if base_package_type == 'rpm' %}
+{{ macros.enable_extra_repos(['crb', 'epel']) }}
+{% endif %}
+{% if base_distro == 'ubuntu' %}
+    {{ macros.enable_extra_repos(['mozillateam-ppa']) }}
+    {% set ironic_firefox_extension_path = '/usr/lib/firefox-esr-addons/extensions/@ironic-console.openstack.org' %}
+{% else %}
+    {% set ironic_firefox_extension_path = '/usr/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/@ironic-console.openstack.org' %}
+{% endif %}
+
+{% if base_package_type == 'rpm' %}
+    {% set ironic_firefox_name = 'firefox' %}
+    {% set ironic_vnc_container_packages = [
+        ironic_firefox_name,
+        'iproute',
+        'procps',
+        'psmisc',
+        'python3-requests'
+    ] %}
+{% elif base_package_type == 'deb' %}
+    {% set ironic_firefox_name = 'firefox-esr' %}
+
+    {% set ironic_vnc_container_packages = [
+        ironic_firefox_name,
+        'iproute2',
+        'procps',
+        'psmisc',
+        'python3-requests',
+	'wayvnc',
+	'xwayland',
+	'cage',
+	'wget',
+	'python3-pyxdg'
+    ] %}
+{% endif %}
+
+{{ macros.install_packages(ironic_vnc_container_packages | customizable("packages")) }}
+
+#RUN useradd --create-home --shell /bin/bash firefox \
+RUN cp -r {{ ironic_vnc_container_path }}/bin/* /usr/local/bin \
+    && cp -r {{ ironic_vnc_container_path }}/drivers /drivers \
+    && cp -r {{ ironic_vnc_container_path }}/extension "{{ ironic_firefox_extension_path }}"
+
+{% if base_distro == 'ubuntu' %}
+ENV FIREFOX_CONFIG_DIR=/root/.mozilla/firefox-esr
+{% elif base_distro == 'debian' %}
+ENV FIREFOX_CONFIG_DIR=/root/.config/mozilla/firefox
+{% endif %}
+
+ENV DISPLAY_WIDTH=1280 \
+    DISPLAY_HEIGHT=960 \
+    APP='fake' \
+    APP_INFO={} \
+    READ_ONLY=False \
+    DEBUG=0 \
+    FIREFOX={{ ironic_firefox_name }} \
+    FIREFOX_PROFILE_DIR=/root/.ironic-vnc-profile \
+    FIREFOX_USER_HOME=/root \
+    EXTENSION_PATH="{{ ironic_firefox_extension_path }}" \
+    WLR_BACKENDS=headless \
+    WLR_RENDERER=pixman \
+    WLR_LIBINPUT_NO_DEVICES=1 \
+    XDG_RUNTIME_DIR=/run/user/0 \
+    WAYLAND_DISPLAY=wayland-0
+
+{{ macros.kolla_patch_sources() }}
+
+{% block ironic_vnc_container_footer %}{% endblock %}
+{% block footer %}{% endblock %}
+
+RUN mkdir -p /run/user/0
+
+ENTRYPOINT ["/usr/bin/dumb-init", "--single-child", "--"]
+CMD ["cage", "/usr/local/bin/start-wayvnc.py"]
