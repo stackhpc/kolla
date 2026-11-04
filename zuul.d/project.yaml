@@ -13,6 +13,7 @@
       - kolla-scenario-bifrost
       - kolla-scenario-cells
       - kolla-scenario-cephadm
+      - kolla-scenario-cloudkitty
       - kolla-scenario-ironic
       - kolla-scenario-lets-encrypt
       - kolla-scenario-mariadb
